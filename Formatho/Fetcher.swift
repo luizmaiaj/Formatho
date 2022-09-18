@@ -16,14 +16,13 @@ class Fetcher: ObservableObject {
     
     let service = APIService()
     
-    func projects(pat: String) {
+    func projects(pat: String, email: String) {
         
-        //let headers = ["UserAgent": "Red8.io - iOS - Version 0.1.0 - https://red8.io"]
+        let authorisation = "Basic " + (String(email + ":" + pat).data(using: .utf8)?.base64EncodedString() ?? "")
         
-        let patBase64 = pat.data(using: .utf8)?.base64EncodedString()
+        let headers = ["accept": "application/json", "authorization": authorisation]
         
-        let headers = ["accept": "application/json",
-                       "Basic": patBase64 ?? ""]
+        print(headers)
         
         self.isLoading = true
         errorMessage = nil
@@ -44,7 +43,7 @@ class Fetcher: ObservableObject {
                         self.errorMessage = error.localizedDescription
                     case .success(let info):
                         print("Fetcher count: \(info.count)")
-                        self.projects = info.projects
+                        self.projects = info.value
                 }
             }
         }

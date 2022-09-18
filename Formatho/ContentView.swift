@@ -13,17 +13,17 @@ struct ContentView: View {
     
     @ObservedObject var fetcher: Fetcher = Fetcher()
     
-    var pat: String = String("qnwoce4zknjxyjfxmwgidv3bj624aizdbcrusyq54alqgizxpkrq").data(using: .utf8)?.base64EncodedString() ?? ""
+    var pat: String = String("qnwoce4zknjxyjfxmwgidv3bj624aizdbcrusyq54alqgizxpkrq")
+    var email: String = String("luiz@newlogic.com")
     
     var body: some View {
         VStack {
             Image(systemName: "globe")
                 .imageScale(.large)
                 .foregroundColor(.accentColor)
-            Text("Hello, world!")
             
             Button("Send request", action: {
-                fetcher.projects(pat: pat)
+                fetcher.projects(pat: pat, email: email)
             })
         }
         .padding()

@@ -28,12 +28,11 @@ import Foundation
 class ADOProjectSearch:Codable, Identifiable {
     
     init() {
-        self.projects = [Project]()
+        self.value = [Project]()
         self.count = 0
     }
     
-    let id = UUID()
-    let projects: [Project]
+    let value: [Project]
     let count: Int
 }
 
@@ -45,7 +44,7 @@ class Project: Codable, Identifiable {
         description = String()
         url = String()
         state = String()
-        revistion = 0
+        revision = 0
         visibility = String()
         lastUpdateTime = String()
     }
@@ -55,7 +54,7 @@ class Project: Codable, Identifiable {
     let description: String
     let url: String
     let state: String
-    let revistion: Int
+    let revision: Int
     let visibility: String
     let lastUpdateTime: String
     
