@@ -7,24 +7,29 @@
 
 import SwiftUI
 
-import Combine
-
-// PAT qnwoce4zknjxyjfxmwgidv3bj624aizdbcrusyq54alqgizxpkrq
+import Combine // for Just
 
 struct ContentView: View {
     
     @ObservedObject var fetcher: Fetcher = Fetcher()
     
+    @AppStorage("email") private var email: String = String()
+    @AppStorage("pat") private var pat: String = String()
+    
     @State var witid: String = String()
     
-    let pat: String = String("qnwoce4zknjxyjfxmwgidv3bj624aizdbcrusyq54alqgizxpkrq")
-    let email: String = String("luiz@newlogic.com")
+    @State var isPresentedLogin = false
     
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
+            
+            if isPresentedLogin {
+                Form {
+                    TextField("email", text: $email)
+                        
+                    TextField("PAT", text: $pat)
+                }
+            }
             
             Form {
                 Button("Get projects", action: {
@@ -33,11 +38,11 @@ struct ContentView: View {
                 
                 HStack {
                     Text("WIT ID")
-                        .frame(width: 150, alignment: .leading)
+                        .frame(width: 50, alignment: .leading)
                     
                     TextField("> 50001", text: $witid)
                         .frame(alignment: .trailing)
-                    //.keyboardType(.numberPad)
+
                         .onReceive(Just(witid)) { newValue in
                             let filtered = newValue.filter { "0123456789".contains($0) }
                             if filtered != newValue { witid = filtered }
@@ -48,17 +53,35 @@ struct ContentView: View {
                     })
                 }
             }
-            .frame(width: 400)
+            .frame(minWidth: 300)
             
             if fetcher.wits.count > 0 {
-                Text("P\(fetcher.wits[0].fields.MicrosoftVSTSCommonPriority) \(fetcher.wits[0].fields.SystemTitle): \(fetcher.wits[0].fields.SystemDescription)")
+                Text(fetcher.formattedWIT)
+            }
+        }
+        .toolbar {
+            ToolbarItem {
+                
+                Button {
+                    isPresentedLogin.toggle()
+                } label: {
+                    HStack {
+                        
+                        if email.isEmpty {
+                            Text("Login details")
+                        } else {
+                            Text(email)
+                        }
+                        
+                        Image(systemName: "person.circle")
+                            .font(.title2)
+                    }
+                }
             }
         }
         .padding()
     }
 }
-
-// https://dev.azure.com/worldfoodprogramme/SCOPE/_workitems/edit/91860
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

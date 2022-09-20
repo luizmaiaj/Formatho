@@ -129,12 +129,12 @@ class ADOWitSearch:Codable, Identifiable {
 class Wit: Codable, Identifiable {
     
     init() {
-        id = Double()
+        id = Int()
         fields = Fields()
         url = String()
     }
     
-    let id: Double
+    let id: Int
     let fields: Fields
     let url: String
 }

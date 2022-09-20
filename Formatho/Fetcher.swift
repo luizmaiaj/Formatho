@@ -7,13 +7,18 @@
 
 import Foundation
 
-//curl -vu luiz@newlogic.com:qnwoce4zknjxyjfxmwgidv3bj624aizdbcrusyq54alqgizxpkrq https://dev.azure.com/worldfoodprogramme/_apis/projects
+import AppKit // for clipboard access
 
 class Fetcher: ObservableObject {
     @Published var projects: [Project] = [Project]()
     @Published var wits: [Wit] = [Wit]()
     @Published var isLoading: Bool = false
     @Published var errorMessage: String? = nil
+    @Published var rawWIT: String = String()
+    @Published var htmlWIT: String = String()
+    @Published var formattedWIT: AttributedString = AttributedString()
+    
+    let pboard = NSPasteboard.general // reference to pasteboard
     
     let service = APIService()
     
@@ -33,9 +38,9 @@ class Fetcher: ObservableObject {
         self.isLoading = true
         errorMessage = nil
         
-        let baseUrl: String = "https://dev.azure.com/worldfoodprogramme/_apis/projects"
+        let prjBaseUrl: String = "https://dev.azure.com/worldfoodprogramme/_apis/projects"
         
-        let url = NSURL(string: baseUrl)! as URL
+        let url = NSURL(string: prjBaseUrl)! as URL
         
         self.service.fetch(ADOProjectSearch.self, url: url, headers: headers) { [unowned self] result in
             
@@ -66,9 +71,11 @@ class Fetcher: ObservableObject {
         self.isLoading = true
         errorMessage = nil
         
-        let baseUrl: String = "https://dev.azure.com/worldfoodprogramme/_apis/wit/workitems?ids=" + witid
+        let baseURL: String = "https://dev.azure.com/worldfoodprogramme/SCOPE/_workitems/edit/"
         
-        let url = NSURL(string: baseUrl)! as URL
+        let witBaseUrl: String = "https://dev.azure.com/worldfoodprogramme/_apis/wit/workitems?ids=" + witid
+        
+        let url = NSURL(string: witBaseUrl)! as URL
         
         self.service.fetch(ADOWitSearch.self, url: url, headers: headers) { [unowned self] result in
             
@@ -83,6 +90,27 @@ class Fetcher: ObservableObject {
                     case .success(let info):
                         print("Fetcher count: \(info.count)")
                         self.wits = info.value
+                        
+                        self.rawWIT = "P\(info.value[0].fields.MicrosoftVSTSCommonPriority) \(info.value[0].fields.SystemTitle) [SCOPE-\(String(format: "%d", info.value[0].id))]:"
+                        self.htmlWIT = "<b>P\(info.value[0].fields.MicrosoftVSTSCommonPriority) \(info.value[0].fields.SystemTitle)</b> <a href=\"\(baseURL)\(String(format: "%d", info.value[0].id))\">[SCOPE-\(String(format: "%d", info.value[0].id))]</a>:"
+                        
+                        let fullHTML = self.htmlWIT
+                        
+                        print(info.value[0].url)
+                        
+                        print(fullHTML)
+                        
+                        if let data = fullHTML.data(using: .unicode),
+                           let nsAttrString = try? NSAttributedString(data: data,
+                                                                      options: [.documentType: NSAttributedString.DocumentType.html],
+                                                                      documentAttributes: nil) {
+                            
+                            self.formattedWIT = AttributedString(nsAttrString) // string to be displayed in Text()
+                            
+                            self.pboard.clearContents()
+                            
+                            self.pboard.writeObjects(NSArray(object: nsAttrString) as! [NSPasteboardWriting])
+                        }
                 }
             }
         }
