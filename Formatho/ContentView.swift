@@ -42,10 +42,12 @@ struct ContentView: View {
                     
                     TextField("> 50001", text: $witid)
                         .frame(alignment: .trailing)
-
                         .onReceive(Just(witid)) { newValue in
                             let filtered = newValue.filter { "0123456789".contains($0) }
                             if filtered != newValue { witid = filtered }
+                        }
+                        .onSubmit {
+                            fetcher.wits(pat: pat, email: email, witid: witid)
                         }
                     
                     Button("Get WIT", action: {
