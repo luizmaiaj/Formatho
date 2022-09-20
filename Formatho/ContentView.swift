@@ -67,7 +67,12 @@ struct ContentView: View {
                 
             } else if fetcher.wits.count > 0 {
                 
-                Text(fetcher.formattedWIT)
+                HStack{
+                    Text("Copied to clipboard:")
+                        .font(.body)
+                    
+                    Text(fetcher.formattedWIT)
+                }
             }
         }
         .toolbar {
