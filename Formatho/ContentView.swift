@@ -55,7 +55,16 @@ struct ContentView: View {
             }
             .frame(minWidth: 300)
             
-            if fetcher.wits.count > 0 {
+            if fetcher.isLoading {
+                
+                Text("Fetching...")
+                
+            } else if fetcher.errorMessage != nil {
+                
+                Text(self.fetcher.errorMessage ?? "")
+                
+            } else if fetcher.wits.count > 0 {
+                
                 Text(fetcher.formattedWIT)
             }
         }
