@@ -10,9 +10,9 @@ import SwiftUI
 struct ContentView: View {
     
     @StateObject var fetcher: Fetcher = Fetcher()
-        
+    
     var body: some View {
-
+        
         Main(fetcher: fetcher)
     }
 }

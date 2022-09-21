@@ -24,45 +24,45 @@ enum APIError: Error, CustomStringConvertible {
     case url(URLError?)
     case parsing(DecodingError?)
     case unknown
-
+    
     var localizedDescription: String {
         // user feedback
         switch self {
-            case .badURL, .parsing, .unknown:
-                return "Sorry, something went wrong"
-            case .badResponse(let code):
-                
-                switch code {
-                    case 400:
-                        return "The parameters in the URL or in the request body aren't valid"
-                    case 401:
-                        return "Authentication has failed, please check your credentials"
-                    case 403:
-                        return "The authenticated user doesn't have permission for the operation"
-                    case 404:
-                        return "The wit doesn't exist, or you doesn't have permission to see it"
-                    case 409:
-                        return "There's a conflict between the request and the state of the data on the server"
-                    default:
-                        return "Sorry, the connection to the server has failed"
-                }
-
-            case .url(let error):
-                return error?.localizedDescription ?? "Something went wrong"
+        case .badURL, .parsing, .unknown:
+            return "Sorry, something went wrong"
+        case .badResponse(let code):
+            
+            switch code {
+            case 400:
+                return "The parameters in the URL or in the request body aren't valid"
+            case 401:
+                return "Authentication has failed, please check your credentials"
+            case 403:
+                return "The authenticated user doesn't have permission for the operation"
+            case 404:
+                return "The wit doesn't exist, or you doesn't have permission to see it"
+            case 409:
+                return "There's a conflict between the request and the state of the data on the server"
+            default:
+                return "Sorry, the connection to the server has failed"
+            }
+            
+        case .url(let error):
+            return error?.localizedDescription ?? "Something went wrong"
         }
     }
-
+    
     var description: String {
         // data for debugging
         switch self {
-            case .unknown: return "unknown error"
-            case .badURL: return "invalid url"
-            case .url(let error):
-                return error?.localizedDescription ?? "url session error"
-            case .parsing(let error):
-                return "parsing error \(error?.localizedDescription ?? "")"
-            case .badResponse(statusCode: let statusCode):
-                return "bad response with status code \(statusCode)"
+        case .unknown: return "unknown error"
+        case .badURL: return "invalid url"
+        case .url(let error):
+            return error?.localizedDescription ?? "url session error"
+        case .parsing(let error):
+            return "parsing error \(error?.localizedDescription ?? "")"
+        case .badResponse(statusCode: let statusCode):
+            return "bad response with status code \(statusCode)"
         }
     }
 }

@@ -70,6 +70,7 @@ struct Main: View {
                     HStack{
                         Image(systemName: "arrow.up.doc.on.clipboard")
                         Text(fetcher.formattedWIT)
+                            .lineLimit(nil)
                     }
                 }
             }

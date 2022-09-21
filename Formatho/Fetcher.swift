@@ -53,19 +53,19 @@ class Fetcher: ObservableObject {
                 self.isLoading = false
                 
                 switch result {
-                    case .failure(let error):
-                        print("Fetcher error: \(error)")
-                        self.errorMessage = error.localizedDescription
-                    case .success(let info):
-                        print("Fetcher count: \(info.count)")
-                        self.projects = info.value
+                case .failure(let error):
+                    print("Fetcher error: \(error)")
+                    self.errorMessage = error.localizedDescription
+                case .success(let info):
+                    print("Fetcher count: \(info.count)")
+                    self.projects = info.value
                 }
             }
         }
     }
     
     func wits(org: String, pat: String, email: String, witid: String) {
-                
+        
         let header = buildHeader(pat: pat, email: email)
         
         self.isLoading = true
@@ -84,33 +84,33 @@ class Fetcher: ObservableObject {
                 self.isLoading = false
                 
                 switch result {
-                    case .failure(let error):
-                        print("Fetcher error: \(error)")
-                        self.errorMessage = error.localizedDescription
-                    case .success(let info):
-                        print("Fetcher count: \(info.count)")
-                        self.wits = info.value
+                case .failure(let error):
+                    print("Fetcher error: \(error)")
+                    self.errorMessage = error.localizedDescription
+                case .success(let info):
+                    print("Fetcher count: \(info.count)")
+                    self.wits = info.value
+                    
+                    self.rawWIT = "P\(info.value[0].fields.MicrosoftVSTSCommonPriority) \(info.value[0].fields.SystemTitle) [SCOPE-\(String(format: "%d", info.value[0].id))]: \(info.value[0].fields.CustomReport)"
+                    self.htmlWIT = "<b>P\(info.value[0].fields.MicrosoftVSTSCommonPriority) \(info.value[0].fields.SystemTitle)</b> <a href=\"\(reqURL)\(String(format: "%d", info.value[0].id))\">[SCOPE-\(String(format: "%d", info.value[0].id))]</a>: \(info.value[0].fields.CustomReport)"
+                    
+                    let fullHTML = self.htmlWIT
+                    
+                    print(info.value[0].url)
+                    
+                    print(fullHTML)
+                    
+                    if let data = fullHTML.data(using: .unicode),
+                       let nsAttrString = try? NSAttributedString(data: data,
+                                                                  options: [.documentType: NSAttributedString.DocumentType.html],
+                                                                  documentAttributes: nil) {
                         
-                        self.rawWIT = "P\(info.value[0].fields.MicrosoftVSTSCommonPriority) \(info.value[0].fields.SystemTitle) [SCOPE-\(String(format: "%d", info.value[0].id))]:"
-                        self.htmlWIT = "<b>P\(info.value[0].fields.MicrosoftVSTSCommonPriority) \(info.value[0].fields.SystemTitle)</b> <a href=\"\(reqURL)\(String(format: "%d", info.value[0].id))\">[SCOPE-\(String(format: "%d", info.value[0].id))]</a>:"
+                        self.formattedWIT = AttributedString(nsAttrString) // string to be displayed in Text()
                         
-                        let fullHTML = self.htmlWIT
+                        self.pboard.clearContents()
                         
-                        print(info.value[0].url)
-                        
-                        print(fullHTML)
-                        
-                        if let data = fullHTML.data(using: .unicode),
-                           let nsAttrString = try? NSAttributedString(data: data,
-                                                                      options: [.documentType: NSAttributedString.DocumentType.html],
-                                                                      documentAttributes: nil) {
-                            
-                            self.formattedWIT = AttributedString(nsAttrString) // string to be displayed in Text()
-                            
-                            self.pboard.clearContents()
-                            
-                            self.pboard.writeObjects(NSArray(object: nsAttrString) as! [NSPasteboardWriting])
-                        }
+                        self.pboard.writeObjects(NSArray(object: nsAttrString) as! [NSPasteboardWriting])
+                    }
                 }
             }
         }
