@@ -32,49 +32,49 @@ struct Main: View {
                     
                     TextField("PAT", text: $pat)
                 }
-            }
-            
-            Form {
-                /*Button("Get projects", action: {
-                    fetcher.projects(org: organisation, pat: pat, email: email)
-                })*/
+            } else {
                 
-                HStack {
-                    TextField("WIT ID", text: $witid)
-                        .frame(alignment: .trailing)
-                        .onReceive(Just(witid)) { newValue in
-                            let filtered = newValue.filter { "0123456789".contains($0) }
-                            if filtered != newValue { witid = filtered }
-                        }
-                        .onSubmit {
+                Form {
+                    /*Button("Get projects", action: {
+                     fetcher.projects(org: organisation, pat: pat, email: email)
+                     })*/
+                    
+                    HStack {
+                        TextField("WIT ID", text: $witid)
+                            .frame(alignment: .trailing)
+                            .onReceive(Just(witid)) { newValue in
+                                let filtered = newValue.filter { "0123456789".contains($0) }
+                                if filtered != newValue { witid = filtered }
+                            }
+                            .onSubmit {
+                                fetcher.wits(org: organisation, pat: pat, email: email, witid: witid)
+                            }
+                        
+                        Button("Get WIT", action: {
                             fetcher.wits(org: organisation, pat: pat, email: email, witid: witid)
-                        }
-                    
-                    Button("Get WIT", action: {
-                        fetcher.wits(org: organisation, pat: pat, email: email, witid: witid)
-                    })
+                        })
+                    }
                 }
-            }
-            .frame(minWidth: 300)
-            
-            if fetcher.isLoading {
+                .frame(minWidth: 300)
                 
-                Text("Fetching...")
-                
-            } else if fetcher.errorMessage != nil {
-                
-                Text(self.fetcher.errorMessage ?? "")
-                
-            } else if fetcher.wits.count > 0 {
-                
-                HStack{
-                    Text("Copied to clipboard:")
-                        .font(.body)
+                if fetcher.isLoading {
                     
-                    Text(fetcher.formattedWIT)
+                    Text("Fetching...")
+                    
+                } else if fetcher.errorMessage != nil {
+                    
+                    Text(self.fetcher.errorMessage ?? "")
+                    
+                } else if fetcher.wits.count > 0 {
+                    
+                    HStack{
+                        Image(systemName: "arrow.up.doc.on.clipboard")                        
+                        Text(fetcher.formattedWIT)
+                    }
                 }
             }
         }
+        .frame(minWidth: 300)
         .toolbar {
             ToolbarItem {
                 
