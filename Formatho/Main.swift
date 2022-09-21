@@ -32,6 +32,10 @@ struct Main: View {
                     
                     TextField("PAT", text: $pat)
                 }
+            } else if fetcher.isLoading {
+                
+                Text("Fetching...")
+                
             } else {
                 
                 Form {
@@ -46,6 +50,7 @@ struct Main: View {
                                 let filtered = newValue.filter { "0123456789".contains($0) }
                                 if filtered != newValue { witid = filtered }
                             }
+                            .frame(maxWidth: 125)
                             .onSubmit {
                                 fetcher.wits(org: organisation, pat: pat, email: email, witid: witid)
                             }
@@ -55,26 +60,21 @@ struct Main: View {
                         })
                     }
                 }
-                .frame(minWidth: 300)
                 
-                if fetcher.isLoading {
-                    
-                    Text("Fetching...")
-                    
-                } else if fetcher.errorMessage != nil {
+                if fetcher.errorMessage != nil {
                     
                     Text(self.fetcher.errorMessage ?? "")
                     
                 } else if fetcher.wits.count > 0 {
                     
                     HStack{
-                        Image(systemName: "arrow.up.doc.on.clipboard")                        
+                        Image(systemName: "arrow.up.doc.on.clipboard")
                         Text(fetcher.formattedWIT)
                     }
                 }
             }
         }
-        .frame(minWidth: 300)
+        .frame(minWidth: 400)
         .toolbar {
             ToolbarItem {
                 
