@@ -18,31 +18,35 @@ class Fetcher: ObservableObject {
     @Published var htmlWIT: String = String()
     @Published var formattedWIT: AttributedString = AttributedString()
     
+    let baseURL: String = "https://dev.azure.com/"
+    
     let pboard = NSPasteboard.general // reference to pasteboard
     
     let service = APIService()
     
-    private func buildAuthParam(pat: String, email: String) -> String {
+    private func buildHeader(pat: String, email: String) -> [String : String] {
         
-        return "Basic " + (String(email + ":" + pat).data(using: .utf8)?.base64EncodedString() ?? "")
+        let authorisation = "Basic " + (String(email + ":" + pat).data(using: .utf8)?.base64EncodedString() ?? "")
+        
+        let header = ["accept": "application/json", "authorization": authorisation]
+        
+        print(header)
+        
+        return header
     }
     
-    func projects(pat: String, email: String) {
+    func projects(org: String, pat: String, email: String) {
         
-        let authorisation = buildAuthParam(pat: pat, email: email)
-        
-        let headers = ["accept": "application/json", "authorization": authorisation]
-        
-        print(headers)
+        let header = buildHeader(pat: pat, email: email)
         
         self.isLoading = true
         errorMessage = nil
         
-        let prjBaseUrl: String = "https://dev.azure.com/worldfoodprogramme/_apis/projects"
+        let prjBaseUrl: String = baseURL + org + "/_apis/projects"
         
         let url = NSURL(string: prjBaseUrl)! as URL
         
-        self.service.fetch(ADOProjectSearch.self, url: url, headers: headers) { [unowned self] result in
+        self.service.fetch(ADOProjectSearch.self, url: url, headers: header) { [unowned self] result in
             
             DispatchQueue.main.async {
                 
@@ -60,24 +64,20 @@ class Fetcher: ObservableObject {
         }
     }
     
-    func wits(pat: String, email: String, witid: String) {
-        
-        let authorisation = buildAuthParam(pat: pat, email: email)
-        
-        let headers = ["accept": "application/json", "authorization": authorisation]
-        
-        print(headers)
+    func wits(org: String, pat: String, email: String, witid: String) {
+                
+        let header = buildHeader(pat: pat, email: email)
         
         self.isLoading = true
         errorMessage = nil
         
-        let baseURL: String = "https://dev.azure.com/worldfoodprogramme/SCOPE/_workitems/edit/"
+        let reqURL: String = baseURL + org + "/SCOPE/_workitems/edit/" //why is it necessary to put SCOPE ?
         
-        let witBaseUrl: String = "https://dev.azure.com/worldfoodprogramme/_apis/wit/workitems?ids=" + witid
+        let witBaseUrl: String = baseURL + org + "/_apis/wit/workitems?ids=" + witid
         
         let url = NSURL(string: witBaseUrl)! as URL
         
-        self.service.fetch(ADOWitSearch.self, url: url, headers: headers) { [unowned self] result in
+        self.service.fetch(ADOWitSearch.self, url: url, headers: header) { [unowned self] result in
             
             DispatchQueue.main.async {
                 
@@ -92,7 +92,7 @@ class Fetcher: ObservableObject {
                         self.wits = info.value
                         
                         self.rawWIT = "P\(info.value[0].fields.MicrosoftVSTSCommonPriority) \(info.value[0].fields.SystemTitle) [SCOPE-\(String(format: "%d", info.value[0].id))]:"
-                        self.htmlWIT = "<b>P\(info.value[0].fields.MicrosoftVSTSCommonPriority) \(info.value[0].fields.SystemTitle)</b> <a href=\"\(baseURL)\(String(format: "%d", info.value[0].id))\">[SCOPE-\(String(format: "%d", info.value[0].id))]</a>:"
+                        self.htmlWIT = "<b>P\(info.value[0].fields.MicrosoftVSTSCommonPriority) \(info.value[0].fields.SystemTitle)</b> <a href=\"\(reqURL)\(String(format: "%d", info.value[0].id))\">[SCOPE-\(String(format: "%d", info.value[0].id))]</a>:"
                         
                         let fullHTML = self.htmlWIT
                         

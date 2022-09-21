@@ -13,6 +13,7 @@ struct Main: View {
     
     @ObservedObject var fetcher: Fetcher
     
+    @AppStorage("organisation") private var organisation: String = String()
     @AppStorage("email") private var email: String = String()
     @AppStorage("pat") private var pat: String = String()
     
@@ -25,6 +26,8 @@ struct Main: View {
             
             if isPresentedLogin {
                 Form {
+                    TextField("organisation", text: $organisation)
+                    
                     TextField("email", text: $email)
                     
                     TextField("PAT", text: $pat)
@@ -32,26 +35,23 @@ struct Main: View {
             }
             
             Form {
-                Button("Get projects", action: {
-                    fetcher.projects(pat: pat, email: email)
-                })
+                /*Button("Get projects", action: {
+                    fetcher.projects(org: organisation, pat: pat, email: email)
+                })*/
                 
                 HStack {
-                    Text("WIT ID")
-                        .frame(width: 50, alignment: .leading)
-                    
-                    TextField("> 50001", text: $witid)
+                    TextField("WIT ID", text: $witid)
                         .frame(alignment: .trailing)
                         .onReceive(Just(witid)) { newValue in
                             let filtered = newValue.filter { "0123456789".contains($0) }
                             if filtered != newValue { witid = filtered }
                         }
                         .onSubmit {
-                            fetcher.wits(pat: pat, email: email, witid: witid)
+                            fetcher.wits(org: organisation, pat: pat, email: email, witid: witid)
                         }
                     
                     Button("Get WIT", action: {
-                        fetcher.wits(pat: pat, email: email, witid: witid)
+                        fetcher.wits(org: organisation, pat: pat, email: email, witid: witid)
                     })
                 }
             }
