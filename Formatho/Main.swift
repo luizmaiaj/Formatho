@@ -65,12 +65,6 @@ struct Main: View {
                     Text("P\($0.fields.MicrosoftVSTSCommonPriority) \($0.fields.SystemTitle) [SCOPE-\(String(format: "%d", $0.id))]: \($0.fields.CustomReport)")
                 }
                 
-                /*HStack{
-                    Image(systemName: "arrow.up.doc.on.clipboard")
-                    Text(fetcher.formattedWIT)
-                        .lineLimit(nil)
-                }*/
-                
                 Text(self.fetcher.errorMessage ?? "")
             }
         }

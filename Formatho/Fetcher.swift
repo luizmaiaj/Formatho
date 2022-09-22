@@ -14,8 +14,6 @@ class Fetcher: ObservableObject {
     @Published var wits: [Wit] = [Wit]()
     @Published var isLoading: Bool = false
     @Published var errorMessage: String? = nil
-    @Published var rawWIT: String = String()
-    @Published var htmlWIT: String = String()
     @Published var formattedWIT: AttributedString = AttributedString()
     
     let baseURL: String = "https://dev.azure.com/"
@@ -91,25 +89,24 @@ class Fetcher: ObservableObject {
                     print("Fetcher count: \(info.count)")
                     self.wits = info.value
                     
-                    self.rawWIT = "P\(info.value[0].fields.MicrosoftVSTSCommonPriority) \(info.value[0].fields.SystemTitle) [SCOPE-\(String(format: "%d", info.value[0].id))]: \(info.value[0].fields.CustomReport)"
-                    self.htmlWIT = "<b>P\(info.value[0].fields.MicrosoftVSTSCommonPriority) \(info.value[0].fields.SystemTitle)</b> <a href=\"\(reqURL)\(String(format: "%d", info.value[0].id))\">[SCOPE-\(String(format: "%d", info.value[0].id))]</a>: \(info.value[0].fields.CustomReport)"
+                    for wit in self.wits {
+                        wit.html = "<b>P\(wit.fields.MicrosoftVSTSCommonPriority) \(wit.fields.SystemTitle)</b> <a href=\"\(reqURL)\(String(format: "%d", wit.id))\">[SCOPE-\(String(format: "%d", wit.id))]</a>: \(wit.fields.CustomReport)"
+                    }
                     
-                    let fullHTML = self.htmlWIT
-                    
-                    print(info.value[0].url)
-                    
-                    print(fullHTML)
-                    
-                    if let data = fullHTML.data(using: .unicode),
-                       let nsAttrString = try? NSAttributedString(data: data,
-                                                                  options: [.documentType: NSAttributedString.DocumentType.html],
-                                                                  documentAttributes: nil) {
+                    if self.wits.count == 1 {
+                        print(self.wits[0].html)
                         
-                        self.formattedWIT = AttributedString(nsAttrString) // string to be displayed in Text()
-                        
-                        self.pboard.clearContents()
-                        
-                        self.pboard.writeObjects(NSArray(object: nsAttrString) as! [NSPasteboardWriting])
+                        if let data = self.wits[0].html.data(using: .unicode),
+                           let nsAttrString = try? NSAttributedString(data: data,
+                                                                      options: [.documentType: NSAttributedString.DocumentType.html],
+                                                                      documentAttributes: nil) {
+                            
+                            self.formattedWIT = AttributedString(nsAttrString) // string to be displayed in Text()
+                            
+                            self.pboard.clearContents()
+                            
+                            self.pboard.writeObjects(NSArray(object: nsAttrString) as! [NSPasteboardWriting])
+                        }
                     }
                 }
             }

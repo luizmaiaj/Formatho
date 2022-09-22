@@ -143,6 +143,7 @@ class Wit: Codable, Identifiable {
         id = Int()
         fields = Fields()
         url = String()
+        html = String()
     }
     
     required init(from decoder: Decoder) throws {
@@ -157,11 +158,14 @@ class Wit: Codable, Identifiable {
         
         do { self.url = try values.decode(String.self, forKey: .url)
         } catch { self.url = "" }
+        
+        self.html = String() // to be filled later
     }
     
     let id: Int
     let fields: Fields
     let url: String
+    var html: String
 }
 
 class Fields: Codable, Identifiable {
@@ -218,7 +222,21 @@ class Fields: Codable, Identifiable {
         } catch { self.MicrosoftVSTSCommonPriority = 0 }
         
         // trimming added to remove leading and trailing white spaces and new lines
-        do { self.CustomReport = try values.decode(String.self, forKey: .CustomReport).trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        var report: String = String()
+        
+        do {
+            // remove leading and trailing div on report field
+            report = try values.decode(String.self, forKey: .CustomReport).trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            if report.hasPrefix("<div>") { report = String(report.dropFirst(5)) }
+            
+            if report.hasSuffix("</div>") { report = String(report.dropLast(6)) }
+            
+            report = report.trimmingCharacters(in: .whitespacesAndNewlines)
+            
+            self.CustomReport = report
+            
         } catch { self.CustomReport = "" }
     }
     
