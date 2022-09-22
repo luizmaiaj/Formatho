@@ -121,6 +121,17 @@ class ADOWitSearch:Codable, Identifiable {
         self.count = Int()
     }
     
+    required init(from decoder: Decoder) throws {
+        
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        
+        do { self.value = try values.decode([Wit].self, forKey: .value)
+        } catch { self.value = [Wit]() }
+        
+        do { self.count = try values.decode(Int.self, forKey: .count)
+        } catch { self.count = 0 }
+    }
+    
     let value: [Wit]
     let count: Int
 }
@@ -132,6 +143,20 @@ class Wit: Codable, Identifiable {
         id = Int()
         fields = Fields()
         url = String()
+    }
+    
+    required init(from decoder: Decoder) throws {
+        
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        
+        do { self.id = try values.decode(Int.self, forKey: .id)
+        } catch { self.id = 0 }
+        
+        do { self.fields = try values.decode(Fields.self, forKey: .fields)
+        } catch { self.fields = Fields() }
+        
+        do { self.url = try values.decode(String.self, forKey: .url)
+        } catch { self.url = "" }
     }
     
     let id: Int

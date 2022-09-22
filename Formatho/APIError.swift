@@ -34,15 +34,15 @@ enum APIError: Error, CustomStringConvertible {
             
             switch code {
             case 400:
-                return "The parameters in the URL or in the request body aren't valid"
+                return "The parameters in the URL or in the request body are not valid"
             case 401:
                 return "Authentication has failed, please check your credentials"
             case 403:
-                return "The authenticated user doesn't have permission for the operation"
+                return "The authenticated user does not have permission for the operation"
             case 404:
-                return "The wit doesn't exist, or you doesn't have permission to see it"
+                return "The wit does not exist, or you do not have permission to see it"
             case 409:
-                return "There's a conflict between the request and the state of the data on the server"
+                return "There is a conflict between the request and the state of the data on the server"
             default:
                 return "Sorry, the connection to the server has failed"
             }

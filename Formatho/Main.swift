@@ -61,21 +61,20 @@ struct Main: View {
                     }
                 }
                 
-                if fetcher.errorMessage != nil {
-                    
-                    Text(self.fetcher.errorMessage ?? "")
-                    
-                } else if fetcher.wits.count > 0 {
-                    
-                    HStack{
-                        Image(systemName: "arrow.up.doc.on.clipboard")
-                        Text(fetcher.formattedWIT)
-                            .lineLimit(nil)
-                    }
+                List(fetcher.wits) {
+                    Text("P\($0.fields.MicrosoftVSTSCommonPriority) \($0.fields.SystemTitle) [SCOPE-\(String(format: "%d", $0.id))]: \($0.fields.CustomReport)")
                 }
+                
+                /*HStack{
+                    Image(systemName: "arrow.up.doc.on.clipboard")
+                    Text(fetcher.formattedWIT)
+                        .lineLimit(nil)
+                }*/
+                
+                Text(self.fetcher.errorMessage ?? "")
             }
         }
-        .frame(minWidth: 400)
+        .frame(minWidth: 400, minHeight: 100)
         .toolbar {
             ToolbarItem {
                 
