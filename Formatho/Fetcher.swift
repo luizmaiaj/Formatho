@@ -62,6 +62,35 @@ class Fetcher: ObservableObject {
         }
     }
     
+    func queries(org: String, pat: String, email: String) {
+
+        let header = buildHeader(pat: pat, email: email)
+        
+        self.isLoading = true
+        errorMessage = nil
+        
+        let prjBaseUrl: String = baseURL + org + "/SCOPE/_apis/wit/queries?$depth=2"
+        
+        let url = NSURL(string: prjBaseUrl)! as URL
+        
+        self.service.fetch(ADOProjectSearch.self, url: url, headers: header) { [unowned self] result in
+            
+            DispatchQueue.main.async {
+                
+                self.isLoading = false
+                
+                switch result {
+                case .failure(let error):
+                    print("Fetcher error: \(error)")
+                    self.errorMessage = error.localizedDescription
+                case .success(let info):
+                    print("Fetcher count: \(info.count)")
+                    self.projects = info.value
+                }
+            }
+        }
+    }
+    
     func wits(org: String, pat: String, email: String, witid: String) {
         
         let header = buildHeader(pat: pat, email: email)

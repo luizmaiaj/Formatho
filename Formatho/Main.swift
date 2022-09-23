@@ -39,9 +39,13 @@ struct Main: View {
             } else {
                 
                 Form {
-                    /*Button("Get projects", action: {
-                     fetcher.projects(org: organisation, pat: pat, email: email)
-                     })*/
+                    Button("Get projects", action: {
+                        fetcher.projects(org: organisation, pat: pat, email: email)
+                    })
+                    
+                    Button("Get queries", action: {
+                        fetcher.queries(org: organisation, pat: pat, email: email)
+                    })
                     
                     HStack {
                         TextField("WIT ID", text: $witid)
