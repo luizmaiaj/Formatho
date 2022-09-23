@@ -39,13 +39,15 @@ struct Main: View {
             } else {
                 
                 Form {
-                    Button("Get projects", action: {
-                        fetcher.projects(org: organisation, pat: pat, email: email)
-                    })
-                    
-                    Button("Get queries", action: {
-                        fetcher.queries(org: organisation, pat: pat, email: email)
-                    })
+                    HStack {
+                        Button("Get projects", action: {
+                            fetcher.projects(org: organisation, pat: pat, email: email)
+                        })
+                        
+                        Button("Get account activity", action: {
+                            fetcher.accountActivity(org: organisation, pat: pat, email: email)
+                        })
+                    }
                     
                     HStack {
                         TextField("WIT ID", text: $witid)
@@ -56,23 +58,34 @@ struct Main: View {
                             }
                             .frame(maxWidth: 125)
                             .onSubmit {
-                                fetcher.wits(org: organisation, pat: pat, email: email, witid: witid)
+                                fetcher.wit(org: organisation, pat: pat, email: email, witid: witid)
                             }
                         
                         Button("Get WIT", action: {
-                            fetcher.wits(org: organisation, pat: pat, email: email, witid: witid)
+                            fetcher.wit(org: organisation, pat: pat, email: email, witid: witid)
                         })
                     }
                 }
                 
-                List(fetcher.wits) {
-                    Text("P\($0.fields.MicrosoftVSTSCommonPriority) \($0.fields.SystemTitle) [SCOPE-\(String(format: "%d", $0.id))]: \($0.fields.CustomReport)")
+                if !fetcher.activities.isEmpty {
+                    
+                    List(fetcher.activities) {
+                        Text($0.html)
+                    }
+                    .frame(minHeight: 30)
+                    
+                } else if !fetcher.wits.isEmpty {
+                    
+                    List(fetcher.wits) {
+                        Text("P\($0.fields.MicrosoftVSTSCommonPriority) \($0.fields.SystemTitle) [SCOPE-\(String(format: "%d", $0.id))]: \($0.fields.CustomReport)")
+                    }
+                    .frame(minHeight: 30)
                 }
                 
                 Text(self.fetcher.errorMessage ?? "")
             }
         }
-        .frame(minWidth: 400, minHeight: 100)
+        .frame(minWidth: 400)
         .toolbar {
             ToolbarItem {
                 

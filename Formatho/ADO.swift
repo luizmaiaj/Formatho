@@ -26,6 +26,143 @@ import Foundation
  }
  */
 
+class ADOProjectSearch:Codable, Identifiable {
+    
+    init() {
+        self.value = [Project]()
+        self.count = 0
+    }
+    
+    let value: [Project]
+    let count: Int
+}
+
+class Project: Codable, Identifiable {
+    
+    init() {
+        id = String()
+        name = String()
+        description = String()
+        url = String()
+        state = String()
+        revision = 0
+        visibility = String()
+        lastUpdateTime = String()
+    }
+    
+    let id: String
+    let name: String
+    let description: String
+    let url: String
+    let state: String
+    let revision: Int
+    let visibility: String
+    let lastUpdateTime: String
+}
+
+/*
+ Activity
+ {
+ "count": 200,
+ "value": [
+ {
+ "assignedTo": {
+ "id": "99471a74-85f1-4fa6-b320-5ff1e1d19a54",
+ "name": "luiz <luiz@newlogic.com>",
+ "displayName": "luiz",
+ "uniqueName": "luiz@newlogic.com",
+ "descriptor": "aad.ZGIyZjhhYjMtZjlkOC03YzNmLTk0MzAtMDZmN2M2NTBhZDEy"
+ },
+ "id": 172034,
+ "workItemType": "Product Backlog Item",
+ "title": "Panama RB: for emergency/migrants operation a standardized json file is requested to be used in the region ",
+ "state": "Test",
+ "changedDate": "2022-09-23T13:35:03.66Z",
+ "teamProject": "SCOPE",
+ "activityDate": "2022-09-23T12:09:46.517Z",
+ "activityType": "edited",
+ "identityId": "00000000-0000-0000-0000-000000000000"
+ }
+ }
+ */
+class RecentActivity:Codable, Identifiable {
+    
+    init() {
+        self.value = [Activity]()
+        self.count = Int()
+    }
+    
+    required init(from decoder: Decoder) throws {
+        
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        
+        do { self.value = try values.decode([Activity].self, forKey: .value)
+        } catch { self.value = [Activity]() }
+        
+        do { self.count = try values.decode(Int.self, forKey: .count)
+        } catch { self.count = 0 }
+    }
+    
+    let value: [Activity]
+    let count: Int
+}
+
+class Activity: Codable, Identifiable {
+    
+    init() {
+        id = Int()
+        workItemType = String()
+        title = String()
+        state = String()
+        changedDate = String()
+        teamProject = String()
+        activityDate = String()
+        activityType = String()
+        html = String()
+    }
+    
+    required init(from decoder: Decoder) throws {
+        
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        
+        do { self.id = try values.decode(Int.self, forKey: .id)
+        } catch { self.id = 0 }
+        
+        do { self.workItemType = try values.decode(String.self, forKey: .workItemType)
+        } catch { self.workItemType = String() }
+        
+        do { self.title = try values.decode(String.self, forKey: .title)
+        } catch { self.title = String() }
+        
+        do { self.state = try values.decode(String.self, forKey: .state)
+        } catch { self.state = String() }
+        
+        do { self.changedDate = try values.decode(String.self, forKey: .changedDate)
+        } catch { self.changedDate = String() }
+        
+        do { self.teamProject = try values.decode(String.self, forKey: .teamProject)
+        } catch { self.teamProject = String() }
+        
+        do { self.activityDate = try values.decode(String.self, forKey: .activityDate)
+        } catch { self.activityDate = String() }
+        
+        do { self.activityType = try values.decode(String.self, forKey: .activityType)
+        } catch { self.activityType = String() }
+        
+        self.html = String() // to be filled later
+    }
+    
+    let id: Int
+    let workItemType: String
+    let title: String
+    let state: String
+    let changedDate: String
+    let teamProject: String
+    let activityDate: String
+    let activityType: String
+    var html: String
+}
+
 /*
  Wits
  {
@@ -79,41 +216,6 @@ import Foundation
  ]
  }
  */
-
-class ADOProjectSearch:Codable, Identifiable {
-    
-    init() {
-        self.value = [Project]()
-        self.count = 0
-    }
-    
-    let value: [Project]
-    let count: Int
-}
-
-class Project: Codable, Identifiable {
-    
-    init() {
-        id = String()
-        name = String()
-        description = String()
-        url = String()
-        state = String()
-        revision = 0
-        visibility = String()
-        lastUpdateTime = String()
-    }
-    
-    let id: String
-    let name: String
-    let description: String
-    let url: String
-    let state: String
-    let revision: Int
-    let visibility: String
-    let lastUpdateTime: String
-}
-
 class ADOWitSearch:Codable, Identifiable {
     
     init() {
@@ -135,7 +237,6 @@ class ADOWitSearch:Codable, Identifiable {
     let value: [Wit]
     let count: Int
 }
-
 
 class Wit: Codable, Identifiable {
     

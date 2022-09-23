@@ -12,6 +12,8 @@ import AppKit // for clipboard access
 class Fetcher: ObservableObject {
     @Published var projects: [Project] = [Project]()
     @Published var wits: [Wit] = [Wit]()
+    @Published var activities: [Activity] = [Activity]()
+    
     @Published var isLoading: Bool = false
     @Published var errorMessage: String? = nil
     @Published var formattedWIT: AttributedString = AttributedString()
@@ -38,7 +40,7 @@ class Fetcher: ObservableObject {
         let header = buildHeader(pat: pat, email: email)
         
         self.isLoading = true
-        errorMessage = nil
+        self.errorMessage = nil
         
         let prjBaseUrl: String = baseURL + org + "/_apis/projects"
         
@@ -90,8 +92,47 @@ class Fetcher: ObservableObject {
             }
         }
     }
+
+    func accountActivity(org: String, pat: String, email: String) {
+        
+        let header = buildHeader(pat: pat, email: email)
+        
+        self.isLoading = true
+        self.errorMessage = nil
+        
+        let prjBaseUrl: String = baseURL + org + "/_apis/work/accountmyworkrecentactivity"
+        
+        let url = NSURL(string: prjBaseUrl)! as URL
+        
+        self.service.fetch(RecentActivity.self, url: url, headers: header) { [unowned self] result in
+            
+            DispatchQueue.main.async {
+                
+                self.isLoading = false
+                
+                switch result {
+                case .failure(let error):
+                    print("Fetcher error: \(error)")
+                    self.errorMessage = error.localizedDescription
+                case .success(let info):
+                    print("Fetcher count: \(info.count)")
+                    self.activities = info.value
+                    
+                    for activity in self.activities {
+                        activity.html = "\(activity.activityType.capitalized) [SCOPE-\(String(format: "%d", activity.id))] \(activity.workItemType) \(activity.title): \(activity.state)"
+                    }
+                }
+            }
+        }
+
+    }
     
-    func wits(org: String, pat: String, email: String, witid: String) {
+    func wit(org: String, pat: String, email: String, witid: String) {
+
+        self.wits(org: org, pat: pat, email: email, path: "/_apis/wit/workitems?ids=" + witid)
+    }
+    
+    func wits(org: String, pat: String, email: String, path: String) {
         
         let header = buildHeader(pat: pat, email: email)
         
@@ -100,7 +141,7 @@ class Fetcher: ObservableObject {
         
         let reqURL: String = baseURL + org + "/SCOPE/_workitems/edit/" //why is it necessary to put SCOPE ?
         
-        let witBaseUrl: String = baseURL + org + "/_apis/wit/workitems?ids=" + witid
+        let witBaseUrl: String = baseURL + org + path
         
         let url = NSURL(string: witBaseUrl)! as URL
         
