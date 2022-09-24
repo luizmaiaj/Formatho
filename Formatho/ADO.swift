@@ -107,7 +107,10 @@ class RecentActivity:Codable, Identifiable {
     let count: Int
 }
 
-class Activity: Codable, Identifiable {
+class Activity: Codable, Identifiable, Hashable {
+    static func == (lhs: Activity, rhs: Activity) -> Bool {
+        return lhs.id == rhs.id
+    }
     
     init() {
         id = Int()
@@ -150,6 +153,10 @@ class Activity: Codable, Identifiable {
         } catch { self.activityType = String() }
         
         self.html = String() // to be filled later
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
     
     let id: Int
@@ -238,7 +245,11 @@ class ADOWitSearch:Codable, Identifiable {
     let count: Int
 }
 
-class Wit: Codable, Identifiable {
+class Wit: Codable, Identifiable, Hashable {
+    static func == (lhs: Wit, rhs: Wit) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
     
     init() {
         id = Int()
@@ -261,6 +272,10 @@ class Wit: Codable, Identifiable {
         } catch { self.url = "" }
         
         self.html = String() // to be filled later
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
     
     let id: Int
