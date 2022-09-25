@@ -10,36 +10,64 @@ import SwiftUI
 enum Tab: Int {
     case wit = 1
     case recent = 2
-    case login = 3
 }
 
 struct ContentView: View {
     
+    @AppStorage("organisation") private var organisation: String = String()
+    @AppStorage("email") private var email: String = String()
+    @AppStorage("pat") private var pat: String = String()
+    
     @StateObject var fetcher: Fetcher = Fetcher()
+    
+    @State var isPresentedLogin = false
     
     @State private var selection: Tab = Tab.wit
     
     var body: some View {
         
-        TabView(selection: $selection) {
+        VStack {
             
-            WitView(fetcher: fetcher)
-                .tabItem {
-                    Text("WIT")
+            if isPresentedLogin {
+                
+                LoginView()
+                
+            } else {
+                TabView(selection: $selection) {
+                    
+                    WitView(fetcher: fetcher)
+                        .tabItem {
+                            Text("WIT")
+                        }
+                        .tag(Tab.wit)
+                    
+                    ActivityView(fetcher: fetcher)
+                        .tabItem {
+                            Text("Activity")
+                        }
+                        .tag(Tab.recent)
                 }
-                .tag(Tab.wit)
-            
-            ActivityView(fetcher: fetcher)
-                .tabItem {
-                    Text("Activity")
+            }
+        }
+        .toolbar {
+            ToolbarItem {
+                
+                Button {
+                    isPresentedLogin.toggle()
+                } label: {
+                    HStack {
+                        
+                        if email.isEmpty {
+                            Text("Login details")
+                        } else {
+                            Text(email)
+                        }
+                        
+                        Image(systemName: "person.circle")
+                            .font(.title2)
+                    }
                 }
-                .tag(Tab.recent)
-            
-            LoginView()
-                .tabItem {
-                    Text("Login")
-                }
-                .tag(Tab.login)
+            }
         }
         .frame(minWidth: 500, maxWidth: 1000, minHeight: 300, maxHeight: 1000)
     }
