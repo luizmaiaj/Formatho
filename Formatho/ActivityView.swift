@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct RecentView: View {
+struct ActivityView: View {
     
     @AppStorage("organisation") private var organisation: String = String()
     @AppStorage("email") private var email: String = String()
@@ -57,6 +57,6 @@ struct RecentView: View {
 
 struct RecentView_Previews: PreviewProvider {
     static var previews: some View {
-        RecentView(fetcher: Fetcher())
+        ActivityView(fetcher: Fetcher())
     }
 }

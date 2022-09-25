@@ -16,7 +16,7 @@
 		EE1EA0AA28D615E800644D5F /* Fetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1EA0A928D615E800644D5F /* Fetcher.swift */; };
 		EE1EA0AC28D6362300644D5F /* ADO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1EA0AB28D6362300644D5F /* ADO.swift */; };
 		EE9A4FCF28DF721D006BEC27 /* WitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9A4FCE28DF721D006BEC27 /* WitView.swift */; };
-		EE9A4FD128DF768F006BEC27 /* RecentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9A4FD028DF768F006BEC27 /* RecentView.swift */; };
+		EE9A4FD128DF768F006BEC27 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9A4FD028DF768F006BEC27 /* ActivityView.swift */; };
 		EE9A4FD328DF775B006BEC27 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9A4FD228DF775B006BEC27 /* LoginView.swift */; };
 /* End PBXBuildFile section */
 
@@ -33,7 +33,7 @@
 		EE1EA0AB28D6362300644D5F /* ADO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ADO.swift; sourceTree = "<group>"; };
 		EE32BE5128DA2169009EBC6F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		EE9A4FCE28DF721D006BEC27 /* WitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WitView.swift; sourceTree = "<group>"; };
-		EE9A4FD028DF768F006BEC27 /* RecentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentView.swift; sourceTree = "<group>"; };
+		EE9A4FD028DF768F006BEC27 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		EE9A4FD228DF775B006BEC27 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -78,7 +78,7 @@
 				BB5C368E28CE2BBC00A973E4 /* Formatho.entitlements */,
 				BB5C368F28CE2BBC00A973E4 /* Preview Content */,
 				EE9A4FCE28DF721D006BEC27 /* WitView.swift */,
-				EE9A4FD028DF768F006BEC27 /* RecentView.swift */,
+				EE9A4FD028DF768F006BEC27 /* ActivityView.swift */,
 				EE9A4FD228DF775B006BEC27 /* LoginView.swift */,
 			);
 			path = Formatho;
@@ -168,7 +168,7 @@
 				EE1EA0AA28D615E800644D5F /* Fetcher.swift in Sources */,
 				EE1EA0AC28D6362300644D5F /* ADO.swift in Sources */,
 				BB5C368928CE2BBA00A973E4 /* FormathoApp.swift in Sources */,
-				EE9A4FD128DF768F006BEC27 /* RecentView.swift in Sources */,
+				EE9A4FD128DF768F006BEC27 /* ActivityView.swift in Sources */,
 				EE9A4FD328DF775B006BEC27 /* LoginView.swift in Sources */,
 				EE9A4FCF28DF721D006BEC27 /* WitView.swift in Sources */,
 			);

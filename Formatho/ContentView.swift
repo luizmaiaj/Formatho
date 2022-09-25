@@ -29,9 +29,9 @@ struct ContentView: View {
                 }
                 .tag(Tab.wit)
             
-            RecentView(fetcher: fetcher)
+            ActivityView(fetcher: fetcher)
                 .tabItem {
-                    Text("Recent")
+                    Text("Activity")
                 }
                 .tag(Tab.recent)
             
