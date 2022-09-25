@@ -12,7 +12,7 @@ struct LoginView: View {
     @AppStorage("organisation") private var organisation: String = String()
     @AppStorage("email") private var email: String = String()
     @AppStorage("pat") private var pat: String = String()
-
+    
     var body: some View {
         Form {
             TextField("organisation", text: $organisation)
@@ -21,6 +21,7 @@ struct LoginView: View {
             
             TextField("PAT", text: $pat)
         }
+        .frame(maxWidth: 300)
     }
 }
 

@@ -41,6 +41,7 @@ struct ContentView: View {
                 }
                 .tag(Tab.login)
         }
+        .frame(minWidth: 500, maxWidth: 1000, minHeight: 300, maxHeight: 1000)
     }
 }
 

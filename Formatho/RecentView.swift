@@ -17,7 +17,7 @@ struct RecentView: View {
     
     var body: some View {
         
-        Group {
+        VStack {
             
             if fetcher.isLoading {
                 
