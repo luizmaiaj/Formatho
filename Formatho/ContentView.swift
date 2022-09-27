@@ -69,7 +69,7 @@ struct ContentView: View {
                 }
             }
         }
-        .frame(minWidth: 500, maxWidth: 1000, minHeight: 300, maxHeight: 1000)
+        .frame(minWidth: 500, maxWidth: 1000, minHeight: 100, maxHeight: 1000)
     }
 }
 
