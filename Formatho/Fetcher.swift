@@ -124,7 +124,6 @@ class Fetcher: ObservableObject {
                 }
             }
         }
-
     }
     
     func wit(org: String, pat: String, email: String, witid: String) {
@@ -177,6 +176,42 @@ class Fetcher: ObservableObject {
                             
                             self.pboard.writeObjects(NSArray(object: nsAttrString) as! [NSPasteboardWriting])
                         }
+                    }
+                }
+            }
+        }
+    }
+    
+    func query(org: String, pat: String, email: String) {
+        //https://dev.azure.com/worldfoodprogramme/SCOPE/_queries/query/214f0278-10d4-46ba-b841-ec28dc500aec/
+        //GET https://dev.azure.com/{organization}/{project}/{team}/_apis/wit/wiql/{id}?api-version=6.0
+        //GET https://dev.azure.com/worldfoodprogramme/SCOPE
+        
+        let header = buildHeader(pat: pat, email: email)
+        
+        self.isLoading = true
+        self.errorMessage = nil
+        
+        let prjBaseUrl: String = baseURL + org + "/_apis/wit/wiql?id=" + "214f0278-10d4-46ba-b841-ec28dc500aec"
+        
+        let url = NSURL(string: prjBaseUrl)! as URL
+        
+        self.service.fetch(RecentActivity.self, url: url, headers: header) { [unowned self] result in
+            
+            DispatchQueue.main.async {
+                
+                self.isLoading = false
+                
+                switch result {
+                case .failure(let error):
+                    print("Fetcher error: \(error)")
+                    self.errorMessage = error.localizedDescription
+                case .success(let info):
+                    print("Fetcher count: \(info.count)")
+                    self.activities = info.value
+                    
+                    for activity in self.activities {
+                        activity.html = "\(activity.activityType.capitalized) [SCOPE-\(String(format: "%d", activity.id))] \(activity.workItemType) \(activity.title): \(activity.state)"
                     }
                 }
             }
