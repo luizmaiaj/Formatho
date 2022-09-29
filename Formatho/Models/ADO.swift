@@ -384,3 +384,118 @@ class Fields: Codable, Identifiable {
     let MicrosoftVSTSCommonPriority: Int
     let CustomReport: String
 }
+
+/*
+ {
+     "queryType": "flat",
+     "queryResultType": "workItem",
+     "asOf": "2022-09-27T09:12:04.95Z",
+     "columns": [
+         {
+             "referenceName": "System.Id",
+             "name": "ID",
+             "url": "https://dev.azure.com/worldfoodprogramme/_apis/wit/fields/System.Id"
+         }
+     ],
+     "workItems": [
+         {
+             "id": 51932,
+             "url": "https://dev.azure.com/worldfoodprogramme/c449b387-c1b9-4db6-b50a-114d64228ff5/_apis/wit/workItems/51932"
+         }
+     ]
+ }
+*/
+
+class ADOQuerySearch: Codable, Identifiable, Hashable {
+    static func == (lhs: ADOQuerySearch, rhs: ADOQuerySearch) -> Bool {
+        return lhs.asOf == rhs.asOf
+    }
+    
+    
+    init() {
+        queryType = String()
+        queryResultType = String()
+        asOf = String()
+        columns = [Column]()
+        workItems = [WorkItem]()
+    }
+    
+    required init(from decoder: Decoder) throws {
+        
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+
+        do { self.queryType = try values.decode(String.self, forKey: .queryType)
+        } catch { self.queryType = "" }
+
+        do { self.queryResultType = try values.decode(String.self, forKey: .queryResultType)
+        } catch { self.queryResultType = "" }
+
+        do { self.asOf = try values.decode(String.self, forKey: .asOf)
+        } catch { self.asOf = "" }
+        
+        do { self.columns = try values.decode([Column].self, forKey: .columns)
+        } catch { self.columns = [Column]() }
+        
+        do { self.workItems = try values.decode([WorkItem].self, forKey: .workItems)
+        } catch { self.workItems = [WorkItem]() }
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+
+    let queryType: String
+    let queryResultType: String
+    let asOf: String
+    let columns: [Column]
+    let workItems: [WorkItem]
+}
+
+class Column:Codable, Identifiable {
+    
+    init() {
+        self.referenceName = String()
+        self.name = String()
+        self.url = String()
+    }
+    
+    required init(from decoder: Decoder) throws {
+        
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        
+        do { self.referenceName = try values.decode(String.self, forKey: .referenceName)
+        } catch { self.referenceName = "" }
+        
+        do { self.name = try values.decode(String.self, forKey: .name)
+        } catch { self.name = "" }
+        
+        do { self.url = try values.decode(String.self, forKey: .url)
+        } catch { self.url = "" }
+    }
+    
+    let referenceName: String
+    let name: String
+    let url: String
+}
+
+class WorkItem:Codable, Identifiable {
+    
+    init() {
+        self.id = Int()
+        self.url = String()
+    }
+    
+    required init(from decoder: Decoder) throws {
+        
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        
+        do { self.id = try values.decode(Int.self, forKey: .id)
+        } catch { self.id = 0 }
+        
+        do { self.url = try values.decode(String.self, forKey: .url)
+        } catch { self.url = "" }
+    }
+    
+    let id: Int
+    let url: String
+}

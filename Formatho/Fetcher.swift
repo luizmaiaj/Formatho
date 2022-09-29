@@ -13,6 +13,7 @@ class Fetcher: ObservableObject {
     @Published var projects: [Project] = [Project]()
     @Published var wits: [Wit] = [Wit]()
     @Published var activities: [Activity] = [Activity]()
+    @Published var query: ADOQuerySearch = ADOQuerySearch()
     
     @Published var isLoading: Bool = false
     @Published var errorMessage: String? = nil
@@ -193,7 +194,7 @@ class Fetcher: ObservableObject {
         
         let url = NSURL(string: prjBaseUrl)! as URL
         
-        self.service.fetch(RecentActivity.self, url: url, headers: header) { [unowned self] result in
+        self.service.fetch(ADOQuerySearch.self, url: url, headers: header) { [unowned self] result in
             
             DispatchQueue.main.async {
                 
@@ -204,9 +205,10 @@ class Fetcher: ObservableObject {
                     print("Fetcher error: \(error)")
                     self.errorMessage = error.localizedDescription
                 case .success(let info):
-                    print("Fetcher count: \(info.count)")
-                    self.activities = info.value
+                    print("Fetcher count: \(info.workItems.count)")
+                    self.query = info
                     
+                    // make the search of the wits from the query result
                     for activity in self.activities {
                         activity.html = "\(activity.activityType.capitalized) [SCOPE-\(String(format: "%d", activity.id))] \(activity.workItemType) \(activity.title): \(activity.state)"
                     }
