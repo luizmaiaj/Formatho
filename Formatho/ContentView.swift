@@ -10,6 +10,7 @@ import SwiftUI
 enum Tab: Int {
     case wit = 1
     case recent = 2
+    case query = 3
 }
 
 struct ContentView: View {
@@ -46,6 +47,12 @@ struct ContentView: View {
                             Text("Activity")
                         }
                         .tag(Tab.recent)
+                    
+                    QueryView(fetcher: fetcher)
+                        .tabItem {
+                            Text("Query")
+                        }
+                        .tag(Tab.query)
                 }
             }
         }

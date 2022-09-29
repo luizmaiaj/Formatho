@@ -182,17 +182,14 @@ class Fetcher: ObservableObject {
         }
     }
     
-    func query(org: String, pat: String, email: String) {
-        //https://dev.azure.com/worldfoodprogramme/SCOPE/_queries/query/214f0278-10d4-46ba-b841-ec28dc500aec/
-        //GET https://dev.azure.com/{organization}/{project}/{team}/_apis/wit/wiql/{id}?api-version=6.0
-        //GET https://dev.azure.com/worldfoodprogramme/SCOPE
+    func query(org: String, pat: String, email: String, queryid: String) {
         
         let header = buildHeader(pat: pat, email: email)
         
         self.isLoading = true
         self.errorMessage = nil
         
-        let prjBaseUrl: String = baseURL + org + "/_apis/wit/wiql?id=" + "214f0278-10d4-46ba-b841-ec28dc500aec"
+        let prjBaseUrl: String = baseURL + org + "/_apis/wit/wiql?id=" + queryid
         
         let url = NSURL(string: prjBaseUrl)! as URL
         
