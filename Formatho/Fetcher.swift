@@ -151,7 +151,7 @@ class Fetcher: ObservableObject {
         
         print(batches)
         
-        for b in 0...batches {
+        for _ in 0...batches {
             
             var idList: String = String()
             
