@@ -36,7 +36,7 @@ struct QueryView: View {
                                 fetcher.query(org: organisation, pat: pat, email: email, queryid: queryid)
                             }
                         
-                        Button("Get WIT", action: {
+                        Button("Query", action: {
                             fetcher.query(org: organisation, pat: pat, email: email, queryid: queryid)
                         })
                     }

@@ -129,10 +129,10 @@ class Fetcher: ObservableObject {
     
     func wit(org: String, pat: String, email: String, witid: String) {
 
-        self.wits(org: org, pat: pat, email: email, path: "/_apis/wit/workitems?ids=" + witid)
+        self.wits(org: org, pat: pat, email: email, ids: [witid])
     }
     
-    func wits(org: String, pat: String, email: String, path: String) {
+    func wits(org: String, pat: String, email: String, ids: [String]) {
         
         let header = buildHeader(pat: pat, email: email)
         
@@ -141,42 +141,69 @@ class Fetcher: ObservableObject {
         
         let reqURL: String = baseURL + org + "/SCOPE/_workitems/edit/" //why is it necessary to put SCOPE ?
         
-        let witBaseUrl: String = baseURL + org + path
+        self.wits.removeAll()
         
-        let url = NSURL(string: witBaseUrl)! as URL
+        // build id list limited to 200 wits
+        let listSize: Int = 200
+        var iStart: Int = 0
+        var iEnd: Int = min(ids.count - 1, listSize - 1)
+        let batches: Int = Int(ceil(Double(ids.count / listSize)))
         
-        self.service.fetch(ADOWitSearch.self, url: url, headers: header) { [unowned self] result in
+        print(batches)
+        
+        for b in 0...batches {
             
-            DispatchQueue.main.async {
+            var idList: String = String()
+            
+            for i in iStart...iEnd {
                 
-                self.isLoading = false
+                idList += ids[i] + ","
+            }
+            
+            iStart = iEnd + 1
+            iEnd = min(ids.count - 1, iEnd + listSize)
+            
+            idList = idList.trimmingCharacters(in: [","])
+            
+            print(idList)
+            
+            let witBaseUrl: String = baseURL + org + "/_apis/wit/workitems?ids=" + idList
+            
+            let url = NSURL(string: witBaseUrl)! as URL
+            
+            self.service.fetch(ADOWitSearch.self, url: url, headers: header) { [unowned self] result in
                 
-                switch result {
-                case .failure(let error):
-                    print("Fetcher error: \(error)")
-                    self.errorMessage = error.localizedDescription
-                case .success(let info):
-                    print("Fetcher count: \(info.count)")
-                    self.wits = info.value
+                DispatchQueue.main.async {
                     
-                    for wit in self.wits {
-                        wit.html = "<b>P\(wit.fields.MicrosoftVSTSCommonPriority) \(wit.fields.SystemWorkItemType) \(wit.fields.SystemTitle)</b> <a href=\"\(reqURL)\(String(format: "%d", wit.id))\">[SCOPE-\(String(format: "%d", wit.id))]</a>: \(wit.fields.CustomReport)"
-                    }
+                    self.isLoading = false
                     
-                    if self.wits.count == 1 {
-                        print(self.wits[0].html)
-                        
-                        if let data = self.wits[0].html.data(using: .unicode),
-                           let nsAttrString = try? NSAttributedString(data: data,
-                                                                      options: [.documentType: NSAttributedString.DocumentType.html],
-                                                                      documentAttributes: nil) {
+                    switch result {
+                        case .failure(let error):
+                            print("Fetcher error: \(error)")
+                            self.errorMessage = error.localizedDescription
+                        case .success(let info):
+                            print("Fetcher count: \(info.count)")
+                            self.wits += info.value
                             
-                            self.formattedWIT = AttributedString(nsAttrString) // string to be displayed in Text()
+                            for wit in self.wits {
+                                wit.html = "<b>P\(wit.fields.MicrosoftVSTSCommonPriority) \(wit.fields.SystemWorkItemType) \(wit.fields.SystemTitle)</b> <a href=\"\(reqURL)\(String(format: "%d", wit.id))\">[SCOPE-\(String(format: "%d", wit.id))]</a>: \(wit.fields.CustomReport)"
+                            }
                             
-                            self.pboard.clearContents()
-                            
-                            self.pboard.writeObjects(NSArray(object: nsAttrString) as! [NSPasteboardWriting])
-                        }
+                            if self.wits.count == 1 {
+                                print(self.wits[0].html)
+                                
+                                if let data = self.wits[0].html.data(using: .unicode),
+                                   let nsAttrString = try? NSAttributedString(data: data,
+                                                                              options: [.documentType: NSAttributedString.DocumentType.html],
+                                                                              documentAttributes: nil) {
+                                    
+                                    self.formattedWIT = AttributedString(nsAttrString) // string to be displayed in Text()
+                                    
+                                    self.pboard.clearContents()
+                                    
+                                    self.pboard.writeObjects(NSArray(object: nsAttrString) as! [NSPasteboardWriting])
+                                }
+                            }
                     }
                 }
             }
@@ -207,11 +234,16 @@ class Fetcher: ObservableObject {
                 case .success(let info):
                     print("Fetcher count: \(info.workItems.count)")
                     self.query = info
+                        
+                        var ids: [String] = [String]()
                     
-                    // make the search of the wits from the query result
-                    for activity in self.activities {
-                        activity.html = "\(activity.activityType.capitalized) [SCOPE-\(String(format: "%d", activity.id))] \(activity.workItemType) \(activity.title): \(activity.state)"
-                    }
+                        for workItem in self.query.workItems {
+                            ids.append(String(format: "%d", workItem.id))
+                        }
+                        
+                        print(ids)
+                        
+                        self.wits(org: org, pat: pat, email: email, ids: ids)
                 }
             }
         }
