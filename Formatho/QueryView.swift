@@ -57,7 +57,7 @@ struct QueryView: View {
                                 Text(value.fields.SystemWorkItemType)
                                 Text(value.fields.SystemTitle)
                                 Text("[SCOPE-\(String(format: "%d", value.id))]")
-                                Text(value.fields.CustomReport)
+                                Text(value.fields.CustomReport.toRTF())
                             }
                         }
                     }
