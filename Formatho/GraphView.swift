@@ -12,33 +12,25 @@ struct GraphView: View {
     
     @ObservedObject var fetcher: Fetcher
     
-/*    func getPriority(priority: String) -> PlottableValue<Int> {
-        switch priority {
-            case "P1":
-                return 1
-            case "P2":
-                return 2
-            case "P3":
-                return 3
-            case "P4":
-                return 4
-            case "P5":
-                return 5
-            default:
-                return 5
-        }
-    }*/
+    func getPriorityString(priority: Int) -> String {
+        return "P" + String(format: "%d", priority)
+    }
     
     var body: some View {
 
         if fetcher.wits.count < 2 {
             Text("Not enough data")
-        } /*else {
-            Chart(fetcher.wits) {
-                
-                BarMark(x: getPriority(priority: $0.fields.MicrosoftVSTSCommonPriority), y: $0.fields.SystemState)
+        } else {
+            if #available(macOS 13.0, *) {
+                Chart(fetcher.wits) {
+                    
+                    BarMark(x: .value("priority", getPriorityString(priority: $0.fields.MicrosoftVSTSCommonPriority)),
+                            y: .value("count", 1))
+                }
+            } else {
+                Text("Only available on macOS 13")
             }
-        }*/ // to be done once macOS 13 is available
+        }
     }
 }
 
