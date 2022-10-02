@@ -49,21 +49,17 @@ struct WitView: View {
                 
                 if !fetcher.wits.isEmpty {
                     
-                    let columns = [GridItem(.fixed(20)),
-                                   GridItem(.flexible(minimum: 50, maximum: 110)),
-                                   GridItem(.flexible(minimum: 200, maximum: 400)),
-                                   GridItem(.fixed(110)),
-                                   GridItem(.flexible(minimum: 0, maximum: 400))]
-                    
-                    ScrollView {
-                        LazyVGrid(columns: columns, alignment: .leading) {
-                            ForEach(fetcher.wits, id: \.self) { value in
-                                Text("P\(value.fields.MicrosoftVSTSCommonPriority)")
-                                Text(value.fields.SystemWorkItemType)
-                                Text(value.fields.SystemTitle)
-                                Text("[SCOPE-\(String(format: "%d", value.id))]")
-                                Text(value.fields.CustomReport.toRTF())
-                            }
+                    Table(fetcher.wits) {
+                        TableColumn("Priority") { wit in
+                            Text("P" + String(format: "%d", wit.fields.MicrosoftVSTSCommonPriority))
+                        }
+                        TableColumn("Type", value: \.fields.SystemWorkItemType)
+                        TableColumn("Title", value: \.fields.SystemTitle)
+                        TableColumn("id") { wit in
+                            Text("[SCOPE-\(String(format: "%d", wit.id))]")
+                        }
+                        TableColumn("Report") { wit in
+                            Text(wit.fields.CustomReport.toRTF())
                         }
                     }
                     .frame(minHeight: 30)

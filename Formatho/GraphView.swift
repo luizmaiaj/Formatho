@@ -18,19 +18,27 @@ struct GraphView: View {
     
     var body: some View {
 
-        if fetcher.wits.count < 2 {
-            Text("Not enough data")
-        } else {
-            if #available(macOS 13.0, *) {
-                Chart(fetcher.wits) {
-                    
-                    BarMark(x: .value("priority", getPriorityString(priority: $0.fields.MicrosoftVSTSCommonPriority)),
-                            y: .value("count", 1))
-                }
+        Group {
+            if fetcher.wits.count < 2 {
+                
+                Text("Not enough data")
+                
             } else {
-                Text("Only available on macOS 13")
+                
+                if #available(macOS 13.0, *) {
+                    
+                    Chart(fetcher.wits) {
+                        
+                        BarMark(x: .value("priority", getPriorityString(priority: $0.fields.MicrosoftVSTSCommonPriority)),
+                                y: .value("count", 1))
+                    }
+                } else {
+                    
+                    Text("Only available on macOS 13")
+                }
             }
         }
+        .frame(minHeight: 30)
     }
 }
 

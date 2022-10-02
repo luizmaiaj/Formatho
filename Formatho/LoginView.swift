@@ -21,7 +21,7 @@ struct LoginView: View {
             
             TextField("PAT", text: $pat)
         }
-        .frame(maxWidth: 300)
+        .frame(minHeight: 30)
     }
 }
 

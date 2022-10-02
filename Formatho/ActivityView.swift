@@ -25,26 +25,16 @@ struct ActivityView: View {
                 
             } else {
                 
-                let columns = [GridItem(.fixed(60)),
-                               GridItem(.flexible(minimum: 50, maximum: 110)),
-                               GridItem(.flexible(minimum: 200, maximum: 400)),
-                               GridItem(.fixed(110)),
-                               GridItem(.fixed(90))]
-                
-                ScrollView {
-                    LazyVGrid(columns: columns, alignment: .leading, pinnedViews: [.sectionHeaders]) {
-                        //Section(header: Text("Header")) {
-                        ForEach(fetcher.activities, id: \.self) { value in
-                            Text(value.activityType.capitalized)
-                            Text(value.workItemType)
-                            Text(value.title)
-                            Text("[SCOPE-\(String(format: "%d", value.id))]")
-                            Text(value.state)
-                        }
-                        //}
+                Table(fetcher.activities) {
+                    TableColumn("Activity", value: \.activityType.capitalized)
+                    TableColumn("Type", value: \.workItemType)
+                    TableColumn("Title", value: \.title)
+                    TableColumn("id") { activity in
+                        Text("[SCOPE-\(String(format: "%d", activity.id))]")
                     }
+                    TableColumn("State", value: \.state)
                 }
-                .frame(minHeight: 80)
+                .frame(minHeight: 30)
                 
                 Text(self.fetcher.errorMessage ?? "")
             }

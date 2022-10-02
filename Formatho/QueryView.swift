@@ -57,6 +57,7 @@ struct QueryView: View {
                             Text(wit.fields.CustomReport.toRTF())
                         }
                     }
+                    .frame(minHeight: 30)
                 }
                 
                 Text(self.fetcher.errorMessage ?? "")
