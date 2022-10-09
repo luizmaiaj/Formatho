@@ -12,6 +12,7 @@ enum Tab: Int {
     case recent = 2
     case query = 3
     case graph = 4
+    case tree = 5
 }
 
 struct ContentView: View {
@@ -60,6 +61,12 @@ struct ContentView: View {
                             Text("Graph")
                         }
                         .tag(Tab.graph)
+                    
+                    TreeView(fetcher: fetcher, id: 123456)
+                        .tabItem {
+                            Text("Tree")
+                        }
+                        .tag(Tab.tree)
                 }
             }
         }

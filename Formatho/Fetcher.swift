@@ -66,7 +66,7 @@ class Fetcher: ObservableObject {
     }
     
     func queries(org: String, pat: String, email: String) {
-
+        
         let header = buildHeader(pat: pat, email: email)
         
         self.isLoading = true
@@ -93,7 +93,7 @@ class Fetcher: ObservableObject {
             }
         }
     }
-
+    
     func accountActivity(org: String, pat: String, email: String) {
         
         let header = buildHeader(pat: pat, email: email)
@@ -128,7 +128,7 @@ class Fetcher: ObservableObject {
     }
     
     func wit(org: String, pat: String, email: String, witid: String) {
-
+        
         self.wits(org: org, pat: pat, email: email, ids: [witid])
     }
     
@@ -178,32 +178,32 @@ class Fetcher: ObservableObject {
                     self.isLoading = false
                     
                     switch result {
-                        case .failure(let error):
-                            print("Fetcher error: \(error)")
-                            self.errorMessage = error.localizedDescription
-                        case .success(let info):
-                            print("Fetcher count: \(info.count)")
-                            self.wits += info.value
+                    case .failure(let error):
+                        print("Fetcher error: \(error)")
+                        self.errorMessage = error.localizedDescription
+                    case .success(let info):
+                        print("Fetcher count: \(info.count)")
+                        self.wits += info.value
+                        
+                        for wit in self.wits {
+                            wit.html = "<b>P\(wit.fields.MicrosoftVSTSCommonPriority) \(wit.fields.SystemWorkItemType) \(wit.fields.SystemTitle)</b> <a href=\"\(reqURL)\(String(format: "%d", wit.id))\">[SCOPE-\(String(format: "%d", wit.id))]</a>: \(wit.fields.CustomReport)"
+                        }
+                        
+                        if self.wits.count == 1 {
+                            print(self.wits[0].html)
                             
-                            for wit in self.wits {
-                                wit.html = "<b>P\(wit.fields.MicrosoftVSTSCommonPriority) \(wit.fields.SystemWorkItemType) \(wit.fields.SystemTitle)</b> <a href=\"\(reqURL)\(String(format: "%d", wit.id))\">[SCOPE-\(String(format: "%d", wit.id))]</a>: \(wit.fields.CustomReport)"
-                            }
-                            
-                            if self.wits.count == 1 {
-                                print(self.wits[0].html)
+                            if let data = self.wits[0].html.data(using: .unicode),
+                               let nsAttrString = try? NSAttributedString(data: data,
+                                                                          options: [.documentType: NSAttributedString.DocumentType.html],
+                                                                          documentAttributes: nil) {
                                 
-                                if let data = self.wits[0].html.data(using: .unicode),
-                                   let nsAttrString = try? NSAttributedString(data: data,
-                                                                              options: [.documentType: NSAttributedString.DocumentType.html],
-                                                                              documentAttributes: nil) {
-                                    
-                                    self.formattedWIT = AttributedString(nsAttrString) // string to be displayed in Text()
-                                    
-                                    self.pboard.clearContents()
-                                    
-                                    self.pboard.writeObjects(NSArray(object: nsAttrString) as! [NSPasteboardWriting])
-                                }
+                                self.formattedWIT = AttributedString(nsAttrString) // string to be displayed in Text()
+                                
+                                self.pboard.clearContents()
+                                
+                                self.pboard.writeObjects(NSArray(object: nsAttrString) as! [NSPasteboardWriting])
                             }
+                        }
                     }
                 }
             }
@@ -234,18 +234,22 @@ class Fetcher: ObservableObject {
                 case .success(let info):
                     print("Fetcher count: \(info.workItems.count)")
                     self.query = info
-                        
-                        var ids: [String] = [String]()
                     
-                        for workItem in self.query.workItems {
-                            ids.append(String(format: "%d", workItem.id))
-                        }
-                        
-                        print(ids)
-                        
-                        self.wits(org: org, pat: pat, email: email, ids: ids)
+                    var ids: [String] = [String]()
+                    
+                    for workItem in self.query.workItems {
+                        ids.append(String(format: "%d", workItem.id))
+                    }
+                    
+                    print(ids)
+                    
+                    self.wits(org: org, pat: pat, email: email, ids: ids)
                 }
             }
         }
+    }
+    
+    func links(org: String, pat: String, email: String, queryid: String) {
+        //GET https://dev.azure.com/{organization}/_apis/wit/workitemrelationtypes/{relation}?api-version=6.0
     }
 }
