@@ -55,7 +55,7 @@ struct TreeView: View {
                 
                 if !fetcher.wits.isEmpty {
                     
-                    TicketView(title: fetcher.wits[0].fields.SystemTitle, id: fetcher.wits[0].id)
+                    TicketView(wit: fetcher.wits[0])
                     
                 }
                 
@@ -73,8 +73,7 @@ struct TreeView_Previews: PreviewProvider {
 
 struct TicketView: View {
     
-    let title: String
-    let id: Int
+    let wit: Wit
     
     var body: some View {
         
@@ -84,8 +83,15 @@ struct TicketView: View {
                 .foregroundColor(.white)
             
             VStack {
-                Text(title)
-                Text(id.formatted())
+                Text(wit.fields.SystemTitle)
+                Text(wit.id.formatted())
+                
+                ForEach(wit.relations, id: \.self) { relation in
+                    HStack {
+                        Text(relation.attributes.name)
+                        Text(relation.url)
+                    }
+                }
             }
         }
     }

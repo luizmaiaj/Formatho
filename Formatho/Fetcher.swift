@@ -231,6 +231,7 @@ class Fetcher: ObservableObject {
                     case .failure(let error):
                         print("Fetcher error: \(error)")
                         self.errorMessage = error.localizedDescription
+                        
                     case .success(let info):
                         print("Fetcher count: \(info.workItems.count)")
                         self.query = info
@@ -250,7 +251,6 @@ class Fetcher: ObservableObject {
     }
     
     func links(org: String, pat: String, email: String, witid: String) {
-        //GET https://dev.azure.com/{organization}/_apis/wit/workitemrelationtypes/{relation}?api-version=6.0
         
         let header = buildHeader(pat: pat, email: email)
         
@@ -263,7 +263,7 @@ class Fetcher: ObservableObject {
         
         let url = NSURL(string: witBaseUrl)! as URL
         
-        self.service.fetch(ADOWitSearch.self, url: url, headers: header) { [unowned self] result in
+        self.service.fetch(Wit.self, url: url, headers: header) { [unowned self] result in
             
             DispatchQueue.main.async {
                 
@@ -273,25 +273,11 @@ class Fetcher: ObservableObject {
                     case .failure(let error):
                         print("Fetcher error: \(error)")
                         self.errorMessage = error.localizedDescription
+                        
                     case .success(let info):
-                        print("Fetcher count: \(info.count)")
-                        self.wits += info.value
-                                              
-                        if self.wits.count == 1 {
-                            print(self.wits[0].html)
-                            
-                            if let data = self.wits[0].html.data(using: .unicode),
-                               let nsAttrString = try? NSAttributedString(data: data,
-                                                                          options: [.documentType: NSAttributedString.DocumentType.html],
-                                                                          documentAttributes: nil) {
-                                
-                                self.formattedWIT = AttributedString(nsAttrString) // string to be displayed in Text()
-                                
-                                self.pboard.clearContents()
-                                
-                                self.pboard.writeObjects(NSArray(object: nsAttrString) as! [NSPasteboardWriting])
-                            }
-                        }
+                        print("Fetcher count: \([info].count)")
+                        self.wits = [info]
+                        
                 }
             }
         }

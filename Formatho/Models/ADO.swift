@@ -250,12 +250,12 @@ class Wit: Codable, Identifiable, Hashable {
         return lhs.id == rhs.id
     }
     
-    
     init() {
         id = Int()
         fields = Fields()
         url = String()
         html = String()
+        relations = [Relations]()
     }
     
     required init(from decoder: Decoder) throws {
@@ -272,6 +272,9 @@ class Wit: Codable, Identifiable, Hashable {
         } catch { self.url = "" }
         
         self.html = String() // to be filled later
+        
+        do { self.relations = try values.decode([Relations].self, forKey: .relations)
+        } catch { self.relations = [Relations]() }
     }
     
     func hash(into hasher: inout Hasher) {
@@ -282,6 +285,7 @@ class Wit: Codable, Identifiable, Hashable {
     let fields: Fields
     let url: String
     var html: String
+    let relations: [Relations]
 }
 
 class Fields: Codable, Identifiable {
@@ -383,6 +387,64 @@ class Fields: Codable, Identifiable {
     let SystemDescription: String
     let MicrosoftVSTSCommonPriority: Int
     let CustomReport: String
+}
+
+class Relations: Codable, Identifiable, Hashable {
+    static func == (lhs: Relations, rhs: Relations) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    init() {
+        self.rel = String()
+        self.url = String()
+        self.attributes = Attributes()
+    }
+    
+    required init(from decoder: Decoder) throws {
+        
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        
+        do { self.rel = try values.decode(String.self, forKey: .rel)
+        } catch { self.rel = "" }
+        
+        do { self.url = try values.decode(String.self, forKey: .url)
+        } catch { self.url = "" }
+        
+        do { self.attributes = try values.decode(Attributes.self, forKey: .attributes)
+        } catch { self.attributes = Attributes() }
+        
+    }
+  
+    let id = UUID()
+    let rel: String
+    let url: String
+    let attributes: Attributes
+}
+
+class Attributes: Codable, Identifiable {
+    init() {
+        self.isLocked = false
+        self.name = String()
+    }
+    
+    required init(from decoder: Decoder) throws {
+        
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        
+        do { self.isLocked = try values.decode(Bool.self, forKey: .isLocked)
+        } catch { self.isLocked = false }
+        
+        do { self.name = try values.decode(String.self, forKey: .name)
+        } catch { self.name = "" }
+        
+    }
+    
+    let isLocked: Bool
+    let name: String
 }
 
 /*
