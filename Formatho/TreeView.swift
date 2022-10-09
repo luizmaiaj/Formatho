@@ -21,6 +21,10 @@ struct TreeView: View {
     
     let id: Int
     
+    func fetch() {
+        fetcher.links(org: organisation, pat: pat, email: email, witid: witid)
+    }
+    
     var body: some View {
         VStack {
             
@@ -40,11 +44,11 @@ struct TreeView: View {
                                 if filtered != newValue { witid = filtered }
                             }
                             .onSubmit {
-                                fetcher.wit(org: organisation, pat: pat, email: email, witid: witid)
+                                fetch()
                             }
                         
                         Button("Get WIT", action: {
-                            fetcher.wit(org: organisation, pat: pat, email: email, witid: witid)
+                            fetch()
                         })
                     }
                 }
