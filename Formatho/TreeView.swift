@@ -75,11 +75,18 @@ struct TicketView: View {
     
     let wit: Wit
     
+    func getWitNumber(url: String) -> String {
+
+        let result = url.trimmingCharacters(in: .decimalDigits)
+
+        return String(url.dropFirst(result.count))
+    }
+    
     var body: some View {
         
         ZStack{
             RoundedRectangle(cornerRadius: 20)
-                .frame(width: 200, height: 100)
+                //.frame(width: 200, height: 100)
                 .foregroundColor(.white)
             
             VStack {
@@ -89,7 +96,7 @@ struct TicketView: View {
                 ForEach(wit.relations, id: \.self) { relation in
                     HStack {
                         Text(relation.attributes.name)
-                        Text(relation.url)
+                        Text(getWitNumber(url: relation.url))
                     }
                 }
             }
