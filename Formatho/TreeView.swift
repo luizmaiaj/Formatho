@@ -19,8 +19,6 @@ struct TreeView: View {
     
     @State var witid: String = String()
     
-    let id: Int
-    
     func fetch() {
         fetcher.links(org: organisation, pat: pat, email: email, witid: witid)
     }
@@ -67,7 +65,7 @@ struct TreeView: View {
 
 struct TreeView_Previews: PreviewProvider {
     static var previews: some View {
-        TreeView(fetcher: Fetcher(), id: 123456)
+        TreeView(fetcher: Fetcher())
     }
 }
 

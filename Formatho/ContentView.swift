@@ -62,7 +62,7 @@ struct ContentView: View {
                         }
                         .tag(Tab.graph)
                     
-                    TreeView(fetcher: fetcher, id: 123456)
+                    TreeView(fetcher: fetcher)
                         .tabItem {
                             Text("Tree")
                         }
