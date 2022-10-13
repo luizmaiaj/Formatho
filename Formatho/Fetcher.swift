@@ -308,7 +308,11 @@ class Fetcher: ObservableObject {
         }
     }
     
-    func getRelations(org: String, pat: String, email: String, witid: String) {
+    func getRelations(org: String, pat: String, email: String, witid: String, level: Int = 0) {
+        
+        if RELATIONS_LEVELS <= level {
+            return
+        }
         
         let header = buildHeader(pat: pat, email: email)
         
@@ -348,11 +352,11 @@ class Fetcher: ObservableObject {
                         
                         if idNumber > 50000 && idNumber < 500000 && !self.fetched.contains(id) {
                             
-                            print("\(r.url) -> \(idNumber)")
+                            print("\(level) \(witid) -> \(idNumber)")
                             
                             let fetchR: Fetcher = Fetcher()
                             
-                            fetchR.getRelations(org: org, pat: pat, email: email, witid: id)
+                            fetchR.getRelations(org: org, pat: pat, email: email, witid: id, level: level + 1)
                             
                             self.fetchers.append(fetchR)
                         }
