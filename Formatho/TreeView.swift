@@ -17,7 +17,7 @@ struct TreeView: View {
     @AppStorage("email") private var email: String = String()
     @AppStorage("pat") private var pat: String = String()
     
-    @ObservedObject var fetcher: Fetcher
+    @ObservedObject var root: Node = Node()
     
     @State var witid: String = String()
     
@@ -25,13 +25,13 @@ struct TreeView: View {
         
         self.fetched.removeAll()
         
-        fetcher.getRelations(org: organisation, pat: pat, email: email, witid: witid)
+        self.root.getInfo(org: organisation, pat: pat, email: email, id: witid)
     }
     
     var body: some View {
         VStack {
             
-            if fetcher.isLoading {
+            if root.isLoading {
                 
                 Text("Fetching...")
                 
@@ -56,13 +56,13 @@ struct TreeView: View {
                     }
                 }
                 
-                if !fetcher.wits.isEmpty {
+                if root.wit.id != 0 {
                     
-                    TicketView(wit: fetcher.wits[0])
+                    TicketView(node: root)
                     
                 }
                 
-                Text(self.fetcher.errorMessage ?? "")
+                Text(self.root.errorMessage ?? "")
             }
         }
     }
@@ -70,13 +70,18 @@ struct TreeView: View {
 
 struct TreeView_Previews: PreviewProvider {
     static var previews: some View {
-        TreeView(fetcher: Fetcher())
+        TreeView()
     }
 }
 
 struct TicketView: View {
     
-    let wit: Wit
+    @AppStorage("organisation") private var organisation: String = String()
+    @AppStorage("email") private var email: String = String()
+    @AppStorage("pat") private var pat: String = String()
+    
+    let node: Node
+    var leaf: Node = Node()
     
     func getWitNumber(url: String) -> String {
 
@@ -87,19 +92,33 @@ struct TicketView: View {
     
     var body: some View {
         
-        ZStack{
-            RoundedRectangle(cornerRadius: 20)
+        VStack {
+            ZStack {
+                RoundedRectangle(cornerRadius: 20)
                 //.frame(width: 200, height: 100)
-                .foregroundColor(.white)
-            
-            VStack {
-                Text(wit.fields.SystemTitle)
-                Text(wit.id.formatted())
+                    .foregroundColor(.white)
                 
-                ForEach(wit.relations, id: \.self) { relation in
+                VStack {
+                    Text(node.wit.fields.SystemTitle)
+                    Text(node.wit.id.formatted())
+                    
+                    ForEach(node.wit.relations, id: \.self) { relation in
+                        HStack {
+                            Text(relation.attributes.name)
+                            //Text(getWitNumber(url: relation.url))
+                            
+                            Button(getWitNumber(url: relation.url), action: {
+                                node.getNode(org: organisation, pat: pat, email: email, id: getWitNumber(url: relation.url))
+                            })
+                        }
+                    }
+                }
+            }
+            
+            if !node.nodes.isEmpty {
+                ForEach(node.nodes, id: \.self) { node in
                     HStack {
-                        Text(relation.attributes.name)
-                        Text(getWitNumber(url: relation.url))
+                        TicketView(node: node)
                     }
                 }
             }

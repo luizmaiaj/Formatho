@@ -9,23 +9,32 @@ import SwiftUI
 
 import AppKit // for clipboard access
 
-class Node: ObservableObject {
+class Node: ObservableObject, Hashable {
     
     @AppStorage("fetched") private var fetched: [String] = [String]()
     
-    @Published var wits: [Wit] = [Wit]()
-    @Published var fetchers: [Fetcher] = [Fetcher]()
+    @Published var nodes: [Node] = [Node]()
     
-    @Published var wit: Wit = Wit()
+    @Published var wit: Wit = Wit() // information on this work item type
     
     @Published var isLoading: Bool = false
     @Published var errorMessage: String? = nil
     
     let baseURL: String = "https://dev.azure.com/"
     
-    let pboard = NSPasteboard.general // reference to pasteboard
-    
     let service = APIService()
+    
+    let id = UUID()
+    
+    // equatable
+    static func == (lhs: Node, rhs: Node) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    // hashable
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
     
     private func getWitNumber(url: String) -> String {
         
@@ -53,7 +62,9 @@ class Node: ObservableObject {
         return header
     }
     
-    func getRelations(org: String, pat: String, email: String, witid: String, level: Int = 0) {
+    func getInfo(org: String, pat: String, email: String, id: String, level: Int = 0) {
+        
+        self.wit = Wit()
         
         if RELATIONS_LEVELS <= level {
             return
@@ -64,11 +75,9 @@ class Node: ObservableObject {
         self.isLoading = true
         errorMessage = nil
         
-        self.fetched.append(witid)
+        self.fetched.append(id)
         
-        self.wits.removeAll()
-        
-        let witBaseUrl: String = baseURL + org + "/_apis/wit/workitems/" + witid + "?$expand=relations"
+        let witBaseUrl: String = baseURL + org + "/_apis/wit/workitems/" + id + "?$expand=relations"
         
         let url = NSURL(string: witBaseUrl)! as URL
         
@@ -91,6 +100,7 @@ class Node: ObservableObject {
                     }
                     self.wit = info
                     
+                        /*
                     for r in self.wit.relations {
                         let id: String = self.getWitNumber(url: r.url)
                         let idNumber: Int = Int(id) ?? 0
@@ -99,15 +109,24 @@ class Node: ObservableObject {
                             
                             print("\(level) \(witid) -> \(idNumber)")
                             
-                            let fetchR: Fetcher = Fetcher()
+                            let node: Node = Node()
                             
-                            fetchR.getRelations(org: org, pat: pat, email: email, witid: id, level: level + 1)
+                            node.getRelations(org: org, pat: pat, email: email, witid: id, level: level + 1)
                             
-                            self.fetchers.append(fetchR)
+                            self.nodes.append(node)
                         }
                     }
+                         */
                 }
             }
         }
+    }
+    
+    func getNode(org: String, pat: String, email: String, id: String) {
+        let node: Node = Node()
+        
+        node.getInfo(org: org, pat: pat, email: email, id: id)
+        
+        self.nodes.append(node)
     }
 }
