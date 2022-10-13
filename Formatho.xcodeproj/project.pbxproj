@@ -15,6 +15,7 @@
 		BB79FCEF28EFE92800F12473 /* TreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB79FCEE28EFE92800F12473 /* TreeView.swift */; };
 		BBC3A61928D5645800143EA4 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC3A61828D5645800143EA4 /* APIService.swift */; };
 		BBC3A61B28D564D600143EA4 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC3A61A28D564D600143EA4 /* APIError.swift */; };
+		BBF7D8CF28F7C44500CD9A16 /* Definitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7D8CE28F7C44500CD9A16 /* Definitions.swift */; };
 		EE00AE5428E71B0B00500331 /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00AE5328E71B0B00500331 /* GraphView.swift */; };
 		EE00AE5728E721E000500331 /* Support.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00AE5628E721E000500331 /* Support.swift */; };
 		EE1EA0AA28D615E800644D5F /* Fetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1EA0A928D615E800644D5F /* Fetcher.swift */; };
@@ -35,6 +36,7 @@
 		BB79FCEE28EFE92800F12473 /* TreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeView.swift; sourceTree = "<group>"; };
 		BBC3A61828D5645800143EA4 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		BBC3A61A28D564D600143EA4 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
+		BBF7D8CE28F7C44500CD9A16 /* Definitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Definitions.swift; sourceTree = "<group>"; };
 		EE00AE5328E71B0B00500331 /* GraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
 		EE00AE5628E721E000500331 /* Support.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Support.swift; sourceTree = "<group>"; };
 		EE1EA0A928D615E800644D5F /* Fetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fetcher.swift; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 				BB66E26528E52499004F731D /* Models */,
 				EE32BE5128DA2169009EBC6F /* Info.plist */,
 				BB5C368828CE2BBA00A973E4 /* FormathoApp.swift */,
+				BBF7D8CE28F7C44500CD9A16 /* Definitions.swift */,
 				BB5C368A28CE2BBA00A973E4 /* ContentView.swift */,
 				BBC3A61828D5645800143EA4 /* APIService.swift */,
 				BBC3A61A28D564D600143EA4 /* APIError.swift */,
@@ -190,6 +193,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BBF7D8CF28F7C44500CD9A16 /* Definitions.swift in Sources */,
 				BB5C368B28CE2BBA00A973E4 /* ContentView.swift in Sources */,
 				BB66E26428E5215F004F731D /* QueryView.swift in Sources */,
 				BBC3A61B28D564D600143EA4 /* APIError.swift in Sources */,

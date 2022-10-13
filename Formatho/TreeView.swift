@@ -20,7 +20,7 @@ struct TreeView: View {
     @State var witid: String = String()
     
     func fetch() {
-        fetcher.links(org: organisation, pat: pat, email: email, witid: witid)
+        fetcher.getRelations(org: organisation, pat: pat, email: email, witid: witid)
     }
     
     var body: some View {

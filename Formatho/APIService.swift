@@ -39,8 +39,10 @@ struct APIService {
                 completion(Result.failure(APIError.badResponse(statusCode: response.statusCode)))
             } else if let data = data {
                 
-                if let string = String(data: data, encoding: .utf8) {
-                    print("APIService string: \(string)")
+                if HTTP_DATA {
+                    if let string = String(data: data, encoding: .utf8) {
+                        print("APIService string: \(string)")
+                    }
                 }
                 
                 let decoder = JSONDecoder()

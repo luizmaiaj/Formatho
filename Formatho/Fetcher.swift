@@ -5,13 +5,39 @@
 //  Created by Luiz Carlos Maia Junior on 17/9/22.
 //
 
-import Foundation
+import SwiftUI
 
 import AppKit // for clipboard access
 
+extension Array: RawRepresentable where Element: Codable {
+    public init?(rawValue: String) {
+        guard let data = rawValue.data(using: .utf8),
+              let result = try? JSONDecoder().decode([Element].self, from: data)
+        else {
+            return nil
+        }
+        self = result
+    }
+
+    public var rawValue: String {
+        guard let data = try? JSONEncoder().encode(self),
+              let result = String(data: data, encoding: .utf8)
+        else {
+            return "[]"
+        }
+        return result
+    }
+}
+
 class Fetcher: ObservableObject {
+    
+    @AppStorage("fetched") private var fetched: [String] = [String]()
+    
     @Published var projects: [Project] = [Project]()
     @Published var wits: [Wit] = [Wit]()
+    @Published var fetchers: [Fetcher] = [Fetcher]()
+    
+    @Published var wit: Wit = Wit()
     @Published var activities: [Activity] = [Activity]()
     @Published var query: ADOQuerySearch = ADOQuerySearch()
     
@@ -24,6 +50,13 @@ class Fetcher: ObservableObject {
     let pboard = NSPasteboard.general // reference to pasteboard
     
     let service = APIService()
+    
+    private func getWitNumber(url: String) -> String {
+
+        let result = url.trimmingCharacters(in: .decimalDigits)
+
+        return String(url.dropFirst(result.count))
+    }
     
     private func buildHeader(pat: String, email: String) -> [String : String] {
         
@@ -278,6 +311,56 @@ class Fetcher: ObservableObject {
                         print("Fetcher count: \([info].count)")
                         self.wits = [info]
                         
+                }
+            }
+        }
+    }
+    
+    func getRelations(org: String, pat: String, email: String, witid: String) {
+        
+        let header = buildHeader(pat: pat, email: email)
+        
+        self.isLoading = true
+        errorMessage = nil
+        
+        self.fetched.append(witid)
+        
+        self.wits.removeAll()
+        
+        let witBaseUrl: String = baseURL + org + "/_apis/wit/workitems/" + witid + "?$expand=relations"
+        
+        let url = NSURL(string: witBaseUrl)! as URL
+        
+        self.service.fetch(Wit.self, url: url, headers: header) { [unowned self] result in
+            
+            DispatchQueue.main.async {
+                
+                self.isLoading = false
+                
+                switch result {
+                    case .failure(let error):
+                        print("Fetcher error: \(error)")
+                        self.errorMessage = error.localizedDescription
+                        
+                    case .success(let info):
+                        print("Fetcher count: \([info].count)")
+                        self.wit = info
+                    
+                    for r in self.wit.relations {
+                        let id: String = self.getWitNumber(url: r.url)
+                        let idNumber: Int = Int(id) ?? 0
+                        
+                        print("\(r.url) -> \(id)")
+                        
+                        if idNumber > 50000 && idNumber < 500000 && !self.fetched.contains(id) {
+                            
+                            let fetchR: Fetcher = Fetcher()
+                            
+                            fetchR.getRelations(org: org, pat: pat, email: email, witid: id)
+                            
+                            self.fetchers.append(fetchR)
+                        }
+                    }
                 }
             }
         }
