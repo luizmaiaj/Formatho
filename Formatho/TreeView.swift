@@ -11,6 +11,8 @@ import Combine
 
 struct TreeView: View {
     
+    @AppStorage("fetched") private var fetched: [String] = [String]()
+    
     @AppStorage("organisation") private var organisation: String = String()
     @AppStorage("email") private var email: String = String()
     @AppStorage("pat") private var pat: String = String()
@@ -20,6 +22,9 @@ struct TreeView: View {
     @State var witid: String = String()
     
     func fetch() {
+        
+        self.fetched.removeAll()
+        
         fetcher.getRelations(org: organisation, pat: pat, email: email, witid: witid)
     }
     

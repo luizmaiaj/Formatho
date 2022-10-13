@@ -34,7 +34,9 @@ struct APIService {
                 completion(Result.failure(APIError.url(error)))
             } else if let response = response as? HTTPURLResponse, !(200...299).contains(response.statusCode) {
                 // ERROR
-                print(response.statusCode)
+                if HTTP_ERROR {
+                    print("APIService error: \(response.statusCode)")
+                }
                 
                 completion(Result.failure(APIError.badResponse(statusCode: response.statusCode)))
             } else if let data = data {
@@ -48,14 +50,18 @@ struct APIService {
                 let decoder = JSONDecoder()
                 
                 do {
-                    print("APIService data: \(data)")
+                    if HTTP_DATA {
+                        print("APIService data: \(data)")
+                    }
                     
                     let result = try decoder.decode(type, from: data)
                     
                     completion(Result.success(result))
                     
                 } catch {
-                    print("APIService error: \(error)")
+                    if HTTP_ERROR {
+                        print("APIService error: \(error)")
+                    }
                     
                     completion(Result.failure(APIError.parsing(error as? DecodingError)))
                 }

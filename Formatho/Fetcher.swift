@@ -9,26 +9,6 @@ import SwiftUI
 
 import AppKit // for clipboard access
 
-extension Array: RawRepresentable where Element: Codable {
-    public init?(rawValue: String) {
-        guard let data = rawValue.data(using: .utf8),
-              let result = try? JSONDecoder().decode([Element].self, from: data)
-        else {
-            return nil
-        }
-        self = result
-    }
-
-    public var rawValue: String {
-        guard let data = try? JSONEncoder().encode(self),
-              let result = String(data: data, encoding: .utf8)
-        else {
-            return "[]"
-        }
-        return result
-    }
-}
-
 class Fetcher: ObservableObject {
     
     @AppStorage("fetched") private var fetched: [String] = [String]()
@@ -52,10 +32,16 @@ class Fetcher: ObservableObject {
     let service = APIService()
     
     private func getWitNumber(url: String) -> String {
-
+        
         let result = url.trimmingCharacters(in: .decimalDigits)
-
-        return String(url.dropFirst(result.count))
+        
+        if result.hasSuffix("/") {
+            
+            return String(url.dropFirst(result.count))
+        }
+        else {
+            return ""
+        }
     }
     
     private func buildHeader(pat: String, email: String) -> [String : String] {
@@ -64,7 +50,9 @@ class Fetcher: ObservableObject {
         
         let header = ["accept": "application/json", "authorization": authorisation]
         
-        print(header)
+        if HTTP_DATA {
+            print(header)
+        }
         
         return header
     }
@@ -87,12 +75,16 @@ class Fetcher: ObservableObject {
                 self.isLoading = false
                 
                 switch result {
-                    case .failure(let error):
+                case .failure(let error):
+                    if HTTP_ERROR {
                         print("Fetcher error: \(error)")
-                        self.errorMessage = error.localizedDescription
-                    case .success(let info):
+                    }
+                    self.errorMessage = error.localizedDescription
+                case .success(let info):
+                    if HTTP_DATA {
                         print("Fetcher count: \(info.count)")
-                        self.projects = info.value
+                    }
+                    self.projects = info.value
                 }
             }
         }
@@ -116,12 +108,12 @@ class Fetcher: ObservableObject {
                 self.isLoading = false
                 
                 switch result {
-                    case .failure(let error):
-                        print("Fetcher error: \(error)")
-                        self.errorMessage = error.localizedDescription
-                    case .success(let info):
-                        print("Fetcher count: \(info.count)")
-                        self.projects = info.value
+                case .failure(let error):
+                    print("Fetcher error: \(error)")
+                    self.errorMessage = error.localizedDescription
+                case .success(let info):
+                    print("Fetcher count: \(info.count)")
+                    self.projects = info.value
                 }
             }
         }
@@ -145,16 +137,16 @@ class Fetcher: ObservableObject {
                 self.isLoading = false
                 
                 switch result {
-                    case .failure(let error):
-                        print("Fetcher error: \(error)")
-                        self.errorMessage = error.localizedDescription
-                    case .success(let info):
-                        print("Fetcher count: \(info.count)")
-                        self.activities = info.value
-                        
-                        for activity in self.activities {
-                            activity.html = "\(activity.activityType.capitalized) [SCOPE-\(String(format: "%d", activity.id))] \(activity.workItemType) \(activity.title): \(activity.state)"
-                        }
+                case .failure(let error):
+                    print("Fetcher error: \(error)")
+                    self.errorMessage = error.localizedDescription
+                case .success(let info):
+                    print("Fetcher count: \(info.count)")
+                    self.activities = info.value
+                    
+                    for activity in self.activities {
+                        activity.html = "\(activity.activityType.capitalized) [SCOPE-\(String(format: "%d", activity.id))] \(activity.workItemType) \(activity.title): \(activity.state)"
+                    }
                 }
             }
         }
@@ -211,32 +203,32 @@ class Fetcher: ObservableObject {
                     self.isLoading = false
                     
                     switch result {
-                        case .failure(let error):
-                            print("Fetcher error: \(error)")
-                            self.errorMessage = error.localizedDescription
-                        case .success(let info):
-                            print("Fetcher count: \(info.count)")
-                            self.wits += info.value
+                    case .failure(let error):
+                        print("Fetcher error: \(error)")
+                        self.errorMessage = error.localizedDescription
+                    case .success(let info):
+                        print("Fetcher count: \(info.count)")
+                        self.wits += info.value
+                        
+                        for wit in self.wits {
+                            wit.html = "<b>P\(wit.fields.MicrosoftVSTSCommonPriority) \(wit.fields.SystemWorkItemType) \(wit.fields.SystemTitle)</b> <a href=\"\(reqURL)\(String(format: "%d", wit.id))\">[SCOPE-\(String(format: "%d", wit.id))]</a>: \(wit.fields.CustomReport)"
+                        }
+                        
+                        if self.wits.count == 1 {
+                            print(self.wits[0].html)
                             
-                            for wit in self.wits {
-                                wit.html = "<b>P\(wit.fields.MicrosoftVSTSCommonPriority) \(wit.fields.SystemWorkItemType) \(wit.fields.SystemTitle)</b> <a href=\"\(reqURL)\(String(format: "%d", wit.id))\">[SCOPE-\(String(format: "%d", wit.id))]</a>: \(wit.fields.CustomReport)"
-                            }
-                            
-                            if self.wits.count == 1 {
-                                print(self.wits[0].html)
+                            if let data = self.wits[0].html.data(using: .unicode),
+                               let nsAttrString = try? NSAttributedString(data: data,
+                                                                          options: [.documentType: NSAttributedString.DocumentType.html],
+                                                                          documentAttributes: nil) {
                                 
-                                if let data = self.wits[0].html.data(using: .unicode),
-                                   let nsAttrString = try? NSAttributedString(data: data,
-                                                                              options: [.documentType: NSAttributedString.DocumentType.html],
-                                                                              documentAttributes: nil) {
-                                    
-                                    self.formattedWIT = AttributedString(nsAttrString) // string to be displayed in Text()
-                                    
-                                    self.pboard.clearContents()
-                                    
-                                    self.pboard.writeObjects(NSArray(object: nsAttrString) as! [NSPasteboardWriting])
-                                }
+                                self.formattedWIT = AttributedString(nsAttrString) // string to be displayed in Text()
+                                
+                                self.pboard.clearContents()
+                                
+                                self.pboard.writeObjects(NSArray(object: nsAttrString) as! [NSPasteboardWriting])
                             }
+                        }
                     }
                 }
             }
@@ -261,23 +253,23 @@ class Fetcher: ObservableObject {
                 self.isLoading = false
                 
                 switch result {
-                    case .failure(let error):
-                        print("Fetcher error: \(error)")
-                        self.errorMessage = error.localizedDescription
-                        
-                    case .success(let info):
-                        print("Fetcher count: \(info.workItems.count)")
-                        self.query = info
-                        
-                        var ids: [String] = [String]()
-                        
-                        for workItem in self.query.workItems {
-                            ids.append(String(format: "%d", workItem.id))
-                        }
-                        
-                        print(ids)
-                        
-                        self.wits(org: org, pat: pat, email: email, ids: ids)
+                case .failure(let error):
+                    print("Fetcher error: \(error)")
+                    self.errorMessage = error.localizedDescription
+                    
+                case .success(let info):
+                    print("Fetcher count: \(info.workItems.count)")
+                    self.query = info
+                    
+                    var ids: [String] = [String]()
+                    
+                    for workItem in self.query.workItems {
+                        ids.append(String(format: "%d", workItem.id))
+                    }
+                    
+                    print(ids)
+                    
+                    self.wits(org: org, pat: pat, email: email, ids: ids)
                 }
             }
         }
@@ -303,14 +295,14 @@ class Fetcher: ObservableObject {
                 self.isLoading = false
                 
                 switch result {
-                    case .failure(let error):
-                        print("Fetcher error: \(error)")
-                        self.errorMessage = error.localizedDescription
-                        
-                    case .success(let info):
-                        print("Fetcher count: \([info].count)")
-                        self.wits = [info]
-                        
+                case .failure(let error):
+                    print("Fetcher error: \(error)")
+                    self.errorMessage = error.localizedDescription
+                    
+                case .success(let info):
+                    print("Fetcher count: \([info].count)")
+                    self.wits = [info]
+                    
                 }
             }
         }
@@ -338,21 +330,25 @@ class Fetcher: ObservableObject {
                 self.isLoading = false
                 
                 switch result {
-                    case .failure(let error):
+                case .failure(let error):
+                    if HTTP_ERROR {
                         print("Fetcher error: \(error)")
-                        self.errorMessage = error.localizedDescription
-                        
-                    case .success(let info):
+                    }
+                    self.errorMessage = error.localizedDescription
+                    
+                case .success(let info):
+                    if HTTP_DATA {
                         print("Fetcher count: \([info].count)")
-                        self.wit = info
+                    }
+                    self.wit = info
                     
                     for r in self.wit.relations {
                         let id: String = self.getWitNumber(url: r.url)
                         let idNumber: Int = Int(id) ?? 0
                         
-                        print("\(r.url) -> \(id)")
-                        
                         if idNumber > 50000 && idNumber < 500000 && !self.fetched.contains(id) {
+                            
+                            print("\(r.url) -> \(idNumber)")
                             
                             let fetchR: Fetcher = Fetcher()
                             
