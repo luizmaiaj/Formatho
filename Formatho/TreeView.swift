@@ -25,7 +25,7 @@ struct TreeView: View {
         
         self.fetched.removeAll()
         
-        self.root.getInfo(org: organisation, pat: pat, email: email, id: witid)
+        self.root.getInfo(org: organisation, pat: pat, email: email, id: Int(witid) ?? 0)
     }
     
     var body: some View {
@@ -81,44 +81,42 @@ struct TicketView: View {
     @AppStorage("pat") private var pat: String = String()
     
     let node: Node
-    var leaf: Node = Node()
+    @State var leaf: Node = Node()
     
-    func getWitNumber(url: String) -> String {
-
+    func getWitNumber(url: String) -> Int {
+        
         let result = url.trimmingCharacters(in: .decimalDigits)
-
-        return String(url.dropFirst(result.count))
+        
+        return Int(String(url.dropFirst(result.count))) ?? 0
     }
     
     var body: some View {
         
-        VStack {
-            ZStack {
-                RoundedRectangle(cornerRadius: 20)
-                //.frame(width: 200, height: 100)
-                    .foregroundColor(.white)
+        return VStack(alignment: .center) {
+            
+            VStack {
+                Text(node.wit.fields.SystemTitle)
+                Text(node.wit.id.formatted())
                 
-                VStack {
-                    Text(node.wit.fields.SystemTitle)
-                    Text(node.wit.id.formatted())
+                ForEach(node.wit.relations, id: \.self) { relation in
                     
-                    ForEach(node.wit.relations, id: \.self) { relation in
-                        HStack {
-                            Text(relation.attributes.name)
-                            //Text(getWitNumber(url: relation.url))
-                            
-                            Button(getWitNumber(url: relation.url), action: {
-                                node.getNode(org: organisation, pat: pat, email: email, id: getWitNumber(url: relation.url))
-                            })
-                        }
+                    HStack {
+                        Text(relation.attributes.name)
+                        
+                        Button("\(getWitNumber(url: relation.url))", action: {
+                            node.getNode(org: organisation, pat: pat, email: email, id: getWitNumber(url: relation.url))
+                        })
                     }
                 }
-            }
-            
-            if !node.nodes.isEmpty {
-                ForEach(node.nodes, id: \.self) { node in
-                    HStack {
-                        TicketView(node: node)
+                
+                HStack {
+                    if !node.nodes.isEmpty {
+                        
+                        ForEach(node.nodes, id: \.self) { node in
+                            HStack {
+                                TicketView(node: node)
+                            }
+                        }
                     }
                 }
             }

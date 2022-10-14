@@ -62,7 +62,7 @@ class Node: ObservableObject, Hashable {
         return header
     }
     
-    func getInfo(org: String, pat: String, email: String, id: String, level: Int = 0) {
+    func getInfo(org: String, pat: String, email: String, id: Int, level: Int = 0) {
         
         self.wit = Wit()
         
@@ -75,9 +75,9 @@ class Node: ObservableObject, Hashable {
         self.isLoading = true
         errorMessage = nil
         
-        self.fetched.append(id)
+        self.fetched.append(id.formatted())
         
-        let witBaseUrl: String = baseURL + org + "/_apis/wit/workitems/" + id + "?$expand=relations"
+        let witBaseUrl: String = baseURL + org + "/_apis/wit/workitems/" + "\(id)" + "?$expand=relations"
         
         let url = NSURL(string: witBaseUrl)! as URL
         
@@ -122,7 +122,14 @@ class Node: ObservableObject, Hashable {
         }
     }
     
-    func getNode(org: String, pat: String, email: String, id: String) {
+    func getNode(org: String, pat: String, email: String, id: Int) {
+        
+        for node in nodes {
+            if node.wit.id == id {
+                return
+            }
+        }
+        
         let node: Node = Node()
         
         node.getInfo(org: org, pat: pat, email: email, id: id)

@@ -13,6 +13,7 @@ enum Tab: Int {
     case query = 3
     case graph = 4
     case tree = 5
+    case test = 6
 }
 
 struct ContentView: View {
@@ -26,6 +27,8 @@ struct ContentView: View {
     @State var isPresentedLogin = false
     
     @State private var selection: Tab = Tab.wit
+    
+    @State var tree: Tree<Unique<Int>> = binaryTree.map(Unique.init)
     
     var body: some View {
         
@@ -67,6 +70,15 @@ struct ContentView: View {
                             Text("Tree")
                         }
                         .tag(Tab.tree)
+                    
+                    DiagramSimple(tree: tree, node: { value in
+                        Text("\(value.value)")
+                            .modifier(RoundedCircleStyle())
+                    })
+                        .tabItem {
+                            Text("Diagram")
+                        }
+                        .tag(Tab.test)
                 }
             }
         }
