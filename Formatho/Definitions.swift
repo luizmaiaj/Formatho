@@ -9,4 +9,4 @@ import Foundation
 
 let HTTP_DATA = false
 let HTTP_ERROR = true
-let RELATIONS_LEVELS = 3
+let RELATIONS_LEVELS = 1

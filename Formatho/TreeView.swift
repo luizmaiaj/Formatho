@@ -80,8 +80,7 @@ struct TicketView: View {
     @AppStorage("email") private var email: String = String()
     @AppStorage("pat") private var pat: String = String()
     
-    let node: Node
-    @State var leaf: Node = Node()
+    @StateObject var node: Node
     
     func getWitNumber(url: String) -> Int {
         
@@ -100,12 +99,14 @@ struct TicketView: View {
                 
                 ForEach(node.wit.relations, id: \.self) { relation in
                     
-                    HStack {
-                        Text(relation.attributes.name)
-                        
-                        Button("\(getWitNumber(url: relation.url))", action: {
-                            node.getNode(org: organisation, pat: pat, email: email, id: getWitNumber(url: relation.url))
-                        })
+                    if node.wit.id != 0 {
+                        HStack {
+                            Text(relation.attributes.name)
+                            
+                            Button("\(getWitNumber(url: relation.url))", action: {
+                                node.getNode(org: organisation, pat: pat, email: email, id: getWitNumber(url: relation.url))
+                            })
+                        }
                     }
                 }
                 
@@ -114,7 +115,11 @@ struct TicketView: View {
                         
                         ForEach(node.nodes, id: \.self) { node in
                             HStack {
-                                TicketView(node: node)
+                                if node.isLoading {
+                                    Text("Fetching...")
+                                } else {
+                                    TicketView(node: node)
+                                }
                             }
                         }
                     }

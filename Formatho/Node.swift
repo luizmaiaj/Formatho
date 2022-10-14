@@ -62,13 +62,7 @@ class Node: ObservableObject, Hashable {
         return header
     }
     
-    func getInfo(org: String, pat: String, email: String, id: Int, level: Int = 0) {
-        
-        self.wit = Wit()
-        
-        if RELATIONS_LEVELS <= level {
-            return
-        }
+    func getInfo(org: String, pat: String, email: String, id: Int) {
         
         let header = buildHeader(pat: pat, email: email)
         
@@ -88,35 +82,29 @@ class Node: ObservableObject, Hashable {
                 self.isLoading = false
                 
                 switch result {
-                case .failure(let error):
-                    if HTTP_ERROR {
-                        print("Fetcher error: \(error)")
-                    }
-                    self.errorMessage = error.localizedDescription
-                    
-                case .success(let info):
-                    if HTTP_DATA {
-                        print("Fetcher count: \([info].count)")
-                    }
-                    self.wit = info
-                    
-                        /*
-                    for r in self.wit.relations {
-                        let id: String = self.getWitNumber(url: r.url)
-                        let idNumber: Int = Int(id) ?? 0
+                    case .failure(let error):
+                        if HTTP_ERROR {
+                            print("Fetcher error: \(error)")
+                        }
+                        self.errorMessage = error.localizedDescription
                         
-                        if idNumber > 50000 && idNumber < 500000 && !self.fetched.contains(id) {
+                    case .success(let info):
+                        if HTTP_DATA {
+                            print("Fetcher count: \([info].count)")
+                        }
+                        
+                        if self.wit.id == 0 {
                             
-                            print("\(level) \(witid) -> \(idNumber)")
+                            self.wit = info
                             
+                        } else {
                             let node: Node = Node()
                             
-                            node.getRelations(org: org, pat: pat, email: email, witid: id, level: level + 1)
+                            node.wit = info
                             
                             self.nodes.append(node)
                         }
-                    }
-                         */
+                        
                 }
             }
         }
@@ -130,10 +118,6 @@ class Node: ObservableObject, Hashable {
             }
         }
         
-        let node: Node = Node()
-        
-        node.getInfo(org: org, pat: pat, email: email, id: id)
-        
-        self.nodes.append(node)
+        self.getInfo(org: org, pat: pat, email: email, id: id)
     }
 }
