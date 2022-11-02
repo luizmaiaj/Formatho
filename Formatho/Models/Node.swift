@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-import AppKit // for clipboard access
-
 class Node: ObservableObject, Hashable {
     
     @AppStorage("fetched") private var fetched: [String] = [String]()

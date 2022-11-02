@@ -75,32 +75,27 @@ struct ContentView: View {
                         Text("\(value.value)")
                             .modifier(RoundedCircleStyle())
                     })
-                        .tabItem {
-                            Text("Diagram")
-                        }
-                        .tag(Tab.test)
+                    .tabItem {
+                        Text("Diagram")
+                    }
+                    .tag(Tab.test)
                 }
             }
         }
         .toolbar {
+#if os(OSX)
             ToolbarItem {
-                
-                Button {
-                    isPresentedLogin.toggle()
-                } label: {
-                    HStack {
-                        
-                        if email.isEmpty {
-                            Text("Login details")
-                        } else {
-                            Text(email)
-                        }
-                        
-                        Image(systemName: "person.circle")
-                            .font(.title2)
-                    }
-                }
+                ToolbarButton(systemName: "person.circle", email: email, value: self.$isPresentedLogin)
+                    .foregroundColor(Color("IconFadeColor"))
             }
+#else
+            ToolbarItem(placement: .navigationBarTrailing) {
+                
+                ToolbarButton(systemName: "person.circle", email: email, value: self.$isPresentedLogin)
+                    .foregroundColor(Color("IconFadeColor"))
+                
+            }
+#endif
         }
         .frame(minWidth: 250, idealWidth: 500, maxWidth: 1000, minHeight: 100, maxHeight: 1000)
     }

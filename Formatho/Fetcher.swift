@@ -7,7 +7,9 @@
 
 import SwiftUI
 
+#if !os(iOS)
 import AppKit // for clipboard access
+#endif
 
 class Fetcher: ObservableObject {
     
@@ -25,7 +27,9 @@ class Fetcher: ObservableObject {
     
     let baseURL: String = "https://dev.azure.com/"
     
+#if !os(iOS)
     let pboard = NSPasteboard.general // reference to pasteboard
+#endif
     
     let service = APIService()
     
@@ -222,9 +226,14 @@ class Fetcher: ObservableObject {
                                 
                                 self.formattedWIT = AttributedString(nsAttrString) // string to be displayed in Text()
                                 
+#if !os(iOS)
                                 self.pboard.clearContents()
                                 
                                 self.pboard.writeObjects(NSArray(object: nsAttrString) as! [NSPasteboardWriting])
+#else
+                                //UIPasteboard.general.string = NSArray(object: nsAttrString)
+                                UIPasteboard.general.setValue(nsAttrString, forPasteboardType: "NSArray")
+#endif
                             }
                         }
                     }
