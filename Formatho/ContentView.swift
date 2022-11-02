@@ -41,6 +41,7 @@ struct ContentView: View {
             } else {
                 TabView(selection: $selection) {
                     
+#if os(OSX)
                     WitView(fetcher: fetcher)
                         .tabItem {
                             Text("WIT")
@@ -79,6 +80,13 @@ struct ContentView: View {
                         Text("Diagram")
                     }
                     .tag(Tab.test)
+#else
+                    WitTab(fetcher: fetcher)
+                        .tabItem {
+                            Text("WIT")
+                        }
+                        .tag(Tab.wit)
+#endif
                 }
             }
         }

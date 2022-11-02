@@ -68,6 +68,17 @@ struct WitView: View {
                 Text(self.fetcher.errorMessage ?? "")
             }
         }
+#if os(iOS)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                
+                ToolbarButton(systemName: "person.circle", email: email, value: self.$isPresentedLogin)
+                    .foregroundColor(Color("IconFadeColor"))
+                
+            }
+        }
+#endif
+
     }
 }
 
