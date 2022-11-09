@@ -19,9 +19,14 @@ struct LoginView: View {
             
             TextField("email", text: $email)
             
-            TextField("PAT", text: $pat)
+            if #available(macOS 13.0, *) {
+                TextField("PAT", text: $pat, axis: .vertical)
+                    .lineLimit(2...5)
+            } else {
+                TextField("PAT", text: $pat)
+            }
         }
-        .frame(minHeight: 30)
+        .frame(maxWidth: 300, minHeight: 30)
     }
 }
 

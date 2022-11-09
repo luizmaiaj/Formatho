@@ -217,9 +217,12 @@ class Fetcher: ObservableObject {
                         }
                         
                         if self.wits.count == 1 {
-                            print(self.wits[0].html)
                             
-                            if let data = self.wits[0].html.data(using: .unicode),
+                            self.wit = self.wits[0]
+                            
+                            print(self.wit.html)
+                            
+                            if let data = self.wit.html.data(using: .unicode),
                                let nsAttrString = try? NSAttributedString(data: data,
                                                                           options: [.documentType: NSAttributedString.DocumentType.html],
                                                                           documentAttributes: nil) {

@@ -49,20 +49,8 @@ struct WitView: View {
                 
                 if !fetcher.wits.isEmpty {
                     
-                    Table(fetcher.wits) {
-                        TableColumn("Priority") { wit in
-                            Text("P" + String(format: "%d", wit.fields.MicrosoftVSTSCommonPriority))
-                        }
-                        TableColumn("Type", value: \.fields.SystemWorkItemType)
-                        TableColumn("Title", value: \.fields.SystemTitle)
-                        TableColumn("id") { wit in
-                            Text("[SCOPE-\(String(format: "%d", wit.id))]")
-                        }
-                        TableColumn("Report") { wit in
-                            Text(wit.fields.CustomReport.toRTF())
-                        }
-                    }
-                    .frame(minHeight: 30)
+                    Text(fetcher.wit.html.toRTF())
+                        .frame(minHeight: 30)
                 }
                 
                 Text(self.fetcher.errorMessage ?? "")
