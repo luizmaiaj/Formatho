@@ -7,25 +7,6 @@
 
 import Foundation
 
-/*
- Projects
- {
- "count": 1,
- "value": [
- {
- "id": "1563c3d9-a220-44eb-8320-0e057810adc4",
- "name": "SCOPE-Tamwini",
- "description": "Tamwini, Tasjil, Tamawwon and OpenSPP projects managed by Iraq CO with Newlogic",
- "url": "https://dev.azure.com/worldfoodprogramme/_apis/projects/1563c3d9-a220-44eb-8320-0e057810adc4",
- "state": "wellFormed",
- "revision": 3488,
- "visibility": "private",
- "lastUpdateTime": "2022-09-06T08:30:56.08Z"
- }
- ]
- }
- */
-
 class ADOProjectSearch:Codable, Identifiable {
     
     init() {
@@ -60,31 +41,6 @@ class Project: Codable, Identifiable {
     let lastUpdateTime: String
 }
 
-/*
- Activity
- {
- "count": 200,
- "value": [
- {
- "assignedTo": {
- "id": "99471a74-85f1-4fa6-b320-5ff1e1d19a54",
- "name": "luiz <luiz@newlogic.com>",
- "displayName": "luiz",
- "uniqueName": "luiz@newlogic.com",
- "descriptor": "aad.ZGIyZjhhYjMtZjlkOC03YzNmLTk0MzAtMDZmN2M2NTBhZDEy"
- },
- "id": 172034,
- "workItemType": "Product Backlog Item",
- "title": "Panama RB: for emergency/migrants operation a standardized json file is requested to be used in the region ",
- "state": "Test",
- "changedDate": "2022-09-23T13:35:03.66Z",
- "teamProject": "SCOPE",
- "activityDate": "2022-09-23T12:09:46.517Z",
- "activityType": "edited",
- "identityId": "00000000-0000-0000-0000-000000000000"
- }
- }
- */
 class RecentActivity:Codable, Identifiable {
     
     init() {

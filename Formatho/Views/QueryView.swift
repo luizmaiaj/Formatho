@@ -51,7 +51,7 @@ struct QueryView: View {
                         TableColumn("Type", value: \.fields.SystemWorkItemType)
                         TableColumn("Title", value: \.fields.SystemTitle)
                         TableColumn("id") { wit in
-                            Text("[SCOPE-\(String(format: "%d", wit.id))]")
+                            Text(String(format: "%d", wit.id)) // removing reference
                         }
                         TableColumn("Report") { wit in
                             Text(wit.fields.CustomReport.toRTF())

@@ -36,7 +36,7 @@ struct ContentView: View {
             
             if isPresentedLogin {
                 
-                LoginView()
+                LoginView(fetcher: fetcher)
                 
             } else {
                 TabView(selection: $selection) {
@@ -104,7 +104,7 @@ struct ContentView: View {
             }
 #endif
         }
-        .frame(minWidth: 250, idealWidth: 500, maxWidth: 1000, minHeight: 100, maxHeight: 1000)
+        .frame(minWidth: 250, idealWidth: 500)
     }
 }
 

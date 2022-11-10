@@ -30,7 +30,7 @@ struct ActivityView: View {
                     TableColumn("Type", value: \.workItemType)
                     TableColumn("Title", value: \.title)
                     TableColumn("id") { activity in
-                        Text("[SCOPE-\(String(format: "%d", activity.id))]")
+                        Text(String(format: "%d", activity.id)) // removing reference
                     }
                     TableColumn("State", value: \.state)
                 }

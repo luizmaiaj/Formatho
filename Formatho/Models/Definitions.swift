@@ -7,6 +7,6 @@
 
 import Foundation
 
-let HTTP_DATA = false
+let HTTP_DATA = true
 let HTTP_ERROR = true
 let RELATIONS_LEVELS = 1
