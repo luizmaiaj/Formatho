@@ -60,11 +60,13 @@ struct ContentView: View {
                         }
                         .tag(Tab.query)
                     
-                    GraphView(fetcher: fetcher)
-                        .tabItem {
-                            Text("Graph")
-                        }
-                        .tag(Tab.graph)
+                    if #available(macOS 13.0, *) {
+                        GraphView(fetcher: fetcher)
+                            .tabItem {
+                                Text("Graph")
+                            }
+                            .tag(Tab.graph)
+                    }
                     
                     TreeView()
                         .tabItem {
@@ -72,14 +74,14 @@ struct ContentView: View {
                         }
                         .tag(Tab.tree)
                     
-                    DiagramSimple(tree: tree, node: { value in
+                    /*DiagramSimple(tree: tree, node: { value in
                         Text("\(value.value)")
                             .modifier(RoundedCircleStyle())
                     })
                     .tabItem {
                         Text("Diagram")
                     }
-                    .tag(Tab.test)
+                    .tag(Tab.test)*/
 #else
                     WitTab(fetcher: fetcher)
                         .tabItem {
