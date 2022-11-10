@@ -61,8 +61,6 @@ struct WitView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 
                 ToolbarButton(systemName: "person.circle", email: email, value: self.$isPresentedLogin)
-                    .foregroundColor(Color("IconFadeColor"))
-                
             }
         }
 #endif

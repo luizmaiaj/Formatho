@@ -96,14 +96,11 @@ struct ContentView: View {
 #if os(OSX)
             ToolbarItem {
                 ToolbarButton(systemName: "person.circle", email: email, value: self.$isPresentedLogin)
-                    .foregroundColor(Color("IconFadeColor"))
             }
 #else
             ToolbarItem(placement: .navigationBarTrailing) {
                 
                 ToolbarButton(systemName: "person.circle", email: email, value: self.$isPresentedLogin)
-                    .foregroundColor(Color("IconFadeColor"))
-                
             }
 #endif
         }
