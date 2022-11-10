@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 #if !os(iOS)
 import AppKit // for clipboard access
@@ -234,8 +235,9 @@ class Fetcher: ObservableObject {
                                 
                                 self.pboard.writeObjects(NSArray(object: nsAttrString) as! [NSPasteboardWriting])
 #else
+                                
                                 //UIPasteboard.general.string = NSArray(object: nsAttrString)
-                                UIPasteboard.general.setValue(nsAttrString, forPasteboardType: "NSArray")
+                                UIPasteboard.general.setValue(nsAttrString, forPasteboardType: UTType.rtf)
 #endif
                             }
                         }
