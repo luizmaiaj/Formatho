@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ADOProjectSearch:Codable, Identifiable {
+class ADOProjectSearch: Codable, Identifiable {
     
     init() {
         self.value = [Project]()
@@ -18,7 +18,7 @@ class ADOProjectSearch:Codable, Identifiable {
     let count: Int
 }
 
-class Project: Codable, Identifiable {
+class Project: Codable, Identifiable, Hashable {
     
     init() {
         id = String()
@@ -31,6 +31,16 @@ class Project: Codable, Identifiable {
         lastUpdateTime = String()
     }
     
+    // equatable
+    static func == (lhs: Project, rhs: Project) -> Bool {
+        return lhs.id == rhs.id
+    }
+
+    // hashable
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
     let id: String
     let name: String
     let description: String
@@ -41,7 +51,7 @@ class Project: Codable, Identifiable {
     let lastUpdateTime: String
 }
 
-class RecentActivity:Codable, Identifiable {
+class RecentActivity: Codable, Identifiable {
     
     init() {
         self.value = [Activity]()
@@ -64,9 +74,6 @@ class RecentActivity:Codable, Identifiable {
 }
 
 class Activity: Codable, Identifiable, Hashable {
-    static func == (lhs: Activity, rhs: Activity) -> Bool {
-        return lhs.id == rhs.id
-    }
     
     init() {
         id = Int()
@@ -111,6 +118,12 @@ class Activity: Codable, Identifiable, Hashable {
         self.html = String() // to be filled later
     }
     
+    // equatable
+    static func == (lhs: Activity, rhs: Activity) -> Bool {
+        return lhs.id == rhs.id
+    }
+
+    // hashable
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
@@ -126,59 +139,6 @@ class Activity: Codable, Identifiable, Hashable {
     var html: String
 }
 
-/*
- Wits
- {
- "count": 1,
- "value": [
- {
- "id": 297,
- "rev": 1,
- "fields": {
- "System.AreaPath": "Fabrikam-Fiber-Git",
- "System.TeamProject": "Fabrikam-Fiber-Git",
- "System.IterationPath": "Fabrikam-Fiber-Git",
- "System.WorkItemType": "Product Backlog Item",
- "System.State": "New",
- "System.Reason": "New backlog item",
- "System.CreatedDate": "2014-12-29T20:49:20.77Z",
- "System.CreatedBy": {
- "displayName": "Jamal Hartnett",
- "url": "https://vssps.dev.azure.com/fabrikam/_apis/Identities/d291b0c4-a05c-4ea6-8df1-4b41d5f39eff",
- "_links": {
- "avatar": {
- "href": "https://dev.azure.com/mseng/_apis/GraphProfile/MemberAvatars/aad.YTkzODFkODYtNTYxYS03ZDdiLWJjM2QtZDUzMjllMjM5OTAz"
- }
- },
- "id": "d291b0c4-a05c-4ea6-8df1-4b41d5f39eff",
- "uniqueName": "fabrikamfiber4@hotmail.com",
- "imageUrl": "https://dev.azure.com/fabrikam/_api/_common/identityImage?id=d291b0c4-a05c-4ea6-8df1-4b41d5f39eff",
- "descriptor": "aad.YTkzODFkODYtNTYxYS03ZDdiLWJjM2QtZDUzMjllMjM5OTAz"
- },
- "System.ChangedDate": "2014-12-29T20:49:20.77Z",
- "System.ChangedBy": {
- "displayName": "Jamal Hartnett",
- "url": "https://vssps.dev.azure.com/fabrikam/_apis/Identities/d291b0c4-a05c-4ea6-8df1-4b41d5f39eff",
- "_links": {
- "avatar": {
- "href": "https://dev.azure.com/mseng/_apis/GraphProfile/MemberAvatars/aad.YTkzODFkODYtNTYxYS03ZDdiLWJjM2QtZDUzMjllMjM5OTAz"
- }
- },
- "id": "d291b0c4-a05c-4ea6-8df1-4b41d5f39eff",
- "uniqueName": "fabrikamfiber4@hotmail.com",
- "imageUrl": "https://dev.azure.com/fabrikam/_api/_common/identityImage?id=d291b0c4-a05c-4ea6-8df1-4b41d5f39eff",
- "descriptor": "aad.YTkzODFkODYtNTYxYS03ZDdiLWJjM2QtZDUzMjllMjM5OTAz"
- },
- "System.Title": "Customer can sign in using their Microsoft Account",
- "Microsoft.VSTS.Scheduling.Effort": 8,
- "WEF_6CB513B6E70E43499D9FC94E5BBFB784_Kanban.Column": "New",
- "System.Description": "Our authorization logic needs to allow for users with Microsoft accounts (formerly Live Ids) - http://msdn.microsoft.com/en-us/library/live/hh826547.aspx"
- },
- "url": "https://dev.azure.com/fabrikam/_apis/wit/workItems/297"
- }
- ]
- }
- */
 class ADOWitSearch:Codable, Identifiable {
     
     init() {
@@ -202,10 +162,7 @@ class ADOWitSearch:Codable, Identifiable {
 }
 
 class Wit: Codable, Identifiable, Hashable {
-    static func == (lhs: Wit, rhs: Wit) -> Bool {
-        return lhs.id == rhs.id
-    }
-    
+
     init() {
         id = Int()
         fields = Fields()
@@ -232,7 +189,13 @@ class Wit: Codable, Identifiable, Hashable {
         do { self.relations = try values.decode([Relations].self, forKey: .relations)
         } catch { self.relations = [Relations]() }
     }
+
+    // equatable
+    static func == (lhs: Wit, rhs: Wit) -> Bool {
+        return lhs.id == rhs.id
+    }
     
+    // hashable
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
@@ -346,13 +309,6 @@ class Fields: Codable, Identifiable {
 }
 
 class Relations: Codable, Identifiable, Hashable {
-    static func == (lhs: Relations, rhs: Relations) -> Bool {
-        return lhs.id == rhs.id
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
     
     init() {
         self.rel = String()
@@ -375,6 +331,16 @@ class Relations: Codable, Identifiable, Hashable {
         
     }
   
+    // equatable
+    static func == (lhs: Relations, rhs: Relations) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    // hashable
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+
     let id = UUID()
     let rel: String
     let url: String
@@ -382,6 +348,7 @@ class Relations: Codable, Identifiable, Hashable {
 }
 
 class Attributes: Codable, Identifiable {
+    
     init() {
         self.isLocked = false
         self.name = String()
@@ -403,32 +370,7 @@ class Attributes: Codable, Identifiable {
     let name: String
 }
 
-/*
- {
-     "queryType": "flat",
-     "queryResultType": "workItem",
-     "asOf": "2022-09-27T09:12:04.95Z",
-     "columns": [
-         {
-             "referenceName": "System.Id",
-             "name": "ID",
-             "url": "https://dev.azure.com/worldfoodprogramme/_apis/wit/fields/System.Id"
-         }
-     ],
-     "workItems": [
-         {
-             "id": 51932,
-             "url": "https://dev.azure.com/worldfoodprogramme/c449b387-c1b9-4db6-b50a-114d64228ff5/_apis/wit/workItems/51932"
-         }
-     ]
- }
-*/
-
 class ADOQuerySearch: Codable, Identifiable, Hashable {
-    static func == (lhs: ADOQuerySearch, rhs: ADOQuerySearch) -> Bool {
-        return lhs.asOf == rhs.asOf
-    }
-    
     
     init() {
         queryType = String()
@@ -457,7 +399,13 @@ class ADOQuerySearch: Codable, Identifiable, Hashable {
         do { self.workItems = try values.decode([WorkItem].self, forKey: .workItems)
         } catch { self.workItems = [WorkItem]() }
     }
+
+    // equatable
+    static func == (lhs: ADOQuerySearch, rhs: ADOQuerySearch) -> Bool {
+        return lhs.asOf == rhs.asOf
+    }
     
+    // hashable
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
@@ -469,7 +417,7 @@ class ADOQuerySearch: Codable, Identifiable, Hashable {
     let workItems: [WorkItem]
 }
 
-class Column:Codable, Identifiable {
+class Column: Codable, Identifiable {
     
     init() {
         self.referenceName = String()
@@ -496,7 +444,7 @@ class Column:Codable, Identifiable {
     let url: String
 }
 
-class WorkItem:Codable, Identifiable {
+class WorkItem: Codable, Identifiable {
     
     init() {
         self.id = Int()

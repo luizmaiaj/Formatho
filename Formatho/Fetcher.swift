@@ -8,13 +8,15 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
-#if !os(iOS)
+#if os(OSX)
 import AppKit // for clipboard access
 #endif
 
 class Fetcher: ObservableObject {
     
     @Published var projects: [Project] = [Project]()
+    @Published var projectNames: [String] = [String]()
+    
     @Published var wits: [Wit] = [Wit]()
     @Published var fetchers: [Fetcher] = [Fetcher]()
     
@@ -28,7 +30,7 @@ class Fetcher: ObservableObject {
     
     let baseURL: String = "https://dev.azure.com/"
     
-#if !os(iOS)
+#if os(OSX)
     let pboard = NSPasteboard.general // reference to pasteboard
 #endif
     
@@ -88,6 +90,12 @@ class Fetcher: ObservableObject {
                         print("Fetcher count: \(info.count)")
                     }
                     self.projects = info.value
+                    
+                    self.projectNames.removeAll()
+                    
+                    for project in self.projects {
+                        self.projectNames.append(project.name)
+                    }
                 }
             }
         }

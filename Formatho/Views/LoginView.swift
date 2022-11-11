@@ -65,9 +65,14 @@ struct LoginView: View {
                 }
             }
             
+            if DEBUG_INFO {
+                let _ = print(project)
+            }
+            
             Picker("Project", selection: $project) {
-                ForEach(fetcher.projects) { project in
-                    Text(project.name)
+                
+                ForEach(fetcher.projectNames, id: \.self) {
+                    Text($0)
                 }
             }
         }
