@@ -21,6 +21,7 @@ struct ContentView: View {
     @AppStorage("organisation") private var organisation: String = String()
     @AppStorage("email") private var email: String = String()
     @AppStorage("pat") private var pat: String = String()
+    @AppStorage("project") private var project: String = String()
     
     @StateObject var fetcher: Fetcher = Fetcher()
     
@@ -37,6 +38,23 @@ struct ContentView: View {
             if isPresentedLogin {
                 
                 LoginView(fetcher: fetcher)
+                
+            } else if organisation.isEmpty || pat.isEmpty || email.isEmpty || project.isEmpty {
+                
+                Text("Please configure login")
+                
+                Button {
+                    isPresentedLogin.toggle()
+                } label: {
+                    
+                    HStack {
+                        
+                        Text("Login details")
+                        
+                        Image(systemName: "person.circle")
+                            .font(.title2)
+                    }
+                }
                 
             } else {
                 TabView(selection: $selection) {
@@ -75,13 +93,13 @@ struct ContentView: View {
                         .tag(Tab.tree)
                     
                     /*DiagramSimple(tree: tree, node: { value in
-                        Text("\(value.value)")
-                            .modifier(RoundedCircleStyle())
-                    })
-                    .tabItem {
-                        Text("Diagram")
-                    }
-                    .tag(Tab.test)*/
+                     Text("\(value.value)")
+                     .modifier(RoundedCircleStyle())
+                     })
+                     .tabItem {
+                     Text("Diagram")
+                     }
+                     .tag(Tab.test)*/
 #else
                     WitTab(fetcher: fetcher)
                         .tabItem {

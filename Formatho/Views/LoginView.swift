@@ -69,11 +69,16 @@ struct LoginView: View {
                 let _ = print(project)
             }
             
-            Picker("Project", selection: $project) {
+            if fetcher.projects.count > 0 {
                 
-                ForEach(fetcher.projectNames, id: \.self) {
-                    Text($0)
+                Picker("Project", selection: $project) {
+                    
+                    ForEach(fetcher.projectNames, id: \.self) {
+                        Text($0)
+                    }
                 }
+            } else {
+                Text(self.fetcher.errorMessage ?? "")
             }
         }
         .frame(maxWidth: 300, minHeight: 30)
