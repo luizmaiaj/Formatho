@@ -18,6 +18,10 @@ struct LoginView: View {
     
     @ObservedObject var fetcher: Fetcher
     
+    func fetch() {
+        fetcher.projects(org: organisation, pat: pat, email: email)
+    }
+    
     var body: some View {
         Form {
             TextField("organisation", text: $organisation)
@@ -40,7 +44,7 @@ struct LoginView: View {
                 
                 HStack {
                     Button("Get project list", action: {
-                        fetcher.projects(org: organisation, pat: pat, email: email)
+                        fetch()
                     })
                     .padding()
                     
@@ -86,7 +90,7 @@ struct LoginView: View {
             
             if !organisation.isEmpty && !pat.isEmpty && !email.isEmpty {
                 
-                fetcher.projects(org: organisation, pat: pat, email: email)
+                fetch()
             }
             
             connectionTested = true

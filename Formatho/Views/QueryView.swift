@@ -17,6 +17,10 @@ struct QueryView: View {
     
     @ObservedObject var fetcher: Fetcher
     
+    func fetch() {
+        fetcher.query(org: organisation, pat: pat, email: email, queryid: queryid)
+    }
+    
     var body: some View {
         VStack {
             
@@ -33,11 +37,11 @@ struct QueryView: View {
                             .frame(alignment: .trailing)
                             .frame(maxWidth: 125)
                             .onSubmit {
-                                fetcher.query(org: organisation, pat: pat, email: email, queryid: queryid)
+                                fetch()
                             }
                         
                         Button("Query", action: {
-                            fetcher.query(org: organisation, pat: pat, email: email, queryid: queryid)
+                            fetch()
                         })
                     }
                 }

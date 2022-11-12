@@ -19,6 +19,10 @@ struct WitView: View {
     
     @State var witid: String = String()
     
+    func fetch() {
+        fetcher.wit(org: organisation, pat: pat, email: email, witid: witid)
+    }
+    
     var body: some View {
         VStack {
             
@@ -38,11 +42,11 @@ struct WitView: View {
                                 if filtered != newValue { witid = filtered }
                             }
                             .onSubmit {
-                                fetcher.wit(org: organisation, pat: pat, email: email, witid: witid)
+                                fetch()
                             }
                         
                         Button("Get WIT", action: {
-                            fetcher.wit(org: organisation, pat: pat, email: email, witid: witid)
+                            fetch()
                         })
                     }
                 }
@@ -56,15 +60,6 @@ struct WitView: View {
                 Text(self.fetcher.errorMessage ?? "")
             }
         }
-#if os(iOS)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
-                
-                ToolbarButton(systemName: "person.circle", email: email, value: self.$isPresentedLogin)
-            }
-        }
-#endif
-
     }
 }
 
