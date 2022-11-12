@@ -21,6 +21,7 @@ class ADOProjectSearch: Codable, Identifiable {
 class Project: Codable, Identifiable, Hashable {
     
     init() {
+        
         id = String()
         name = String()
         description = String()
@@ -29,6 +30,35 @@ class Project: Codable, Identifiable, Hashable {
         revision = 0
         visibility = String()
         lastUpdateTime = String()
+    }
+    
+    required init(from decoder: Decoder) throws {
+        
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        
+        do { self.id = try values.decode(String.self, forKey: .id)
+        } catch { self.id = String() }
+
+        do { self.name = try values.decode(String.self, forKey: .name)
+        } catch { self.name = String() }
+        
+        do { self.description = try values.decode(String.self, forKey: .description)
+        } catch { self.description = String() }
+
+        do { self.url = try values.decode(String.self, forKey: .url)
+        } catch { self.url = String() }
+        
+        do { self.state = try values.decode(String.self, forKey: .state)
+        } catch { self.state = String() }
+        
+        do { self.revision = try values.decode(Int.self, forKey: .state)
+        } catch { self.revision = Int() }
+        
+        do { self.visibility = try values.decode(String.self, forKey: .visibility)
+        } catch { self.visibility = String() }
+        
+        do { self.lastUpdateTime = try values.decode(String.self, forKey: .lastUpdateTime)
+        } catch { self.lastUpdateTime = String() }
     }
     
     // equatable

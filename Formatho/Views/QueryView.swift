@@ -36,7 +36,7 @@ struct QueryView: View {
                         
                         TextField("QUERY ID", text: $queryid)
                             .frame(alignment: .trailing)
-                            .frame(maxWidth: 125)
+                            .frame(maxWidth: 350)
                             .onSubmit {
                                 fetch()
                             }
