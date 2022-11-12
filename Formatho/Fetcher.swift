@@ -69,6 +69,8 @@ class Fetcher: ObservableObject {
         self.isLoading = true
         self.errorMessage = nil
         
+        self.projects.removeAll()
+        
         let prjBaseUrl: String = baseURL + org + "/_apis/projects"
         
         let url = NSURL(string: prjBaseUrl)! as URL
@@ -101,14 +103,14 @@ class Fetcher: ObservableObject {
         }
     }
     
-    func queries(org: String, pat: String, email: String) {
+    func queries(org: String, pat: String, email: String, project: String) {
         
         let header = buildHeader(pat: pat, email: email)
         
         self.isLoading = true
         errorMessage = nil
         
-        let prjBaseUrl: String = baseURL + org + "/SCOPE/_apis/wit/queries?$depth=2"
+        let prjBaseUrl: String = baseURL + org + "/" + project + "/_apis/wit/queries?$depth=2"
         
         let url = NSURL(string: prjBaseUrl)! as URL
         
@@ -124,7 +126,7 @@ class Fetcher: ObservableObject {
                     self.errorMessage = error.localizedDescription
                 case .success(let info):
                     print("Fetcher count: \(info.count)")
-                    self.projects = info.value
+                    self.projects = info.value // ** QUERIES SHOULD NOT BE STORED IN PROJECTS **
                 }
             }
         }
@@ -156,28 +158,28 @@ class Fetcher: ObservableObject {
                     self.activities = info.value
                     
                     for activity in self.activities {
-                        activity.html = "\(activity.activityType.capitalized) [SCOPE-\(String(format: "%d", activity.id))] \(activity.workItemType) \(activity.title): \(activity.state)"
+                        activity.html = "\(activity.activityType.capitalized) [\(String(format: "%d", activity.id))] \(activity.workItemType) \(activity.title): \(activity.state)"
                     }
                 }
             }
         }
     }
     
-    func wit(org: String, pat: String, email: String, witid: String) {
+    func wit(org: String, pat: String, email: String, witid: String, project: String) {
         
-        self.wits(org: org, pat: pat, email: email, ids: [witid])
+        self.wits(org: org, pat: pat, email: email, ids: [witid], project: project)
     }
     
-    func wits(org: String, pat: String, email: String, ids: [String]) {
+    func wits(org: String, pat: String, email: String, ids: [String], project: String) {
         
         let header = buildHeader(pat: pat, email: email)
         
         self.isLoading = true
         errorMessage = nil
         
-        let reqURL: String = baseURL + org + "/SCOPE/_workitems/edit/" //why is it necessary to put SCOPE ?
-        
         self.wits.removeAll()
+        
+        let reqURL: String = baseURL + org + "/" + project + "/_workitems/edit/" // removing reference to name
         
         // build id list limited to 200 wits
         let listSize: Int = 200
@@ -222,7 +224,7 @@ class Fetcher: ObservableObject {
                         self.wits += info.value
                         
                         for wit in self.wits {
-                            wit.html = "<b>P\(wit.fields.MicrosoftVSTSCommonPriority) \(wit.fields.SystemWorkItemType) \(wit.fields.SystemTitle)</b> <a href=\"\(reqURL)\(String(format: "%d", wit.id))\">[SCOPE-\(String(format: "%d", wit.id))]</a>: \(wit.fields.CustomReport)"
+                            wit.html = "<b>P\(wit.fields.MicrosoftVSTSCommonPriority) \(wit.fields.SystemWorkItemType) \(wit.fields.SystemTitle)</b> <a href=\"\(reqURL)\(String(format: "%d", wit.id))\">[\(project)-\(String(format: "%d", wit.id))]</a>: \(wit.fields.CustomReport)"
                         }
                         
                         if self.wits.count == 1 {
@@ -255,7 +257,7 @@ class Fetcher: ObservableObject {
         }
     }
     
-    func query(org: String, pat: String, email: String, queryid: String) {
+    func query(org: String, pat: String, email: String, queryid: String, project: String) {
         
         let header = buildHeader(pat: pat, email: email)
         
@@ -289,7 +291,7 @@ class Fetcher: ObservableObject {
                     
                     print(ids)
                     
-                    self.wits(org: org, pat: pat, email: email, ids: ids)
+                    self.wits(org: org, pat: pat, email: email, ids: ids, project: project)
                 }
             }
         }

@@ -12,13 +12,14 @@ struct QueryView: View {
     @AppStorage("organisation") private var organisation: String = String()
     @AppStorage("email") private var email: String = String()
     @AppStorage("pat") private var pat: String = String()
+    @AppStorage("project") private var project: String = String()
     
     @AppStorage("queryid") private var queryid: String = String() //214f0278-10d4-46ba-b841-ec28dc500aec
     
     @ObservedObject var fetcher: Fetcher
     
     func fetch() {
-        fetcher.query(org: organisation, pat: pat, email: email, queryid: queryid)
+        fetcher.query(org: organisation, pat: pat, email: email, queryid: queryid, project: project)
     }
     
     var body: some View {

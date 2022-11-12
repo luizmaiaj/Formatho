@@ -86,13 +86,13 @@ struct ContentView: View {
                             .tag(Tab.graph)
                     }
                     
-                    TreeView()
+                    /*TreeView()
                         .tabItem {
                             Text("Tree")
                         }
                         .tag(Tab.tree)
                     
-                    /*DiagramSimple(tree: tree, node: { value in
+                    DiagramSimple(tree: tree, node: { value in
                      Text("\(value.value)")
                      .modifier(RoundedCircleStyle())
                      })

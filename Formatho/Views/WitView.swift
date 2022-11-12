@@ -14,13 +14,14 @@ struct WitView: View {
     @AppStorage("organisation") private var organisation: String = String()
     @AppStorage("email") private var email: String = String()
     @AppStorage("pat") private var pat: String = String()
+    @AppStorage("project") private var project: String = String()
     
     @ObservedObject var fetcher: Fetcher
     
     @State var witid: String = String()
     
     func fetch() {
-        fetcher.wit(org: organisation, pat: pat, email: email, witid: witid)
+        fetcher.wit(org: organisation, pat: pat, email: email, witid: witid, project: project)
     }
     
     var body: some View {
