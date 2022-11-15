@@ -16,12 +16,13 @@ struct QueryView: View {
     
     @AppStorage("queryid") private var queryid: String = String() //214f0278-10d4-46ba-b841-ec28dc500aec
     
-    @AppStorage("saveToClip") private var saveToClip: Bool = false
+    @AppStorage("copyToCB") private var copyToCB: Bool = false
+    @AppStorage("addReport") private var addReport: Bool = false
     
     @ObservedObject var fetcher: Fetcher
     
     func fetch() {
-        fetcher.query(org: organisation, pat: pat, email: email, queryid: queryid, project: project, cb: saveToClip)
+        fetcher.query(org: organisation, pat: pat, email: email, queryid: queryid, project: project, cb: copyToCB, addReport: addReport)
     }
     
     var body: some View {
@@ -57,7 +58,11 @@ struct QueryView: View {
                         Form {
                             VStack {
                                 
-                                Toggle("save to clipboard", isOn: $saveToClip)
+                                HStack {
+                                    Toggle("copy to clipboard", isOn: $copyToCB)
+                                    
+                                    Toggle("add report", isOn: $addReport)
+                                }
                                 
                                 HStack {
                                     

@@ -173,7 +173,7 @@ class Fetcher: ObservableObject {
         self.wits(org: org, pat: pat, email: email, ids: [witid], project: project)
     }
     
-    func wits(org: String, pat: String, email: String, ids: [String], project: String, cb: Bool = false) {
+    func wits(org: String, pat: String, email: String, ids: [String], project: String, cb: Bool = false, addReport: Bool = true) {
         
         let header = buildHeader(pat: pat, email: email)
         var report: String = String()
@@ -228,7 +228,18 @@ class Fetcher: ObservableObject {
                         self.wits += info.value
                         
                         for wit in self.wits {
-                            wit.html = "<b>P\(wit.fields.MicrosoftVSTSCommonPriority) \(wit.fields.SystemWorkItemType) \(wit.fields.SystemTitle)</b> <a href=\"\(reqURL)\(String(format: "%d", wit.id))\">[\(project)-\(String(format: "%d", wit.id))]</a>: \(wit.fields.CustomReport)"
+                            
+                            wit.html = "<b>P\(wit.fields.MicrosoftVSTSCommonPriority) \(wit.fields.SystemWorkItemType) \(wit.fields.SystemTitle)</b> <a href=\"\(reqURL)\(String(format: "%d", wit.id))\">[\(project)-\(String(format: "%d", wit.id))]</a>"
+                            
+                            //add report field information if necessary
+                            if addReport {
+                                
+                                wit.html +=  ": \(wit.fields.CustomReport)"
+                                
+                            } else {
+                                
+                                wit.html +=  "<br>" // add line break if report is not added
+                            }
                             
                             report += wit.html
                         }
@@ -271,7 +282,7 @@ class Fetcher: ObservableObject {
     }
     
     // use a query id to get the list of wit ids and then use the wits fectcher function to get information for each wit
-    func query(org: String, pat: String, email: String, queryid: String, project: String, cb: Bool) {
+    func query(org: String, pat: String, email: String, queryid: String, project: String, cb: Bool, addReport: Bool) {
         
         let header = buildHeader(pat: pat, email: email)
         
@@ -306,7 +317,7 @@ class Fetcher: ObservableObject {
                     if DEBUG_INFO { print(ids) }
                     
                     // call wits function to get information about the wits
-                    self.wits(org: org, pat: pat, email: email, ids: ids, project: project, cb: cb)
+                    self.wits(org: org, pat: pat, email: email, ids: ids, project: project, cb: cb, addReport: addReport)
                 }
             }
         }
