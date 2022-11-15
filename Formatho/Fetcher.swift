@@ -22,7 +22,7 @@ class Fetcher: ObservableObject {
     
     @Published var wit: Wit = Wit()
     @Published var activities: [Activity] = [Activity]()
-    @Published var query: ADOQuerySearch = ADOQuerySearch()
+    @Published var query: Query = Query()
     
     @Published var isLoading: Bool = false
     @Published var errorMessage: String? = nil
@@ -75,7 +75,7 @@ class Fetcher: ObservableObject {
         
         let url = NSURL(string: prjBaseUrl)! as URL
         
-        self.service.fetch(ADOProjectSearch.self, url: url, headers: header) { [unowned self] result in
+        self.service.fetch(Projects.self, url: url, headers: header) { [unowned self] result in
             
             DispatchQueue.main.async {
                 
@@ -114,7 +114,7 @@ class Fetcher: ObservableObject {
         
         let url = NSURL(string: prjBaseUrl)! as URL
         
-        self.service.fetch(ADOProjectSearch.self, url: url, headers: header) { [unowned self] result in
+        self.service.fetch(Projects.self, url: url, headers: header) { [unowned self] result in
             
             DispatchQueue.main.async {
                 
@@ -143,7 +143,7 @@ class Fetcher: ObservableObject {
         
         let url = NSURL(string: prjBaseUrl)! as URL
         
-        self.service.fetch(RecentActivity.self, url: url, headers: header) { [unowned self] result in
+        self.service.fetch(Activities.self, url: url, headers: header) { [unowned self] result in
             
             DispatchQueue.main.async {
                 
@@ -209,7 +209,7 @@ class Fetcher: ObservableObject {
             
             let url = NSURL(string: witBaseUrl)! as URL
             
-            self.service.fetch(ADOWitSearch.self, url: url, headers: header) { [unowned self] result in
+            self.service.fetch(Wits.self, url: url, headers: header) { [unowned self] result in
                 
                 DispatchQueue.main.async {
                     
@@ -269,7 +269,7 @@ class Fetcher: ObservableObject {
         
         let url = NSURL(string: prjBaseUrl)! as URL
         
-        self.service.fetch(ADOQuerySearch.self, url: url, headers: header) { [unowned self] result in
+        self.service.fetch(Query.self, url: url, headers: header) { [unowned self] result in
             
             DispatchQueue.main.async {
                 

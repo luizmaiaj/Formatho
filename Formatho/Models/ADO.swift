@@ -7,7 +7,7 @@
 
 import Foundation
 
-class ADOProjectSearch: Codable, Identifiable {
+class Projects: Codable, Identifiable {
     
     init() {
         self.value = [Project]()
@@ -81,7 +81,7 @@ class Project: Codable, Identifiable, Hashable {
     let lastUpdateTime: String
 }
 
-class RecentActivity: Codable, Identifiable {
+class Activities: Codable, Identifiable {
     
     init() {
         self.value = [Activity]()
@@ -169,7 +169,7 @@ class Activity: Codable, Identifiable, Hashable {
     var html: String
 }
 
-class ADOWitSearch:Codable, Identifiable {
+class Wits: Codable, Identifiable {
     
     init() {
         self.value = [Wit]()
@@ -400,7 +400,7 @@ class Attributes: Codable, Identifiable {
     let name: String
 }
 
-class ADOQuerySearch: Codable, Identifiable, Hashable {
+class Query: Codable, Identifiable, Hashable {
     
     init() {
         queryType = String()
@@ -431,7 +431,7 @@ class ADOQuerySearch: Codable, Identifiable, Hashable {
     }
 
     // equatable
-    static func == (lhs: ADOQuerySearch, rhs: ADOQuerySearch) -> Bool {
+    static func == (lhs: Query, rhs: Query) -> Bool {
         return lhs.asOf == rhs.asOf
     }
     
