@@ -257,6 +257,7 @@ class Fetcher: ObservableObject {
         }
     }
     
+    // use a query id to get the list of wit ids and then use the wits fectcher function to get information for each wit
     func query(org: String, pat: String, email: String, queryid: String, project: String) {
         
         let header = buildHeader(pat: pat, email: email)
@@ -289,14 +290,16 @@ class Fetcher: ObservableObject {
                         ids.append(String(format: "%d", workItem.id))
                     }
                     
-                    print(ids)
+                    if DEBUG_INFO { print(ids) }
                     
+                    // call wits function to get information about the wits
                     self.wits(org: org, pat: pat, email: email, ids: ids, project: project)
                 }
             }
         }
     }
     
+    // queries for all the links contained in one wit
     func links(org: String, pat: String, email: String, witid: String) {
         
         let header = buildHeader(pat: pat, email: email)

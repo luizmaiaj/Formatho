@@ -68,6 +68,9 @@ struct QueryView: View {
                 Text(self.fetcher.errorMessage ?? "")
             }
         }
+        .onAppear(){
+            self.fetcher.queries(org: organisation, pat: pat, email: email, project: project)
+        }
     }
 }
 

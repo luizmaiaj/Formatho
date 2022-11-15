@@ -206,13 +206,13 @@ class Wit: Codable, Identifiable, Hashable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
         do { self.id = try values.decode(Int.self, forKey: .id)
-        } catch { self.id = 0 }
+        } catch { self.id = Int() }
         
         do { self.fields = try values.decode(Fields.self, forKey: .fields)
         } catch { self.fields = Fields() }
         
         do { self.url = try values.decode(String.self, forKey: .url)
-        } catch { self.url = "" }
+        } catch { self.url = String() }
         
         self.html = String() // to be filled later
         
@@ -258,37 +258,37 @@ class Fields: Codable, Identifiable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
         do { self.SystemAreaPath = try values.decode(String.self, forKey: .SystemAreaPath)
-        } catch { self.SystemAreaPath = "" }
+        } catch { self.SystemAreaPath = String() }
         
         do { self.SystemTeamProject = try values.decode(String.self, forKey: .SystemTeamProject)
-        } catch { self.SystemTeamProject = "" }
+        } catch { self.SystemTeamProject = String() }
         
         do { self.SystemIterationPath = try values.decode(String.self, forKey: .SystemIterationPath)
-        } catch { self.SystemIterationPath = "" }
+        } catch { self.SystemIterationPath = String() }
         
         do { self.SystemWorkItemType = try values.decode(String.self, forKey: .SystemWorkItemType)
-        } catch { self.SystemWorkItemType = "" }
+        } catch { self.SystemWorkItemType = String() }
         
         do { self.SystemState = try values.decode(String.self, forKey: .SystemState)
-        } catch { self.SystemState = "" }
+        } catch { self.SystemState = String() }
         
         do { self.SystemReason = try values.decode(String.self, forKey: .SystemReason)
-        } catch { self.SystemReason = "" }
+        } catch { self.SystemReason = String() }
         
         do { self.SystemCreatedDate = try values.decode(String.self, forKey: .SystemCreatedDate)
-        } catch { self.SystemCreatedDate = "" }
+        } catch { self.SystemCreatedDate = String() }
         
         do { self.SystemChangedDate = try values.decode(String.self, forKey: .SystemChangedDate)
-        } catch { self.SystemChangedDate = "" }
+        } catch { self.SystemChangedDate = String() }
         
         do { self.SystemTitle = try values.decode(String.self, forKey: .SystemTitle)
-        } catch { self.SystemTitle = "" }
+        } catch { self.SystemTitle = String() }
         
         do { self.SystemDescription = try values.decode(String.self, forKey: .SystemDescription)
-        } catch { self.SystemDescription = "" }
+        } catch { self.SystemDescription = String() }
         
         do { self.MicrosoftVSTSCommonPriority = try values.decode(Int.self, forKey: .MicrosoftVSTSCommonPriority)
-        } catch { self.MicrosoftVSTSCommonPriority = 0 }
+        } catch { self.MicrosoftVSTSCommonPriority = Int() }
         
         // trimming added to remove leading and trailing white spaces and new lines
         
@@ -351,10 +351,10 @@ class Relations: Codable, Identifiable, Hashable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
         do { self.rel = try values.decode(String.self, forKey: .rel)
-        } catch { self.rel = "" }
+        } catch { self.rel = String() }
         
         do { self.url = try values.decode(String.self, forKey: .url)
-        } catch { self.url = "" }
+        } catch { self.url = String() }
         
         do { self.attributes = try values.decode(Attributes.self, forKey: .attributes)
         } catch { self.attributes = Attributes() }
@@ -389,10 +389,10 @@ class Attributes: Codable, Identifiable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
         do { self.isLocked = try values.decode(Bool.self, forKey: .isLocked)
-        } catch { self.isLocked = false }
+        } catch { self.isLocked = Bool() }
         
         do { self.name = try values.decode(String.self, forKey: .name)
-        } catch { self.name = "" }
+        } catch { self.name = String() }
         
     }
     
@@ -415,13 +415,13 @@ class ADOQuerySearch: Codable, Identifiable, Hashable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
 
         do { self.queryType = try values.decode(String.self, forKey: .queryType)
-        } catch { self.queryType = "" }
+        } catch { self.queryType = String() }
 
         do { self.queryResultType = try values.decode(String.self, forKey: .queryResultType)
-        } catch { self.queryResultType = "" }
+        } catch { self.queryResultType = String() }
 
         do { self.asOf = try values.decode(String.self, forKey: .asOf)
-        } catch { self.asOf = "" }
+        } catch { self.asOf = String() }
         
         do { self.columns = try values.decode([Column].self, forKey: .columns)
         } catch { self.columns = [Column]() }
@@ -460,13 +460,13 @@ class Column: Codable, Identifiable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
         do { self.referenceName = try values.decode(String.self, forKey: .referenceName)
-        } catch { self.referenceName = "" }
+        } catch { self.referenceName = String() }
         
         do { self.name = try values.decode(String.self, forKey: .name)
-        } catch { self.name = "" }
+        } catch { self.name = String() }
         
         do { self.url = try values.decode(String.self, forKey: .url)
-        } catch { self.url = "" }
+        } catch { self.url = String() }
     }
     
     let referenceName: String
@@ -486,10 +486,10 @@ class WorkItem: Codable, Identifiable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
         do { self.id = try values.decode(Int.self, forKey: .id)
-        } catch { self.id = 0 }
+        } catch { self.id = Int() }
         
         do { self.url = try values.decode(String.self, forKey: .url)
-        } catch { self.url = "" }
+        } catch { self.url = String() }
     }
     
     let id: Int
