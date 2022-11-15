@@ -173,9 +173,10 @@ class Fetcher: ObservableObject {
         self.wits(org: org, pat: pat, email: email, ids: [witid], project: project)
     }
     
-    func wits(org: String, pat: String, email: String, ids: [String], project: String) {
+    func wits(org: String, pat: String, email: String, ids: [String], project: String, cb: Bool = false) {
         
         let header = buildHeader(pat: pat, email: email)
+        var report: String = String()
         
         self.isLoading = true
         errorMessage = nil
@@ -228,15 +229,22 @@ class Fetcher: ObservableObject {
                         
                         for wit in self.wits {
                             wit.html = "<b>P\(wit.fields.MicrosoftVSTSCommonPriority) \(wit.fields.SystemWorkItemType) \(wit.fields.SystemTitle)</b> <a href=\"\(reqURL)\(String(format: "%d", wit.id))\">[\(project)-\(String(format: "%d", wit.id))]</a>: \(wit.fields.CustomReport)"
+                            
+                            report += wit.html
                         }
                         
-                        if self.wits.count == 1 {
+                        // if query was for only one item
+                        if self.wits.count == 1 || cb {
                             
                             self.wit = self.wits[0]
                             
-                            print(self.wit.html)
+                            if self.wits.count == 1 {
+                                report = self.wit.html
+                            }
                             
-                            if let data = self.wit.html.data(using: .unicode),
+                            if DEBUG_INFO { print(report) }
+                            
+                            if let data = report.data(using: .unicode),
                                let nsAttrString = try? NSAttributedString(data: data,
                                                                           options: [.documentType: NSAttributedString.DocumentType.html],
                                                                           documentAttributes: nil) {
@@ -263,7 +271,7 @@ class Fetcher: ObservableObject {
     }
     
     // use a query id to get the list of wit ids and then use the wits fectcher function to get information for each wit
-    func query(org: String, pat: String, email: String, queryid: String, project: String) {
+    func query(org: String, pat: String, email: String, queryid: String, project: String, cb: Bool) {
         
         let header = buildHeader(pat: pat, email: email)
         
@@ -298,7 +306,7 @@ class Fetcher: ObservableObject {
                     if DEBUG_INFO { print(ids) }
                     
                     // call wits function to get information about the wits
-                    self.wits(org: org, pat: pat, email: email, ids: ids, project: project)
+                    self.wits(org: org, pat: pat, email: email, ids: ids, project: project, cb: cb)
                 }
             }
         }

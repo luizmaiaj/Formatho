@@ -14,13 +14,14 @@ struct QueryView: View {
     @AppStorage("pat") private var pat: String = String()
     @AppStorage("project") private var project: String = String()
     
-    @AppStorage("query") private var query: String = String()
     @AppStorage("queryid") private var queryid: String = String() //214f0278-10d4-46ba-b841-ec28dc500aec
+    
+    @AppStorage("saveToClip") private var saveToClip: Bool = false
     
     @ObservedObject var fetcher: Fetcher
     
     func fetch() {
-        fetcher.query(org: organisation, pat: pat, email: email, queryid: queryid, project: project)
+        fetcher.query(org: organisation, pat: pat, email: email, queryid: queryid, project: project, cb: saveToClip)
     }
     
     var body: some View {
@@ -54,18 +55,23 @@ struct QueryView: View {
                     
                     VStack {
                         Form {
-                            HStack {
+                            VStack {
                                 
-                                TextField("QUERY ID", text: $queryid)
-                                    .frame(alignment: .trailing)
-                                    .frame(maxWidth: 350)
-                                    .onSubmit {
+                                Toggle("save to clipboard", isOn: $saveToClip)
+                                
+                                HStack {
+                                    
+                                    TextField("QUERY ID", text: $queryid)
+                                        .frame(alignment: .trailing)
+                                        .frame(maxWidth: 350)
+                                        .onSubmit {
+                                            fetch()
+                                        }
+                                    
+                                    Button("Query", action: {
                                         fetch()
-                                    }
-                                
-                                Button("Query", action: {
-                                    fetch()
-                                })
+                                    })
+                                }
                             }
                         }
                         
