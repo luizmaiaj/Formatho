@@ -34,7 +34,7 @@ struct QueryView: View {
                 
                 HStack {
                     
-                    ScrollView {
+                    List {
                         OutlineGroup(fetcher.queries, children: \.children) { item in
                             
                             if !item.isFolder {

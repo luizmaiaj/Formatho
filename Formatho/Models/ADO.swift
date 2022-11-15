@@ -517,7 +517,7 @@ class QueryNode: Codable, Identifiable, Hashable, CustomStringConvertible {
         lastModifiedDate = String()
         isFolder = Bool()
         hasChildren = Bool()
-        children = [QueryNode]()
+        children = nil
         queryType = String()
         isPublic = Bool()
         lastExecutedDate = String()
@@ -553,7 +553,7 @@ class QueryNode: Codable, Identifiable, Hashable, CustomStringConvertible {
         } catch { self.hasChildren = Bool() }
         
         do { self.children = try values.decode([QueryNode].self, forKey: .children)
-        } catch { self.children = [QueryNode]() }
+        } catch { self.children = nil }
         
         do { self.queryType = try values.decode(String.self, forKey: .queryType)
         } catch { self.queryType = String() }
