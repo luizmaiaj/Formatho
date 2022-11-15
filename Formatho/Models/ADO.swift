@@ -495,3 +495,158 @@ class WorkItem: Codable, Identifiable {
     let id: Int
     let url: String
 }
+
+class Queries: Codable, Identifiable {
+    
+    init() {
+        self.value = [QueryNode]()
+        self.count = 0
+    }
+    
+    let value: [QueryNode]
+    let count: Int
+}
+
+class QueryNode: Codable, Identifiable, Hashable {
+    
+    init() {
+        id = String()
+        name = String()
+        path = String()
+        createdDate = String()
+        lastModifiedDate = String()
+        isFolder = Bool()
+        hasChildren = Bool()
+        children = [QueryNode]()
+        queryType = String()
+        isPublic = Bool()
+        lastExecutedDate = String()
+        _links = Links()
+        url = String()
+    }
+    
+    required init(from decoder: Decoder) throws {
+        
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+
+        do { self.id = try values.decode(String.self, forKey: .id)
+        } catch { self.id = String() }
+
+        do { self.name = try values.decode(String.self, forKey: .name)
+        } catch { self.name = String() }
+
+        do { self.path = try values.decode(String.self, forKey: .path)
+        } catch { self.path = String() }
+
+        do { self.createdDate = try values.decode(String.self, forKey: .createdDate)
+        } catch { self.createdDate = String() }
+
+        do { self.lastModifiedDate = try values.decode(String.self, forKey: .lastModifiedDate)
+        } catch { self.lastModifiedDate = String() }
+
+        do { self.isFolder = try values.decode(Bool.self, forKey: .isFolder)
+        } catch { self.isFolder = Bool() }
+
+        do { self.hasChildren = try values.decode(Bool.self, forKey: .id)
+        } catch { self.hasChildren = Bool() }
+
+        do { self.children = try values.decode([QueryNode].self, forKey: .children)
+        } catch { self.children = [QueryNode]() }
+
+        do { self.queryType = try values.decode(String.self, forKey: .queryType)
+        } catch { self.queryType = String() }
+
+        do { self.isPublic = try values.decode(Bool.self, forKey: .isPublic)
+        } catch { self.isPublic = Bool() }
+
+        do { self.lastExecutedDate = try values.decode(String.self, forKey: .lastExecutedDate)
+        } catch { self.lastExecutedDate = String() }
+
+        do { self._links = try values.decode(Links.self, forKey: ._links)
+        } catch { self._links = Links() }
+
+        do { self.url = try values.decode(String.self, forKey: .url)
+        } catch { self.url = String() }
+    }
+
+    // equatable
+    static func == (lhs: QueryNode, rhs: QueryNode) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    // hashable
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+
+    let id: String
+    let name: String
+    let path: String
+    let createdDate: String
+    let lastModifiedDate: String
+    let isFolder: Bool
+    let hasChildren: Bool
+    let children: [QueryNode]
+    let queryType: String
+    let isPublic: Bool
+    let lastExecutedDate: String
+    let _links: Links
+    let url: String
+}
+
+class Link: Codable {
+    
+    init() {
+        href = String()
+    }
+    
+    required init(from decoder: Decoder) throws {
+        
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+
+        do { self.href = try values.decode(String.self, forKey: .href)
+        } catch { self.href = String() }
+
+    }
+
+    let href: String
+}
+
+class Links: Codable {
+    
+    init() {
+        lSelf = Link()
+        html = Link()
+        parent = Link()
+        wiql = Link()
+    }
+    
+    required init(from decoder: Decoder) throws {
+        
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+
+        do { self.lSelf = try values.decode(Link.self, forKey: .lSelf)
+        } catch { self.lSelf = Link() }
+
+        do { self.html = try values.decode(Link.self, forKey: .html)
+        } catch { self.html = Link() }
+
+        do { self.parent = try values.decode(Link.self, forKey: .parent)
+        } catch { self.parent = Link() }
+
+        do { self.wiql = try values.decode(Link.self, forKey: .wiql)
+        } catch { self.wiql = Link() }
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case lSelf = "self"
+        case html = "html"
+        case parent = "parent"
+        case wiql = "wiql"
+    }
+
+    let lSelf: Link
+    let html: Link
+    let parent: Link
+    let wiql: Link
+}

@@ -23,6 +23,7 @@ class Fetcher: ObservableObject {
     @Published var wit: Wit = Wit()
     @Published var activities: [Activity] = [Activity]()
     @Published var query: Query = Query()
+    @Published var queries: [QueryNode] = [QueryNode]()
     
     @Published var isLoading: Bool = false
     @Published var errorMessage: String? = nil
@@ -114,7 +115,7 @@ class Fetcher: ObservableObject {
         
         let url = NSURL(string: prjBaseUrl)! as URL
         
-        self.service.fetch(Projects.self, url: url, headers: header) { [unowned self] result in
+        self.service.fetch(Queries.self, url: url, headers: header) { [unowned self] result in
             
             DispatchQueue.main.async {
                 
@@ -126,7 +127,7 @@ class Fetcher: ObservableObject {
                     self.errorMessage = error.localizedDescription
                 case .success(let info):
                     print("Fetcher count: \(info.count)")
-                    self.projects = info.value // ** QUERIES SHOULD NOT BE STORED IN PROJECTS **
+                    self.queries = info.value
                 }
             }
         }
