@@ -37,11 +37,20 @@ struct QueryView: View {
                     ScrollView {
                         OutlineGroup(fetcher.queries, children: \.children) { item in
                             
-                            Text("\(item.description)")
+                            if !item.isFolder {
+                                
+                                Button("\(item.description)", action: {
+                                    queryid = item.id
+                                    
+                                    fetch()
+                                })
+                                
+                            } else {
+                                Text("\(item.description)")
+                            }
                         }
                     }
                     .padding()
-                    
                     
                     VStack {
                         Form {
