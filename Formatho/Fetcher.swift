@@ -10,6 +10,8 @@ import UniformTypeIdentifiers
 
 #if os(OSX)
 import AppKit // for clipboard access
+#else
+import MobileCoreServices
 #endif
 
 class Fetcher: ObservableObject {
@@ -241,14 +243,16 @@ class Fetcher: ObservableObject {
                                 
                                 self.formattedWIT = AttributedString(nsAttrString) // string to be displayed in Text()
                                 
-#if !os(iOS)
+#if os(OSX)
                                 self.pboard.clearContents()
                                 
                                 self.pboard.writeObjects(NSArray(object: nsAttrString) as! [NSPasteboardWriting])
 #else
                                 
                                 //UIPasteboard.general.string = NSArray(object: nsAttrString)
-                                UIPasteboard.general.setValue(nsAttrString, forPasteboardType: UTType.rtf)
+                                //UIPasteboard.general.setValue(nsAttrString, forPasteboardType: UTType.rtf as String)
+                                UIPasteboard.general.setValue(NSArray(object: nsAttrString), forPasteboardType: "public.rtf")
+                                //UIPasteboard.setData(NSArray(object: nsAttrString) as Data, forPasteboardType: kUTTypeRTF as String)
 #endif
                             }
                         }
