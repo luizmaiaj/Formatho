@@ -14,6 +14,7 @@ struct QueryView: View {
     @AppStorage("pat") private var pat: String = String()
     @AppStorage("project") private var project: String = String()
     
+    @AppStorage("query") private var query: String = String()
     @AppStorage("queryid") private var queryid: String = String() //214f0278-10d4-46ba-b841-ec28dc500aec
     
     @ObservedObject var fetcher: Fetcher
@@ -31,38 +32,53 @@ struct QueryView: View {
                 
             } else {
                 
-                Form {
-                    HStack {
-                        
-                        TextField("QUERY ID", text: $queryid)
-                            .frame(alignment: .trailing)
-                            .frame(maxWidth: 350)
-                            .onSubmit {
-                                fetch()
-                            }
-                        
-                        Button("Query", action: {
-                            fetch()
-                        })
-                    }
-                }
-                
-                if !fetcher.wits.isEmpty {
+                HStack {
                     
-                    Table(fetcher.wits) {
-                        TableColumn("Priority") { wit in
-                            Text("P" + String(format: "%d", wit.fields.MicrosoftVSTSCommonPriority))
-                        }
-                        TableColumn("Type", value: \.fields.SystemWorkItemType)
-                        TableColumn("Title", value: \.fields.SystemTitle)
-                        TableColumn("id") { wit in
-                            Text(String(format: "%d", wit.id)) // removing reference
-                        }
-                        TableColumn("Report") { wit in
-                            Text(wit.fields.CustomReport.toRTF())
+                    ScrollView {
+                        OutlineGroup(fetcher.queries, children: \.children) { item in
+                            
+                            Text("\(item.description)")
                         }
                     }
-                    .frame(minHeight: 30)
+                    .padding()
+                    
+                    
+                    VStack {
+                        Form {
+                            HStack {
+                                
+                                TextField("QUERY ID", text: $queryid)
+                                    .frame(alignment: .trailing)
+                                    .frame(maxWidth: 350)
+                                    .onSubmit {
+                                        fetch()
+                                    }
+                                
+                                Button("Query", action: {
+                                    fetch()
+                                })
+                            }
+                        }
+                        
+                        if !fetcher.wits.isEmpty {
+                            
+                            Table(fetcher.wits) {
+                                TableColumn("Priority") { wit in
+                                    Text("P" + String(format: "%d", wit.fields.MicrosoftVSTSCommonPriority))
+                                }
+                                TableColumn("Type", value: \.fields.SystemWorkItemType)
+                                TableColumn("Title", value: \.fields.SystemTitle)
+                                TableColumn("id") { wit in
+                                    Text(String(format: "%d", wit.id)) // removing reference
+                                }
+                                TableColumn("Report") { wit in
+                                    Text(wit.fields.CustomReport.toRTF())
+                                }
+                            }
+                            .frame(minHeight: 30)
+                        }
+                    }
+                    .padding()
                 }
                 
                 Text(self.fetcher.errorMessage ?? "")

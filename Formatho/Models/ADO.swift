@@ -38,13 +38,13 @@ class Project: Codable, Identifiable, Hashable {
         
         do { self.id = try values.decode(String.self, forKey: .id)
         } catch { self.id = String() }
-
+        
         do { self.name = try values.decode(String.self, forKey: .name)
         } catch { self.name = String() }
         
         do { self.description = try values.decode(String.self, forKey: .description)
         } catch { self.description = String() }
-
+        
         do { self.url = try values.decode(String.self, forKey: .url)
         } catch { self.url = String() }
         
@@ -65,7 +65,7 @@ class Project: Codable, Identifiable, Hashable {
     static func == (lhs: Project, rhs: Project) -> Bool {
         return lhs.id == rhs.id
     }
-
+    
     // hashable
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
@@ -152,7 +152,7 @@ class Activity: Codable, Identifiable, Hashable {
     static func == (lhs: Activity, rhs: Activity) -> Bool {
         return lhs.id == rhs.id
     }
-
+    
     // hashable
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
@@ -192,7 +192,7 @@ class Wits: Codable, Identifiable {
 }
 
 class Wit: Codable, Identifiable, Hashable {
-
+    
     init() {
         id = Int()
         fields = Fields()
@@ -219,7 +219,7 @@ class Wit: Codable, Identifiable, Hashable {
         do { self.relations = try values.decode([Relations].self, forKey: .relations)
         } catch { self.relations = [Relations]() }
     }
-
+    
     // equatable
     static func == (lhs: Wit, rhs: Wit) -> Bool {
         return lhs.id == rhs.id
@@ -360,7 +360,7 @@ class Relations: Codable, Identifiable, Hashable {
         } catch { self.attributes = Attributes() }
         
     }
-  
+    
     // equatable
     static func == (lhs: Relations, rhs: Relations) -> Bool {
         return lhs.id == rhs.id
@@ -370,7 +370,7 @@ class Relations: Codable, Identifiable, Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
-
+    
     let id = UUID()
     let rel: String
     let url: String
@@ -413,13 +413,13 @@ class Query: Codable, Identifiable, Hashable {
     required init(from decoder: Decoder) throws {
         
         let values = try decoder.container(keyedBy: CodingKeys.self)
-
+        
         do { self.queryType = try values.decode(String.self, forKey: .queryType)
         } catch { self.queryType = String() }
-
+        
         do { self.queryResultType = try values.decode(String.self, forKey: .queryResultType)
         } catch { self.queryResultType = String() }
-
+        
         do { self.asOf = try values.decode(String.self, forKey: .asOf)
         } catch { self.asOf = String() }
         
@@ -429,7 +429,7 @@ class Query: Codable, Identifiable, Hashable {
         do { self.workItems = try values.decode([WorkItem].self, forKey: .workItems)
         } catch { self.workItems = [WorkItem]() }
     }
-
+    
     // equatable
     static func == (lhs: Query, rhs: Query) -> Bool {
         return lhs.asOf == rhs.asOf
@@ -439,7 +439,7 @@ class Query: Codable, Identifiable, Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
-
+    
     let queryType: String
     let queryResultType: String
     let asOf: String
@@ -507,7 +507,7 @@ class Queries: Codable, Identifiable {
     let count: Int
 }
 
-class QueryNode: Codable, Identifiable, Hashable {
+class QueryNode: Codable, Identifiable, Hashable, CustomStringConvertible {
     
     init() {
         id = String()
@@ -523,52 +523,56 @@ class QueryNode: Codable, Identifiable, Hashable {
         lastExecutedDate = String()
         _links = Links()
         url = String()
+        
+        description = isFolder ? "📂 \(name)" : "📄 \(name)"
     }
     
     required init(from decoder: Decoder) throws {
         
         let values = try decoder.container(keyedBy: CodingKeys.self)
-
+        
         do { self.id = try values.decode(String.self, forKey: .id)
         } catch { self.id = String() }
-
+        
         do { self.name = try values.decode(String.self, forKey: .name)
         } catch { self.name = String() }
-
+        
         do { self.path = try values.decode(String.self, forKey: .path)
         } catch { self.path = String() }
-
+        
         do { self.createdDate = try values.decode(String.self, forKey: .createdDate)
         } catch { self.createdDate = String() }
-
+        
         do { self.lastModifiedDate = try values.decode(String.self, forKey: .lastModifiedDate)
         } catch { self.lastModifiedDate = String() }
-
+        
         do { self.isFolder = try values.decode(Bool.self, forKey: .isFolder)
         } catch { self.isFolder = Bool() }
-
+        
         do { self.hasChildren = try values.decode(Bool.self, forKey: .id)
         } catch { self.hasChildren = Bool() }
-
+        
         do { self.children = try values.decode([QueryNode].self, forKey: .children)
         } catch { self.children = [QueryNode]() }
-
+        
         do { self.queryType = try values.decode(String.self, forKey: .queryType)
         } catch { self.queryType = String() }
-
+        
         do { self.isPublic = try values.decode(Bool.self, forKey: .isPublic)
         } catch { self.isPublic = Bool() }
-
+        
         do { self.lastExecutedDate = try values.decode(String.self, forKey: .lastExecutedDate)
         } catch { self.lastExecutedDate = String() }
-
+        
         do { self._links = try values.decode(Links.self, forKey: ._links)
         } catch { self._links = Links() }
-
+        
         do { self.url = try values.decode(String.self, forKey: .url)
         } catch { self.url = String() }
+        
+        description = isFolder ? "📂 \(name)" : "📄 \(name)"
     }
-
+    
     // equatable
     static func == (lhs: QueryNode, rhs: QueryNode) -> Bool {
         return lhs.id == rhs.id
@@ -578,7 +582,7 @@ class QueryNode: Codable, Identifiable, Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
-
+    
     let id: String
     let name: String
     let path: String
@@ -586,12 +590,13 @@ class QueryNode: Codable, Identifiable, Hashable {
     let lastModifiedDate: String
     let isFolder: Bool
     let hasChildren: Bool
-    let children: [QueryNode]
+    let children: [QueryNode]?
     let queryType: String
     let isPublic: Bool
     let lastExecutedDate: String
     let _links: Links
     let url: String
+    var description: String
 }
 
 class Link: Codable {
@@ -603,12 +608,12 @@ class Link: Codable {
     required init(from decoder: Decoder) throws {
         
         let values = try decoder.container(keyedBy: CodingKeys.self)
-
+        
         do { self.href = try values.decode(String.self, forKey: .href)
         } catch { self.href = String() }
-
+        
     }
-
+    
     let href: String
 }
 
@@ -624,16 +629,16 @@ class Links: Codable {
     required init(from decoder: Decoder) throws {
         
         let values = try decoder.container(keyedBy: CodingKeys.self)
-
+        
         do { self.lSelf = try values.decode(Link.self, forKey: .lSelf)
         } catch { self.lSelf = Link() }
-
+        
         do { self.html = try values.decode(Link.self, forKey: .html)
         } catch { self.html = Link() }
-
+        
         do { self.parent = try values.decode(Link.self, forKey: .parent)
         } catch { self.parent = Link() }
-
+        
         do { self.wiql = try values.decode(Link.self, forKey: .wiql)
         } catch { self.wiql = Link() }
     }
@@ -644,7 +649,7 @@ class Links: Codable {
         case parent = "parent"
         case wiql = "wiql"
     }
-
+    
     let lSelf: Link
     let html: Link
     let parent: Link
