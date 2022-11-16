@@ -175,8 +175,15 @@ class Fetcher: ObservableObject {
     
     func wits(org: String, pat: String, email: String, ids: [String], project: String, cb: Bool = false, addReport: Bool = true) {
         
+        if ids.isEmpty { // if no ids in the list then simply return *** add some error handling ? ***
+            
+            self.errorMessage = "No ids on query"
+            
+            return
+        }
+        
         let header = buildHeader(pat: pat, email: email)
-        var report: String = String()
+        var report: String = String("")
         
         self.isLoading = true
         errorMessage = nil
@@ -185,11 +192,10 @@ class Fetcher: ObservableObject {
         
         let reqURL: String = baseURL + org + "/" + project + "/_workitems/edit/" // removing reference to name
         
-        // build id list limited to 200 wits
-        let listSize: Int = 200
+        // build id list limited to ADO_LIST_LIMIT = 200 wits
         var iStart: Int = 0
-        var iEnd: Int = min(ids.count - 1, listSize - 1)
-        let batches: Int = Int(ceil(Double(ids.count / listSize)))
+        var iEnd: Int = max(min(ids.count - 1, ADO_LIST_LIMIT - 1), 0) // cannot be less than zero, protection for the for block inside the batch in case the id list count at the top does not filter this error out
+        let batches: Int = Int(ceil(Double(ids.count / ADO_LIST_LIMIT)))
         
         print(batches)
         
@@ -203,7 +209,7 @@ class Fetcher: ObservableObject {
             }
             
             iStart = iEnd + 1
-            iEnd = min(ids.count - 1, iEnd + listSize)
+            iEnd = min(ids.count - 1, iEnd + ADO_LIST_LIMIT)
             
             idList = idList.trimmingCharacters(in: [","])
             

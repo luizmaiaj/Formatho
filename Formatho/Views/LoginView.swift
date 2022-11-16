@@ -14,6 +14,8 @@ struct LoginView: View {
     @AppStorage("pat") private var pat: String = String()
     
     @AppStorage("project") private var project: String = String()
+    @AppStorage("queryid") private var queryid: String = String() // to use the reset AppStorage
+    
     @State private var connectionTested: Bool = false
     
     @ObservedObject var fetcher: Fetcher
@@ -69,6 +71,21 @@ struct LoginView: View {
                 }
             }
             
+#if DEBUG
+            if DEBUG_BUTTON {
+                Button("Reset AppStorage", action: {
+                    organisation = String("")
+                    email = String("")
+                    pat = String("")
+                    project = String("")
+                    queryid = String("")
+                    
+                    fetcher.projects.removeAll()
+                })
+                .padding()
+            }
+#endif
+            
             if DEBUG_INFO {
                 let _ = print(project)
             }
@@ -82,6 +99,7 @@ struct LoginView: View {
                     }
                 }
             } else {
+                
                 Text(self.fetcher.errorMessage ?? "")
             }
         }

@@ -14,7 +14,7 @@ struct QueryView: View {
     @AppStorage("pat") private var pat: String = String()
     @AppStorage("project") private var project: String = String()
     
-    @AppStorage("queryid") private var queryid: String = String() //214f0278-10d4-46ba-b841-ec28dc500aec
+    @AppStorage("queryid") private var queryid: String = String()
     
     @AppStorage("copyToCB") private var copyToCB: Bool = false
     @AppStorage("addReport") private var addReport: Bool = false
