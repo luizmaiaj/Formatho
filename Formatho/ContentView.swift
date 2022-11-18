@@ -29,8 +29,6 @@ struct ContentView: View {
     
     @State private var selection: Tab = Tab.wit
     
-    @State var tree: Tree<Unique<Int>> = binaryTree.map(Unique.init)
-    
     var body: some View {
         
         VStack {
@@ -86,20 +84,12 @@ struct ContentView: View {
                             .tag(Tab.graph)
                     }
                     
-                    /*TreeView()
+                    TreeView()
                         .tabItem {
                             Text("Tree")
                         }
                         .tag(Tab.tree)
                     
-                    DiagramSimple(tree: tree, node: { value in
-                     Text("\(value.value)")
-                     .modifier(RoundedCircleStyle())
-                     })
-                     .tabItem {
-                     Text("Diagram")
-                     }
-                     .tag(Tab.test)*/
 #else
                     WitTab(fetcher: fetcher)
                         .tabItem {

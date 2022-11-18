@@ -237,6 +237,46 @@ class Wit: Codable, Identifiable, Hashable {
     let relations: [Relations]
 }
 
+class WitNode: Wit, CustomStringConvertible {
+    
+    var description: String
+    var children: [WitNode]?
+    
+    override init() {
+        
+        self.description = ""
+        
+        self.children = nil
+        
+        super.init()
+    }
+    
+    required init(from decoder: Decoder) throws {
+        
+        self.description = ""
+        
+        self.children = nil
+        
+        try super.init(from: decoder)
+        
+        self.description = self.fields.SystemTitle
+        
+        if !relations.isEmpty {
+            
+            self.children = [WitNode]()
+            
+            for relation in relations {
+                
+                let child: WitNode = WitNode()
+                
+                child.description = "\(relation.rel)"
+                
+                self.children?.append(child)
+            }
+        }
+    }
+}
+
 class Fields: Codable, Identifiable {
     init() {
         self.SystemAreaPath = String()

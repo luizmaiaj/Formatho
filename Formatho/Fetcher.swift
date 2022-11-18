@@ -20,7 +20,7 @@ class Fetcher: ObservableObject {
     @Published var projectNames: [String] = [String]()
     
     @Published var wits: [Wit] = [Wit]()
-    @Published var fetchers: [Fetcher] = [Fetcher]()
+    @Published var nodes: [WitNode] = [WitNode]()
     
     @Published var wit: Wit = Wit()
     @Published var activities: [Activity] = [Activity]()
@@ -330,20 +330,20 @@ class Fetcher: ObservableObject {
     }
     
     // queries for all the links contained in one wit
-    func links(org: String, pat: String, email: String, witid: String) {
+    func links(org: String, pat: String, email: String, id: String) {
         
         let header = buildHeader(pat: pat, email: email)
         
         self.isLoading = true
         errorMessage = nil
         
-        self.wits.removeAll()
+        self.nodes.removeAll()
         
-        let witBaseUrl: String = baseURL + org + "/_apis/wit/workitems/" + witid + "?$expand=relations"
+        let witBaseUrl: String = baseURL + org + "/_apis/wit/workitems/" + id + "?$expand=relations"
         
         let url = NSURL(string: witBaseUrl)! as URL
         
-        self.service.fetch(Wit.self, url: url, headers: header) { [unowned self] result in
+        self.service.fetch(WitNode.self, url: url, headers: header) { [unowned self] result in
             
             DispatchQueue.main.async {
                 
@@ -351,12 +351,13 @@ class Fetcher: ObservableObject {
                 
                 switch result {
                 case .failure(let error):
-                    print("Fetcher error: \(error)")
+                    if HTTP_ERROR { print("Fetcher error: \(error)") }
+                    
                     self.errorMessage = error.localizedDescription
                     
                 case .success(let info):
-                    print("Fetcher count: \([info].count)")
-                    self.wits = [info]
+                    if HTTP_DATA { print("Fetcher count: \([info].count)") }
+                    self.nodes = [info]
                     
                 }
             }
