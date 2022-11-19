@@ -39,19 +39,6 @@ class Fetcher: ObservableObject {
     
     let service = APIService()
     
-    private func getWitNumber(url: String) -> String {
-        
-        let result = url.trimmingCharacters(in: .decimalDigits)
-        
-        if result.hasSuffix("/") {
-            
-            return String(url.dropFirst(result.count))
-        }
-        else {
-            return ""
-        }
-    }
-    
     private func buildHeader(pat: String, email: String) -> [String : String] {
         
         let authorisation = "Basic " + (String(email + ":" + pat).data(using: .utf8)?.base64EncodedString() ?? "")

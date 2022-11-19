@@ -18,3 +18,8 @@ let RELATIONS_LEVELS = 1
 
 // Azure DevOps limit on the number of wits that can be fetched at once
 let ADO_LIST_LIMIT: Int = 200
+
+enum relations: String {
+    case related = "System.LinkTypes.Related"
+    case file = "AttachedFile"
+}

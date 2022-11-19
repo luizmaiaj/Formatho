@@ -26,3 +26,21 @@ extension Array: RawRepresentable where Element: Codable {
         return result
     }
 }
+
+func getWit(url: String) -> String {
+    
+    let result = url.trimmingCharacters(in: .decimalDigits)
+    
+    if result.hasSuffix("/") {
+        
+        return String(url.dropFirst(result.count))
+    }
+    else {
+        return ""
+    }
+}
+
+func getWitNumber(url: String) -> Int {
+    
+    return Int(getWit(url: url)) ?? 0
+}

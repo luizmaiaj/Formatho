@@ -194,13 +194,21 @@ class Wits: Codable, Identifiable {
 class Wit: Codable, Identifiable, Hashable {
     
     init() {
-        id = Int()
-        fields = Fields()
-        url = String()
-        html = String()
-        relations = [Relations]()
+        self.id = Int()
+        self.fields = Fields()
+        self.url = String()
+        self.html = String()
+        self.relations = [Relations]()
     }
     
+    init(id: Int) {
+        self.id = id
+        self.fields = Fields()
+        self.url = String()
+        self.html = String()
+        self.relations = [Relations]()
+    }
+
     required init(from decoder: Decoder) throws {
         
         let values = try decoder.container(keyedBy: CodingKeys.self)
@@ -250,6 +258,15 @@ class WitNode: Wit, CustomStringConvertible {
         
         super.init()
     }
+
+    init(id: Int, description: String) {
+        
+        self.description = description
+        
+        self.children = nil
+        
+        super.init(id: id)
+    }
     
     required init(from decoder: Decoder) throws {
         
@@ -267,10 +284,8 @@ class WitNode: Wit, CustomStringConvertible {
             
             for relation in relations {
                 
-                let child: WitNode = WitNode()
-                
-                child.description = "\(relation.rel)"
-                
+                var child: WitNode = WitNode(id: relation.id, description: "\(relation.id)")
+                                
                 self.children?.append(child)
             }
         }
@@ -381,8 +396,9 @@ class Fields: Codable, Identifiable {
 class Relations: Codable, Identifiable, Hashable {
     
     init() {
-        self.rel = String()
-        self.url = String()
+        self.id = 0
+        self.rel = ""
+        self.url = ""
         self.attributes = Attributes()
     }
     
@@ -399,6 +415,15 @@ class Relations: Codable, Identifiable, Hashable {
         do { self.attributes = try values.decode(Attributes.self, forKey: .attributes)
         } catch { self.attributes = Attributes() }
         
+        // using values retrieved above
+        switch self.rel {
+        case relations.related.rawValue:
+            self.id = getWitNumber(url: self.url)
+        case relations.file.rawValue:
+            self.id = self.attributes.id
+        default:
+            self.id = 0
+        }
     }
     
     // equatable
@@ -411,7 +436,7 @@ class Relations: Codable, Identifiable, Hashable {
         hasher.combine(id)
     }
     
-    let id = UUID()
+    var id: Int
     let rel: String
     let url: String
     let attributes: Attributes
@@ -421,7 +446,8 @@ class Attributes: Codable, Identifiable {
     
     init() {
         self.isLocked = false
-        self.name = String()
+        self.id = 0
+        self.name = ""
     }
     
     required init(from decoder: Decoder) throws {
@@ -434,9 +460,12 @@ class Attributes: Codable, Identifiable {
         do { self.name = try values.decode(String.self, forKey: .name)
         } catch { self.name = String() }
         
+        do { self.id = try values.decode(Int.self, forKey: .id)
+        } catch { self.id = Int() }
     }
     
     let isLocked: Bool
+    let id: Int
     let name: String
 }
 
