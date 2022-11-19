@@ -86,14 +86,13 @@ class Fetcher: ObservableObject {
                 
                 switch result {
                 case .failure(let error):
-                    if HTTP_ERROR {
-                        print("Fetcher error: \(error)")
-                    }
+                    if HTTP_ERROR { print("Fetcher error: \(error)") }
+                    
                     self.errorMessage = error.localizedDescription
+                    
                 case .success(let info):
-                    if HTTP_DATA {
-                        print("Fetcher count: \(info.count)")
-                    }
+                    if HTTP_DATA { print("Fetcher count: \(info.count)") }
+                    
                     self.projects = info.value
                     
                     self.projectNames.removeAll()
@@ -125,10 +124,13 @@ class Fetcher: ObservableObject {
                 
                 switch result {
                 case .failure(let error):
-                    print("Fetcher error: \(error)")
+                    if HTTP_ERROR { print("Fetcher error: \(error)") }
+                    
                     self.errorMessage = error.localizedDescription
+                    
                 case .success(let info):
-                    print("Fetcher count: \(info.count)")
+                    if HTTP_DATA { print("Fetcher count: \(info.count)") }
+                    
                     self.queries = info.value
                 }
             }
@@ -154,10 +156,13 @@ class Fetcher: ObservableObject {
                 
                 switch result {
                 case .failure(let error):
-                    print("Fetcher error: \(error)")
+                    if HTTP_ERROR { print("Fetcher error: \(error)") }
+                    
                     self.errorMessage = error.localizedDescription
+                    
                 case .success(let info):
-                    print("Fetcher count: \(info.count)")
+                    if HTTP_DATA { print("Fetcher count: \(info.count)") }
+                    
                     self.activities = info.value
                     
                     for activity in self.activities {
@@ -227,10 +232,13 @@ class Fetcher: ObservableObject {
                     
                     switch result {
                     case .failure(let error):
-                        print("Fetcher error: \(error)")
+                        if HTTP_ERROR { print("Fetcher error: \(error)") }
+                        
                         self.errorMessage = error.localizedDescription
+                        
                     case .success(let info):
-                        print("Fetcher count: \(info.count)")
+                        if HTTP_DATA { print("Fetcher count: \(info.count)") }
+                        
                         self.wits += info.value
                         
                         for wit in self.wits {
@@ -307,11 +315,13 @@ class Fetcher: ObservableObject {
                 
                 switch result {
                 case .failure(let error):
-                    print("Fetcher error: \(error)")
+                    if HTTP_ERROR { print("Fetcher error: \(error)") }
+                    
                     self.errorMessage = error.localizedDescription
                     
                 case .success(let info):
-                    print("Fetcher count: \(info.workItems.count)")
+                    if HTTP_DATA { print("Fetcher count: \(info.workItems.count)") }
+                    
                     self.query = info
                     
                     var ids: [String] = [String]()
@@ -357,8 +367,8 @@ class Fetcher: ObservableObject {
                     
                 case .success(let info):
                     if HTTP_DATA { print("Fetcher count: \([info].count)") }
-                    self.nodes = [info]
                     
+                    self.nodes = [info]
                 }
             }
         }
