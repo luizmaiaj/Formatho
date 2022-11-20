@@ -284,7 +284,7 @@ class WitNode: Wit, CustomStringConvertible {
             
             for relation in relations {
                 
-                var child: WitNode = WitNode(id: relation.id, description: "\(relation.id)")
+                let child: WitNode = WitNode(id: relation.id, description: "\(relation.id)")
                                 
                 self.children?.append(child)
             }

@@ -15,6 +15,10 @@ struct ActivityView: View {
     
     @ObservedObject var fetcher: Fetcher
     
+    private func fetchActivities() {
+        fetcher.accountActivity(org: organisation, pat: pat, email: email)
+    }
+    
     var body: some View {
         
         VStack {
@@ -25,22 +29,19 @@ struct ActivityView: View {
                 
             } else {
                 
-                Table(fetcher.activities) {
-                    TableColumn("Activity", value: \.activityType.capitalized)
-                    TableColumn("Type", value: \.workItemType)
-                    TableColumn("Title", value: \.title)
-                    TableColumn("id") { activity in
-                        Text(String(format: "%d", activity.id)) // removing reference
-                    }
-                    TableColumn("State", value: \.state)
-                }
-                .frame(minHeight: 30)
+                Button("Refresh activities", action: {
+                    fetchActivities()
+                })
+                
+                ActivityTable(activities: fetcher.activities)
                 
                 Text(self.fetcher.errorMessage ?? "")
             }
         }
         .onAppear() {
-            fetcher.accountActivity(org: organisation, pat: pat, email: email)
+            if fetcher.activities.isEmpty {
+                fetchActivities()
+            }
         }
     }
 }
@@ -48,5 +49,24 @@ struct ActivityView: View {
 struct RecentView_Previews: PreviewProvider {
     static var previews: some View {
         ActivityView(fetcher: Fetcher())
+    }
+}
+
+struct ActivityTable: View {
+    
+    let activities: [Activity]
+    
+    var body: some View {
+        
+        Table(activities) {
+            TableColumn("Activity", value: \.activityType.capitalized)
+            TableColumn("Type", value: \.workItemType)
+            TableColumn("Title", value: \.title)
+            TableColumn("id") { activity in
+                Text(String(format: "%d", activity.id)) // removing reference
+            }
+            TableColumn("State", value: \.state)
+        }
+        .frame(minHeight: 30)
     }
 }
