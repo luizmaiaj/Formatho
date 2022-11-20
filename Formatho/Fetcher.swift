@@ -61,7 +61,7 @@ class Fetcher: ObservableObject {
         
         self.projects.removeAll()
         
-        let prjBaseUrl: String = baseURL + org + "/_apis/projects"
+        let prjBaseUrl: String = self.baseURL + org + "/_apis/projects"
         
         let url = NSURL(string: prjBaseUrl)! as URL
         
@@ -99,7 +99,7 @@ class Fetcher: ObservableObject {
         self.isLoading = true
         errorMessage = nil
         
-        let prjBaseUrl: String = baseURL + org + "/" + project + "/_apis/wit/queries?$depth=2"
+        let prjBaseUrl: String = self.baseURL + org + "/" + project + "/_apis/wit/queries?$depth=2"
         
         let url = NSURL(string: prjBaseUrl)! as URL
         
@@ -131,7 +131,7 @@ class Fetcher: ObservableObject {
         self.isLoading = true
         self.errorMessage = nil
         
-        let prjBaseUrl: String = baseURL + org + "/_apis/work/accountmyworkrecentactivity"
+        let prjBaseUrl: String = self.baseURL + org + "/_apis/work/accountmyworkrecentactivity"
         
         let url = NSURL(string: prjBaseUrl)! as URL
         
@@ -182,7 +182,7 @@ class Fetcher: ObservableObject {
         
         self.wits.removeAll()
         
-        let reqURL: String = baseURL + org + "/" + project + "/_workitems/edit/" // removing reference to name
+        let reqURL: String = self.baseURL + org + "/" + project + "/_workitems/edit/" // removing reference to name
         
         // build id list limited to ADO_LIST_LIMIT = 200 wits
         var iStart: Int = 0
@@ -290,7 +290,7 @@ class Fetcher: ObservableObject {
         self.isLoading = true
         self.errorMessage = nil
         
-        let prjBaseUrl: String = baseURL + org + "/_apis/wit/wiql?id=" + queryid
+        let prjBaseUrl: String = self.baseURL + org + "/_apis/wit/wiql?id=" + queryid
         
         let url = NSURL(string: prjBaseUrl)! as URL
         
@@ -336,7 +336,7 @@ class Fetcher: ObservableObject {
         
         self.nodes.removeAll()
         
-        let witBaseUrl: String = baseURL + org + "/_apis/wit/workitems/" + id + "?$expand=relations"
+        let witBaseUrl: String = self.baseURL + org + "/_apis/wit/workitems/" + id + "?$expand=relations"
         
         let url = NSURL(string: witBaseUrl)! as URL
         
@@ -356,8 +356,48 @@ class Fetcher: ObservableObject {
                     if HTTP_DATA { print("Fetcher count: \([info].count)") }
                     
                     self.nodes = [info]
+                    
+                    for node in self.nodes {
+                        
+                        for child in node.children ?? [] {
+                            self.links(org: org, pat: pat, email: email, id: child.id)
+                        }
+                    }
                 }
             }
         }
+    }
+    
+    func links(org: String, pat: String, email: String, id: Int) {
+
+        let header = buildHeader(pat: pat, email: email)
+        
+        self.isLoading = true
+        errorMessage = nil
+        
+        let witBaseUrl: String = self.baseURL + org + "/_apis/wit/workitems/" + id.formatted() + "?$expand=relations"
+        
+        let url = NSURL(string: witBaseUrl)! as URL
+        
+        self.service.fetch(WitNode.self, url: url, headers: header) { [unowned self] result in
+            
+            DispatchQueue.main.async {
+                
+                self.isLoading = false
+                
+                switch result {
+                case .failure(let error):
+                    if HTTP_ERROR { print("Fetcher error: \(error)") }
+                    
+                    self.errorMessage = error.localizedDescription
+                    
+                case .success(let info):
+                    if HTTP_DATA { print("Fetcher count: \([info].count)") }
+                    
+                    self.wit = info // TO CONTINUE FROM HERE
+                }
+            }
+        }
+
     }
 }
