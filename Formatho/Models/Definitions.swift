@@ -10,7 +10,7 @@ import Foundation
 // for debugging
 let HTTP_DATA = false
 let HTTP_ERROR = true
-let DEBUG_INFO = false
+let DEBUG_INFO = true
 let DEBUG_BUTTON = false
 
 // how many levels from the current node to fetch for the links
@@ -22,5 +22,7 @@ let ADO_LIST_LIMIT: Int = 200
 enum relation: String {
     case root = "root"
     case related = "System.LinkTypes.Related"
+    case child = "System.LinkTypes.Hierarchy-Forward"
+    case parent = "System.LinkTypes.Hierarchy-Reverse"
     case file = "AttachedFile"
 }

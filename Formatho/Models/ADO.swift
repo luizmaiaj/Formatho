@@ -296,15 +296,28 @@ class WitNode: Wit, CustomStringConvertible {
                 switch rel.rel {
                 case relation.related.rawValue:
                     nodeType = relation.related
-                    tempChild = WitNode(id: rel.id, description: "\(rel.attributes.name): \(rel.id)", nodeType: nodeType)
+                    
                 case relation.file.rawValue:
                     nodeType = relation.file
-                    tempChild = WitNode(id: rel.id, description: "\(nodeType.rawValue): \(rel.attributes.name)", nodeType: nodeType)
+                    
+                case relation.child.rawValue:
+                    nodeType = relation.child
+                    
+                case relation.parent.rawValue:
+                    nodeType = relation.parent
+                    
                 default:
                     nodeType = relation.root
-                    tempChild = WitNode()
                 }
 
+                switch nodeType {
+                case relation.file:
+                    tempChild = WitNode(id: rel.id, description: "\(nodeType.rawValue): \(rel.attributes.name)", nodeType: nodeType)
+
+                default:
+                    tempChild = WitNode(id: rel.id, description: "\(rel.attributes.name): \(rel.id)", nodeType: nodeType)
+                }
+                
                 let child: WitNode = tempChild
                                 
                 self.children?.append(child)
@@ -438,12 +451,11 @@ class Relations: Codable, Identifiable, Hashable {
         
         // using values retrieved above populate the id and the relation type enum
         switch self.rel {
-        case relation.related.rawValue:
-            self.id = getWitNumber(url: self.url)
         case relation.file.rawValue:
             self.id = self.attributes.id
+            
         default:
-            self.id = 0
+            self.id = getWitNumber(url: self.url)
         }
     }
     

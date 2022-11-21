@@ -31,6 +31,8 @@ class Fetcher: ObservableObject {
     @Published var errorMessage: String? = nil
     @Published var formattedWIT: AttributedString = AttributedString()
     
+    private var fetched: [Int] = [Int]() // list fetched for the links' tree
+    
     let baseURL: String = "https://dev.azure.com/"
     
 #if os(OSX)
@@ -336,6 +338,8 @@ class Fetcher: ObservableObject {
         
         self.nodes.removeAll()
         
+        self.fetched.removeAll()
+        
         let witBaseUrl: String = self.baseURL + org + "/_apis/wit/workitems/" + id + "?$expand=relations"
         
         let url = NSURL(string: witBaseUrl)! as URL
@@ -357,11 +361,14 @@ class Fetcher: ObservableObject {
                     
                     self.nodes = [info]
                     
+                    self.fetched.append(info.id)
+                    if DEBUG_INFO { print("fetched: \(self.fetched)") }
+                    
                     for node in self.nodes {
                             
                         for child in node.children ?? [] {
                             
-                            if child.nodeType == relation.related {
+                            if child.nodeType != relation.file {
                                 
                                 self.links(org: org, pat: pat, email: email, id: child.id)
                             }
@@ -397,6 +404,9 @@ class Fetcher: ObservableObject {
                     
                 case .success(let info):
                     if HTTP_DATA { print("Fetcher count: \([info].count)") }
+                    
+                    self.fetched.append(info.id)
+                    if DEBUG_INFO { print("fetched: \(self.fetched)") }
                     
                     for n in 0...(self.nodes.count - 1) {
                         
