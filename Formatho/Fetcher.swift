@@ -358,9 +358,13 @@ class Fetcher: ObservableObject {
                     self.nodes = [info]
                     
                     for node in self.nodes {
-                        
+                            
                         for child in node.children ?? [] {
-                            self.links(org: org, pat: pat, email: email, id: child.id)
+                            
+                            if child.nodeType == relation.related {
+                                
+                                self.links(org: org, pat: pat, email: email, id: child.id)
+                            }
                         }
                     }
                 }
@@ -375,7 +379,7 @@ class Fetcher: ObservableObject {
         self.isLoading = true
         errorMessage = nil
         
-        let witBaseUrl: String = self.baseURL + org + "/_apis/wit/workitems/" + id.formatted() + "?$expand=relations"
+        let witBaseUrl: String = self.baseURL + org + "/_apis/wit/workitems/" + "\(id)" + "?$expand=relations"
         
         let url = NSURL(string: witBaseUrl)! as URL
         
@@ -394,7 +398,17 @@ class Fetcher: ObservableObject {
                 case .success(let info):
                     if HTTP_DATA { print("Fetcher count: \([info].count)") }
                     
-                    self.wit = info // TO CONTINUE FROM HERE
+                    for n in 0...(self.nodes.count - 1) {
+                        
+                        let cMax = max((self.nodes[n].children?.count ?? 0) - 1, 0) // cannot be less than zero
+                        
+                        for c in 0...(cMax) {
+                            
+                            if self.nodes[n].children![c].id == id {
+                                self.nodes[n].children![c] = info
+                            }
+                        }
+                    }
                 }
             }
         }

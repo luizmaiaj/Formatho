@@ -22,14 +22,14 @@ class Project: Codable, Identifiable, Hashable {
     
     init() {
         
-        id = String()
-        name = String()
-        description = String()
-        url = String()
-        state = String()
+        id = ""
+        name = ""
+        description = ""
+        url = ""
+        state = ""
         revision = 0
-        visibility = String()
-        lastUpdateTime = String()
+        visibility = ""
+        lastUpdateTime = ""
     }
     
     required init(from decoder: Decoder) throws {
@@ -37,28 +37,28 @@ class Project: Codable, Identifiable, Hashable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
         do { self.id = try values.decode(String.self, forKey: .id)
-        } catch { self.id = String() }
+        } catch { self.id = "" }
         
         do { self.name = try values.decode(String.self, forKey: .name)
-        } catch { self.name = String() }
+        } catch { self.name = "" }
         
         do { self.description = try values.decode(String.self, forKey: .description)
-        } catch { self.description = String() }
+        } catch { self.description = "" }
         
         do { self.url = try values.decode(String.self, forKey: .url)
-        } catch { self.url = String() }
+        } catch { self.url = "" }
         
         do { self.state = try values.decode(String.self, forKey: .state)
-        } catch { self.state = String() }
+        } catch { self.state = "" }
         
         do { self.revision = try values.decode(Int.self, forKey: .state)
-        } catch { self.revision = Int() }
+        } catch { self.revision = 0 }
         
         do { self.visibility = try values.decode(String.self, forKey: .visibility)
-        } catch { self.visibility = String() }
+        } catch { self.visibility = "" }
         
         do { self.lastUpdateTime = try values.decode(String.self, forKey: .lastUpdateTime)
-        } catch { self.lastUpdateTime = String() }
+        } catch { self.lastUpdateTime = "" }
     }
     
     // equatable
@@ -85,7 +85,7 @@ class Activities: Codable, Identifiable {
     
     init() {
         self.value = [Activity]()
-        self.count = Int()
+        self.count = 0
     }
     
     required init(from decoder: Decoder) throws {
@@ -106,15 +106,15 @@ class Activities: Codable, Identifiable {
 class Activity: Codable, Identifiable, Hashable {
     
     init() {
-        id = Int()
-        workItemType = String()
-        title = String()
-        state = String()
-        changedDate = String()
-        teamProject = String()
-        activityDate = String()
-        activityType = String()
-        html = String()
+        id = 0
+        workItemType = ""
+        title = ""
+        state = ""
+        changedDate = ""
+        teamProject = ""
+        activityDate = ""
+        activityType = ""
+        html = ""
     }
     
     required init(from decoder: Decoder) throws {
@@ -125,27 +125,27 @@ class Activity: Codable, Identifiable, Hashable {
         } catch { self.id = 0 }
         
         do { self.workItemType = try values.decode(String.self, forKey: .workItemType)
-        } catch { self.workItemType = String() }
+        } catch { self.workItemType = "" }
         
         do { self.title = try values.decode(String.self, forKey: .title)
-        } catch { self.title = String() }
+        } catch { self.title = "" }
         
         do { self.state = try values.decode(String.self, forKey: .state)
-        } catch { self.state = String() }
+        } catch { self.state = "" }
         
         do { self.changedDate = try values.decode(String.self, forKey: .changedDate)
-        } catch { self.changedDate = String() }
+        } catch { self.changedDate = "" }
         
         do { self.teamProject = try values.decode(String.self, forKey: .teamProject)
-        } catch { self.teamProject = String() }
+        } catch { self.teamProject = "" }
         
         do { self.activityDate = try values.decode(String.self, forKey: .activityDate)
-        } catch { self.activityDate = String() }
+        } catch { self.activityDate = "" }
         
         do { self.activityType = try values.decode(String.self, forKey: .activityType)
-        } catch { self.activityType = String() }
+        } catch { self.activityType = "" }
         
-        self.html = String() // to be filled later
+        self.html = "" // to be filled later
     }
     
     // equatable
@@ -173,7 +173,7 @@ class Wits: Codable, Identifiable {
     
     init() {
         self.value = [Wit]()
-        self.count = Int()
+        self.count = 0
     }
     
     required init(from decoder: Decoder) throws {
@@ -194,18 +194,18 @@ class Wits: Codable, Identifiable {
 class Wit: Codable, Identifiable, Hashable {
     
     init() {
-        self.id = Int()
+        self.id = 0
         self.fields = Fields()
-        self.url = String()
-        self.html = String()
+        self.url = ""
+        self.html = ""
         self.relations = [Relations]()
     }
     
     init(id: Int) {
         self.id = id
         self.fields = Fields()
-        self.url = String()
-        self.html = String()
+        self.url = ""
+        self.html = ""
         self.relations = [Relations]()
     }
 
@@ -214,15 +214,15 @@ class Wit: Codable, Identifiable, Hashable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
         do { self.id = try values.decode(Int.self, forKey: .id)
-        } catch { self.id = Int() }
+        } catch { self.id = 0 }
         
         do { self.fields = try values.decode(Fields.self, forKey: .fields)
         } catch { self.fields = Fields() }
         
         do { self.url = try values.decode(String.self, forKey: .url)
-        } catch { self.url = String() }
+        } catch { self.url = "" }
         
-        self.html = String() // to be filled later
+        self.html = "" // to be filled later
         
         do { self.relations = try values.decode([Relations].self, forKey: .relations)
         } catch { self.relations = [Relations]() }
@@ -249,21 +249,24 @@ class WitNode: Wit, CustomStringConvertible {
     
     var description: String
     var children: [WitNode]?
+    var nodeType: relation
     
     override init() {
         
         self.description = ""
-        
         self.children = nil
+        self.nodeType = relation.root
         
         super.init()
     }
 
-    init(id: Int, description: String) {
+    init(id: Int, description: String, nodeType: relation) {
         
         self.description = description
         
         self.children = nil
+        
+        self.nodeType = nodeType
         
         super.init(id: id)
     }
@@ -274,17 +277,35 @@ class WitNode: Wit, CustomStringConvertible {
         
         self.children = nil
         
+        self.nodeType = relation.root
+        
         try super.init(from: decoder)
         
-        self.description = self.fields.SystemTitle
+        self.description = "\(self.id): " + self.fields.SystemTitle + ": " + self.fields.SystemState
         
         if !relations.isEmpty {
             
             self.children = [WitNode]()
             
-            for relation in relations {
+            for rel in relations { // list for relation class
                 
-                let child: WitNode = WitNode(id: relation.id, description: "\(relation.id)")
+                var nodeType: relation
+                
+                var tempChild: WitNode
+                
+                switch rel.rel {
+                case relation.related.rawValue:
+                    nodeType = relation.related
+                    tempChild = WitNode(id: rel.id, description: "\(rel.attributes.name): \(rel.id)", nodeType: nodeType)
+                case relation.file.rawValue:
+                    nodeType = relation.file
+                    tempChild = WitNode(id: rel.id, description: "\(nodeType.rawValue): \(rel.attributes.name)", nodeType: nodeType)
+                default:
+                    nodeType = relation.root
+                    tempChild = WitNode()
+                }
+
+                let child: WitNode = tempChild
                                 
                 self.children?.append(child)
             }
@@ -294,18 +315,18 @@ class WitNode: Wit, CustomStringConvertible {
 
 class Fields: Codable, Identifiable {
     init() {
-        self.SystemAreaPath = String()
-        self.SystemTeamProject = String()
-        self.SystemIterationPath = String()
-        self.SystemWorkItemType = String()
-        self.SystemState = String()
-        self.SystemReason = String()
-        self.SystemCreatedDate = String()
-        self.SystemChangedDate = String()
-        self.SystemTitle = String()
-        self.SystemDescription = String()
-        self.MicrosoftVSTSCommonPriority = Int()
-        self.CustomReport = String()
+        self.SystemAreaPath = ""
+        self.SystemTeamProject = ""
+        self.SystemIterationPath = ""
+        self.SystemWorkItemType = ""
+        self.SystemState = ""
+        self.SystemReason = ""
+        self.SystemCreatedDate = ""
+        self.SystemChangedDate = ""
+        self.SystemTitle = ""
+        self.SystemDescription = ""
+        self.MicrosoftVSTSCommonPriority = 0
+        self.CustomReport = ""
     }
     
     required init(from decoder: Decoder) throws {
@@ -313,41 +334,41 @@ class Fields: Codable, Identifiable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
         do { self.SystemAreaPath = try values.decode(String.self, forKey: .SystemAreaPath)
-        } catch { self.SystemAreaPath = String() }
+        } catch { self.SystemAreaPath = "" }
         
         do { self.SystemTeamProject = try values.decode(String.self, forKey: .SystemTeamProject)
-        } catch { self.SystemTeamProject = String() }
+        } catch { self.SystemTeamProject = "" }
         
         do { self.SystemIterationPath = try values.decode(String.self, forKey: .SystemIterationPath)
-        } catch { self.SystemIterationPath = String() }
+        } catch { self.SystemIterationPath = "" }
         
         do { self.SystemWorkItemType = try values.decode(String.self, forKey: .SystemWorkItemType)
-        } catch { self.SystemWorkItemType = String() }
+        } catch { self.SystemWorkItemType = "" }
         
         do { self.SystemState = try values.decode(String.self, forKey: .SystemState)
-        } catch { self.SystemState = String() }
+        } catch { self.SystemState = "" }
         
         do { self.SystemReason = try values.decode(String.self, forKey: .SystemReason)
-        } catch { self.SystemReason = String() }
+        } catch { self.SystemReason = "" }
         
         do { self.SystemCreatedDate = try values.decode(String.self, forKey: .SystemCreatedDate)
-        } catch { self.SystemCreatedDate = String() }
+        } catch { self.SystemCreatedDate = "" }
         
         do { self.SystemChangedDate = try values.decode(String.self, forKey: .SystemChangedDate)
-        } catch { self.SystemChangedDate = String() }
+        } catch { self.SystemChangedDate = "" }
         
         do { self.SystemTitle = try values.decode(String.self, forKey: .SystemTitle)
-        } catch { self.SystemTitle = String() }
+        } catch { self.SystemTitle = "" }
         
         do { self.SystemDescription = try values.decode(String.self, forKey: .SystemDescription)
-        } catch { self.SystemDescription = String() }
+        } catch { self.SystemDescription = "" }
         
         do { self.MicrosoftVSTSCommonPriority = try values.decode(Int.self, forKey: .MicrosoftVSTSCommonPriority)
-        } catch { self.MicrosoftVSTSCommonPriority = Int() }
+        } catch { self.MicrosoftVSTSCommonPriority = 0 }
         
         // trimming added to remove leading and trailing white spaces and new lines
         
-        var report: String = String()
+        var report: String = ""
         
         do {
             // remove leading and trailing div on report field
@@ -407,19 +428,19 @@ class Relations: Codable, Identifiable, Hashable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
         do { self.rel = try values.decode(String.self, forKey: .rel)
-        } catch { self.rel = String() }
+        } catch { self.rel = "" }
         
         do { self.url = try values.decode(String.self, forKey: .url)
-        } catch { self.url = String() }
+        } catch { self.url = "" }
         
         do { self.attributes = try values.decode(Attributes.self, forKey: .attributes)
         } catch { self.attributes = Attributes() }
         
-        // using values retrieved above
+        // using values retrieved above populate the id and the relation type enum
         switch self.rel {
-        case relations.related.rawValue:
+        case relation.related.rawValue:
             self.id = getWitNumber(url: self.url)
-        case relations.file.rawValue:
+        case relation.file.rawValue:
             self.id = self.attributes.id
         default:
             self.id = 0
@@ -458,10 +479,10 @@ class Attributes: Codable, Identifiable {
         } catch { self.isLocked = Bool() }
         
         do { self.name = try values.decode(String.self, forKey: .name)
-        } catch { self.name = String() }
+        } catch { self.name = "" }
         
         do { self.id = try values.decode(Int.self, forKey: .id)
-        } catch { self.id = Int() }
+        } catch { self.id = 0 }
     }
     
     let isLocked: Bool
@@ -472,9 +493,9 @@ class Attributes: Codable, Identifiable {
 class Query: Codable, Identifiable, Hashable {
     
     init() {
-        queryType = String()
-        queryResultType = String()
-        asOf = String()
+        queryType = ""
+        queryResultType = ""
+        asOf = ""
         columns = [Column]()
         workItems = [WorkItem]()
     }
@@ -484,13 +505,13 @@ class Query: Codable, Identifiable, Hashable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
         do { self.queryType = try values.decode(String.self, forKey: .queryType)
-        } catch { self.queryType = String() }
+        } catch { self.queryType = "" }
         
         do { self.queryResultType = try values.decode(String.self, forKey: .queryResultType)
-        } catch { self.queryResultType = String() }
+        } catch { self.queryResultType = "" }
         
         do { self.asOf = try values.decode(String.self, forKey: .asOf)
-        } catch { self.asOf = String() }
+        } catch { self.asOf = "" }
         
         do { self.columns = try values.decode([Column].self, forKey: .columns)
         } catch { self.columns = [Column]() }
@@ -519,9 +540,9 @@ class Query: Codable, Identifiable, Hashable {
 class Column: Codable, Identifiable {
     
     init() {
-        self.referenceName = String()
-        self.name = String()
-        self.url = String()
+        self.referenceName = ""
+        self.name = ""
+        self.url = ""
     }
     
     required init(from decoder: Decoder) throws {
@@ -529,13 +550,13 @@ class Column: Codable, Identifiable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
         do { self.referenceName = try values.decode(String.self, forKey: .referenceName)
-        } catch { self.referenceName = String() }
+        } catch { self.referenceName = "" }
         
         do { self.name = try values.decode(String.self, forKey: .name)
-        } catch { self.name = String() }
+        } catch { self.name = "" }
         
         do { self.url = try values.decode(String.self, forKey: .url)
-        } catch { self.url = String() }
+        } catch { self.url = "" }
     }
     
     let referenceName: String
@@ -546,8 +567,8 @@ class Column: Codable, Identifiable {
 class WorkItem: Codable, Identifiable {
     
     init() {
-        self.id = Int()
-        self.url = String()
+        self.id = 0
+        self.url = ""
     }
     
     required init(from decoder: Decoder) throws {
@@ -555,10 +576,10 @@ class WorkItem: Codable, Identifiable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
         do { self.id = try values.decode(Int.self, forKey: .id)
-        } catch { self.id = Int() }
+        } catch { self.id = 0 }
         
         do { self.url = try values.decode(String.self, forKey: .url)
-        } catch { self.url = String() }
+        } catch { self.url = "" }
     }
     
     let id: Int
@@ -579,19 +600,19 @@ class Queries: Codable, Identifiable {
 class QueryNode: Codable, Identifiable, Hashable, CustomStringConvertible {
     
     init() {
-        id = String()
-        name = String()
-        path = String()
-        createdDate = String()
-        lastModifiedDate = String()
+        id = ""
+        name = ""
+        path = ""
+        createdDate = ""
+        lastModifiedDate = ""
         isFolder = Bool()
         hasChildren = Bool()
         children = nil
-        queryType = String()
+        queryType = ""
         isPublic = Bool()
-        lastExecutedDate = String()
+        lastExecutedDate = ""
         _links = Links()
-        url = String()
+        url = ""
         
         description = isFolder ? "📂 \(name)" : "📄 \(name)"
     }
@@ -601,19 +622,19 @@ class QueryNode: Codable, Identifiable, Hashable, CustomStringConvertible {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
         do { self.id = try values.decode(String.self, forKey: .id)
-        } catch { self.id = String() }
+        } catch { self.id = "" }
         
         do { self.name = try values.decode(String.self, forKey: .name)
-        } catch { self.name = String() }
+        } catch { self.name = "" }
         
         do { self.path = try values.decode(String.self, forKey: .path)
-        } catch { self.path = String() }
+        } catch { self.path = "" }
         
         do { self.createdDate = try values.decode(String.self, forKey: .createdDate)
-        } catch { self.createdDate = String() }
+        } catch { self.createdDate = "" }
         
         do { self.lastModifiedDate = try values.decode(String.self, forKey: .lastModifiedDate)
-        } catch { self.lastModifiedDate = String() }
+        } catch { self.lastModifiedDate = "" }
         
         do { self.isFolder = try values.decode(Bool.self, forKey: .isFolder)
         } catch { self.isFolder = Bool() }
@@ -625,19 +646,19 @@ class QueryNode: Codable, Identifiable, Hashable, CustomStringConvertible {
         } catch { self.children = nil }
         
         do { self.queryType = try values.decode(String.self, forKey: .queryType)
-        } catch { self.queryType = String() }
+        } catch { self.queryType = "" }
         
         do { self.isPublic = try values.decode(Bool.self, forKey: .isPublic)
         } catch { self.isPublic = Bool() }
         
         do { self.lastExecutedDate = try values.decode(String.self, forKey: .lastExecutedDate)
-        } catch { self.lastExecutedDate = String() }
+        } catch { self.lastExecutedDate = "" }
         
         do { self._links = try values.decode(Links.self, forKey: ._links)
         } catch { self._links = Links() }
         
         do { self.url = try values.decode(String.self, forKey: .url)
-        } catch { self.url = String() }
+        } catch { self.url = "" }
         
         description = isFolder ? "📂 \(name)" : "📄 \(name)"
     }
@@ -671,7 +692,7 @@ class QueryNode: Codable, Identifiable, Hashable, CustomStringConvertible {
 class Link: Codable {
     
     init() {
-        href = String()
+        href = ""
     }
     
     required init(from decoder: Decoder) throws {
@@ -679,7 +700,7 @@ class Link: Codable {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
         do { self.href = try values.decode(String.self, forKey: .href)
-        } catch { self.href = String() }
+        } catch { self.href = "" }
         
     }
     
