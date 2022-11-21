@@ -125,7 +125,7 @@ struct WitTable: View {
             TableColumn("Type", value: \.fields.SystemWorkItemType)
             TableColumn("Title", value: \.fields.SystemTitle)
             TableColumn("id") { wit in
-                Text(String(format: "%d", wit.id)) // removing reference
+                Text(String(format: "%d", wit.witID)) // removing reference
             }
             TableColumn("Report") { wit in
                 Text(wit.fields.CustomReport.toRTF())

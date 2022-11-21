@@ -194,15 +194,15 @@ class Wits: Codable, Identifiable {
 class Wit: Codable, Identifiable, Hashable {
     
     init() {
-        self.id = 0
+        self.witID = 0
         self.fields = Fields()
         self.url = ""
         self.html = ""
         self.relations = [Relations]()
     }
     
-    init(id: Int) {
-        self.id = id
+    init(witID: Int) {
+        self.witID = witID
         self.fields = Fields()
         self.url = ""
         self.html = ""
@@ -213,8 +213,8 @@ class Wit: Codable, Identifiable, Hashable {
         
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
-        do { self.id = try values.decode(Int.self, forKey: .id)
-        } catch { self.id = 0 }
+        do { self.witID = try values.decode(Int.self, forKey: .witID)
+        } catch { self.witID = 0 }
         
         do { self.fields = try values.decode(Fields.self, forKey: .fields)
         } catch { self.fields = Fields() }
@@ -238,11 +238,19 @@ class Wit: Codable, Identifiable, Hashable {
         hasher.combine(id)
     }
     
-    let id: Int
+    enum CodingKeys: String, CodingKey {
+        case witID = "id"
+        case fields = "fields"
+        case url = "url"
+        case relations = "relations"
+    }
+    
+    let witID: Int
     let fields: Fields
     let url: String
     var html: String
     let relations: [Relations]
+    let id = UUID()
 }
 
 class WitNode: Wit, CustomStringConvertible {
@@ -260,7 +268,7 @@ class WitNode: Wit, CustomStringConvertible {
         super.init()
     }
 
-    init(id: Int, description: String, nodeType: relation) {
+    init(witID: Int, description: String, nodeType: relation) {
         
         self.description = description
         
@@ -268,7 +276,7 @@ class WitNode: Wit, CustomStringConvertible {
         
         self.nodeType = nodeType
         
-        super.init(id: id)
+        super.init(witID: witID)
     }
     
     required init(from decoder: Decoder) throws {
@@ -281,7 +289,7 @@ class WitNode: Wit, CustomStringConvertible {
         
         try super.init(from: decoder)
         
-        self.description = "\(self.id): " + self.fields.SystemTitle + ": " + self.fields.SystemState
+        self.description = "\(self.witID): " + self.fields.SystemTitle + ": " + self.fields.SystemState
         
         if !relations.isEmpty {
             
@@ -312,10 +320,10 @@ class WitNode: Wit, CustomStringConvertible {
 
                 switch nodeType {
                 case relation.file:
-                    tempChild = WitNode(id: rel.id, description: "\(nodeType.rawValue): \(rel.attributes.name)", nodeType: nodeType)
+                    tempChild = WitNode(witID: rel.id, description: "\(nodeType.rawValue): \(rel.attributes.name)", nodeType: nodeType)
 
                 default:
-                    tempChild = WitNode(id: rel.id, description: "\(rel.attributes.name): \(rel.id)", nodeType: nodeType)
+                    tempChild = WitNode(witID: rel.id, description: "\(rel.attributes.name): \(rel.id)", nodeType: nodeType)
                 }
                 
                 let child: WitNode = tempChild

@@ -232,7 +232,7 @@ class Fetcher: ObservableObject {
                         
                         for wit in self.wits {
                             
-                            wit.html = "<b>P\(wit.fields.MicrosoftVSTSCommonPriority) \(wit.fields.SystemWorkItemType) \(wit.fields.SystemTitle)</b> <a href=\"\(reqURL)\(String(format: "%d", wit.id))\">[\(project)-\(String(format: "%d", wit.id))]</a>"
+                            wit.html = "<b>P\(wit.fields.MicrosoftVSTSCommonPriority) \(wit.fields.SystemWorkItemType) \(wit.fields.SystemTitle)</b> <a href=\"\(reqURL)\(String(format: "%d", wit.witID))\">[\(project)-\(String(format: "%d", wit.witID))]</a>"
                             
                             //add report field information if necessary
                             if addReport {
@@ -361,7 +361,7 @@ class Fetcher: ObservableObject {
                     
                     self.nodes = [info]
                     
-                    self.fetched.append(info.id)
+                    self.fetched.append(info.witID)
                     if DEBUG_INFO { print("fetched: \(self.fetched)") }
                     
                     for n in 0...(self.nodes.count - 1) {
@@ -373,9 +373,9 @@ class Fetcher: ObservableObject {
                             if self.nodes[n].children![c].nodeType != relation.file {
                                 
                                 //self.links(org: org, pat: pat, email: email, node: &self.nodes[n].children![c])
-                                self.links(org: org, pat: pat, email: email, id: self.nodes[n].children![c].id, completion: { [self] node in
+                                self.links(org: org, pat: pat, email: email, id: self.nodes[n].children![c].witID, completion: { [self] node in
                                     
-                                    if node.id != 0 {
+                                    if node.witID != 0 {
                                         self.nodes[n].children![c] = node
                                     }
                                 })
@@ -415,18 +415,18 @@ class Fetcher: ObservableObject {
                 case .success(let info):
                     if HTTP_DATA { print("Fetcher count: \([info].count)") }
                     
-                    self.fetched.append(info.id)
+                    self.fetched.append(info.witID)
                     if DEBUG_INFO { print("fetched: \(self.fetched)") }
                     
                     let cMax = max((info.children?.count ?? 0) - 1, 0) // cannot be less than zero
                     
                     for c in 0...(cMax) {
                         
-                        if !self.fetched.contains(info.children![c].id) && info.children![c].nodeType != relation.file {
+                        if !self.fetched.contains(info.children![c].witID) && info.children![c].nodeType != relation.file {
                             
-                            self.links(org: org, pat: pat, email: email, id: info.children![c].id, completion: { node in
+                            self.links(org: org, pat: pat, email: email, id: info.children![c].witID, completion: { node in
                                 
-                                if node.id != 0 {
+                                if node.witID != 0 {
                                     info.children![c] = node
                                 }
                             })
