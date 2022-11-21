@@ -370,9 +370,8 @@ class Fetcher: ObservableObject {
                         
                         for c in 0...(cMax) {
                             
-                            if self.nodes[n].children![c].nodeType != relation.file {
+                            if !self.fetched.contains(self.nodes[n].children![c].witID) && self.nodes[n].children![c].nodeType != relation.file && self.nodes[n].children![c].nodeType != relation.pullRequest {
                                 
-                                //self.links(org: org, pat: pat, email: email, node: &self.nodes[n].children![c])
                                 self.links(org: org, pat: pat, email: email, id: self.nodes[n].children![c].witID, completion: { [self] node in
                                     
                                     if node.witID != 0 {
@@ -406,7 +405,7 @@ class Fetcher: ObservableObject {
                 
                 switch result {
                 case .failure(let error):
-                    if HTTP_ERROR { print("Fetcher error \(id): \(error)") }
+                    if HTTP_ERROR { print("Fetcher error wit id \(id): \(error)") }
                     
                     self.errorMessage = error.localizedDescription
                     
@@ -422,7 +421,7 @@ class Fetcher: ObservableObject {
                     
                     for c in 0...(cMax) {
                         
-                        if !self.fetched.contains(info.children![c].witID) && info.children![c].nodeType != relation.file {
+                        if !self.fetched.contains(info.children![c].witID) && info.children![c].nodeType != relation.file && info.children![c].nodeType != relation.pullRequest {
                             
                             self.links(org: org, pat: pat, email: email, id: info.children![c].witID, completion: { node in
                                 

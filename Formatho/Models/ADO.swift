@@ -208,7 +208,7 @@ class Wit: Codable, Identifiable, Hashable {
         self.html = ""
         self.relations = [Relations]()
     }
-
+    
     required init(from decoder: Decoder) throws {
         
         let values = try decoder.container(keyedBy: CodingKeys.self)
@@ -267,7 +267,7 @@ class WitNode: Wit, CustomStringConvertible {
         
         super.init()
     }
-
+    
     init(witID: Int, description: String, nodeType: relation) {
         
         self.description = description
@@ -297,38 +297,60 @@ class WitNode: Wit, CustomStringConvertible {
             
             for rel in relations { // list for relation class
                 
-                var nodeType: relation
+                var bFound = false
                 
-                var tempChild: WitNode
-                
-                switch rel.rel {
-                case relation.related.rawValue:
-                    nodeType = relation.related
+                for child in self.children ?? [] { // check if it's a duplicate
                     
-                case relation.file.rawValue:
-                    nodeType = relation.file
-                    
-                case relation.child.rawValue:
-                    nodeType = relation.child
-                    
-                case relation.parent.rawValue:
-                    nodeType = relation.parent
-                    
-                default:
-                    nodeType = relation.root
-                }
-
-                switch nodeType {
-                case relation.file:
-                    tempChild = WitNode(witID: rel.id, description: "\(nodeType.rawValue): \(rel.attributes.name)", nodeType: nodeType)
-
-                default:
-                    tempChild = WitNode(witID: rel.id, description: "\(rel.attributes.name): \(rel.id)", nodeType: nodeType)
+                    if child.witID == rel.id {
+                        
+                        if DEBUG_INFO { print("DUPLICATE: \(rel.id)") }
+                        
+                        bFound = true
+                        break
+                    }
                 }
                 
-                let child: WitNode = tempChild
-                                
-                self.children?.append(child)
+                if !bFound { // do not add duplicate ids to the hierarchy
+                    
+                    var nodeType: relation
+                    
+                    var tempChild: WitNode
+                    
+                    switch rel.rel {
+                    case relation.related.rawValue:
+                        nodeType = relation.related
+                        
+                    case relation.child.rawValue:
+                        nodeType = relation.child
+                        
+                    case relation.parent.rawValue:
+                        nodeType = relation.parent
+
+                    case relation.predecessor.rawValue:
+                        nodeType = relation.predecessor
+                    
+                    case relation.pullRequest.rawValue:
+                        nodeType = relation.pullRequest
+                        
+                    case relation.file.rawValue:
+                        nodeType = relation.file
+
+                    default:
+                        nodeType = relation.root
+                    }
+                    
+                    switch nodeType {
+                    case relation.file, relation.pullRequest:
+                        tempChild = WitNode(witID: rel.id, description: "\(nodeType.rawValue): \(rel.attributes.name): \(rel.id)", nodeType: nodeType)
+                        
+                    default:
+                        tempChild = WitNode(witID: rel.id, description: "\(rel.attributes.name): \(rel.id)", nodeType: nodeType)
+                    }
+                    
+                    let child: WitNode = tempChild
+                    
+                    self.children?.append(child)
+                }
             }
         }
     }
@@ -459,7 +481,7 @@ class Relations: Codable, Identifiable, Hashable {
         
         // using values retrieved above populate the id and the relation type enum
         switch self.rel {
-        case relation.file.rawValue:
+        case relation.file.rawValue, relation.pullRequest.rawValue:
             self.id = self.attributes.id
             
         default:
