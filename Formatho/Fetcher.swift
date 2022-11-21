@@ -364,13 +364,21 @@ class Fetcher: ObservableObject {
                     self.fetched.append(info.id)
                     if DEBUG_INFO { print("fetched: \(self.fetched)") }
                     
-                    for node in self.nodes {
+                    for n in 0...(self.nodes.count - 1) {
+                        
+                        let cMax = max((self.nodes[n].children?.count ?? 0) - 1, 0) // cannot be less than zero
+                        
+                        for c in 0...(cMax) {
                             
-                        for child in node.children ?? [] {
-                            
-                            if child.nodeType != relation.file {
+                            if self.nodes[n].children![c].nodeType != relation.file {
                                 
-                                self.links(org: org, pat: pat, email: email, id: child.id)
+                                //self.links(org: org, pat: pat, email: email, node: &self.nodes[n].children![c])
+                                self.links(org: org, pat: pat, email: email, id: self.nodes[n].children![c].id, completion: { [self] node in
+                                    
+                                    if node.id != 0 {
+                                        self.nodes[n].children![c] = node
+                                    }
+                                })
                             }
                         }
                     }
@@ -379,7 +387,7 @@ class Fetcher: ObservableObject {
         }
     }
     
-    func links(org: String, pat: String, email: String, id: Int) {
+    func links(org: String, pat: String, email: String, id: Int, completion: @escaping (WitNode) -> Void) {
 
         let header = buildHeader(pat: pat, email: email)
         
@@ -398,9 +406,11 @@ class Fetcher: ObservableObject {
                 
                 switch result {
                 case .failure(let error):
-                    if HTTP_ERROR { print("Fetcher error: \(error)") }
+                    if HTTP_ERROR { print("Fetcher error \(id): \(error)") }
                     
                     self.errorMessage = error.localizedDescription
+                    
+                    completion(WitNode())
                     
                 case .success(let info):
                     if HTTP_DATA { print("Fetcher count: \([info].count)") }
@@ -408,17 +418,22 @@ class Fetcher: ObservableObject {
                     self.fetched.append(info.id)
                     if DEBUG_INFO { print("fetched: \(self.fetched)") }
                     
-                    for n in 0...(self.nodes.count - 1) {
+                    let cMax = max((info.children?.count ?? 0) - 1, 0) // cannot be less than zero
+                    
+                    for c in 0...(cMax) {
                         
-                        let cMax = max((self.nodes[n].children?.count ?? 0) - 1, 0) // cannot be less than zero
-                        
-                        for c in 0...(cMax) {
+                        if !self.fetched.contains(info.children![c].id) && info.children![c].nodeType != relation.file {
                             
-                            if self.nodes[n].children![c].id == id {
-                                self.nodes[n].children![c] = info
-                            }
+                            self.links(org: org, pat: pat, email: email, id: info.children![c].id, completion: { node in
+                                
+                                if node.id != 0 {
+                                    info.children![c] = node
+                                }
+                            })
                         }
                     }
+                    
+                    completion(info)
                 }
             }
         }
