@@ -16,22 +16,22 @@ import MobileCoreServices
 
 class Fetcher: ObservableObject {
     
-    @Published var projects: [Project] = [Project]()
-    @Published var projectNames: [String] = [String]()
+    @Published var projects: [Project] = [Project]()        // to store the list of projects in the organisation
+    @Published var projectNames: [String] = [String]()      // list of project names to display in the interface picker
     
-    @Published var wits: [Wit] = [Wit]()
-    @Published var nodes: [WitNode] = [WitNode]()
+    @Published var wits: [Wit] = [Wit]()                    // to store the list of wits from the result of a query
+    @Published var nodes: [WitNode] = [WitNode]()           // to store the list of wits in a hierarchy
     
-    @Published var wit: Wit = Wit()
-    @Published var activities: [Activity] = [Activity]()
-    @Published var query: Query = Query()
-    @Published var queries: [QueryNode] = [QueryNode]()
+    @Published var wit: Wit = Wit()                         // single wit
+    @Published var activities: [Activity] = [Activity]()    // for the latest 200 items the user has worked on
+    @Published var query: Query = Query()                   // for the list of wits on a query
+    @Published var queries: [QueryNode] = [QueryNode]()     // to store the list of queries in a hierarchy
     
-    @Published var isLoading: Bool = false
-    @Published var errorMessage: String? = nil
-    @Published var formattedWIT: AttributedString = AttributedString()
+    @Published var isLoading: Bool = false                  // if waiting for the requested data
+    @Published var errorMessage: String? = nil              // error message to be displayed on the interface
+    @Published var formattedWIT: AttributedString = AttributedString() // to manage the string that is copied to the clipboard
     
-    private var fetched: [Int] = [Int]() // list fetched for the links' tree
+    private var fetched: [Int] = [Int]()                    // list fetched for the wit links' tree
     
     let baseURL: String = "https://dev.azure.com/"
     
@@ -54,6 +54,7 @@ class Fetcher: ObservableObject {
         return header
     }
     
+    // to get the list of projects accessible to the user
     func projects(org: String, pat: String, email: String) {
         
         let header = buildHeader(pat: pat, email: email)
@@ -62,6 +63,7 @@ class Fetcher: ObservableObject {
         self.errorMessage = nil
         
         self.projects.removeAll()
+        self.projectNames.removeAll()
         
         let prjBaseUrl: String = self.baseURL + org + "/_apis/projects"
         
@@ -84,8 +86,6 @@ class Fetcher: ObservableObject {
                     
                     self.projects = info.value
                     
-                    self.projectNames.removeAll()
-                    
                     for project in self.projects {
                         self.projectNames.append(project.name)
                     }
@@ -94,6 +94,7 @@ class Fetcher: ObservableObject {
         }
     }
     
+    // to get the list of queries accessible to the user
     func queries(org: String, pat: String, email: String, project: String) {
         
         let header = buildHeader(pat: pat, email: email)
@@ -126,7 +127,8 @@ class Fetcher: ObservableObject {
         }
     }
     
-    func accountActivity(org: String, pat: String, email: String) {
+    // to get the list of the most recent wits that the user has worked on (limited to 200)
+    func activities(org: String, pat: String, email: String) {
         
         let header = buildHeader(pat: pat, email: email)
         
@@ -153,10 +155,6 @@ class Fetcher: ObservableObject {
                     if HTTP_DATA { print("Fetcher count: \(info.count)") }
                     
                     self.activities = info.value
-                    
-                    for activity in self.activities {
-                        activity.html = "\(activity.activityType.capitalized) [\(String(format: "%d", activity.id))] \(activity.workItemType) \(activity.title): \(activity.state)"
-                    }
                 }
             }
         }
@@ -247,7 +245,7 @@ class Fetcher: ObservableObject {
                             report += wit.html
                         }
                         
-                        // if query was for only one item
+                        // if query was for only one item or multiple items but 'add to clipboard' was selected
                         if self.wits.count == 1 || cb {
                             
                             self.wit = self.wits[0]
@@ -313,6 +311,7 @@ class Fetcher: ObservableObject {
                     
                     self.query = info
                     
+                    // build id list to query for the details on wits
                     var ids: [String] = [String]()
                     
                     for workItem in self.query.workItems {

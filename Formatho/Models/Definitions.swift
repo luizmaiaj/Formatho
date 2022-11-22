@@ -28,3 +28,12 @@ enum relation: String {
     case pullRequest = "ArtifactLink"
     case file = "AttachedFile"
 }
+
+enum workItemType: String {
+    case epic = "Epic"
+    case feature = "Feature"
+    case pbi = "Product Backlog Item"
+    case impediment = "Impediment"
+    case bug = "Bug"
+    case task = "Task"
+}
