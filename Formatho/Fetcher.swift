@@ -365,18 +365,21 @@ class Fetcher: ObservableObject {
                     
                     for n in 0...(self.nodes.count - 1) {
                         
-                        let cMax = max((self.nodes[n].children?.count ?? 0) - 1, 0) // cannot be less than zero
-                        
-                        for c in 0...(cMax) {
+                        if self.nodes[n].children != nil {
                             
-                            if !self.fetched.contains(self.nodes[n].children![c].witID) && self.nodes[n].children![c].nodeType != relation.file && self.nodes[n].children![c].nodeType != relation.pullRequest {
+                            let cMax = max((self.nodes[n].children?.count ?? 0) - 1, 0) // cannot be less than zero
+                            
+                            for c in 0...(cMax) {
                                 
-                                self.links(org: org, pat: pat, email: email, id: self.nodes[n].children![c].witID, completion: { [self] node in
+                                if !self.fetched.contains(self.nodes[n].children![c].witID) && self.nodes[n].children![c].nodeType != relation.file && self.nodes[n].children![c].nodeType != relation.pullRequest {
                                     
-                                    if node.witID != 0 {
-                                        self.nodes[n].children![c] = node
-                                    }
-                                })
+                                    self.links(org: org, pat: pat, email: email, id: self.nodes[n].children![c].witID, completion: { [self] node in
+                                        
+                                        if node.witID != 0 {
+                                            self.nodes[n].children![c] = node
+                                        }
+                                    })
+                                }
                             }
                         }
                     }
