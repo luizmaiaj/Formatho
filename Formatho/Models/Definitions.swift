@@ -8,7 +8,7 @@
 import Foundation
 
 // for debugging
-let HTTP_DATA = false
+let HTTP_DATA = true
 let HTTP_ERROR = true
 let DEBUG_INFO = false
 let DEBUG_BUTTON = false

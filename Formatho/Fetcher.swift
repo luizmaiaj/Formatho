@@ -102,7 +102,7 @@ class Fetcher: ObservableObject {
         self.isLoading = true
         errorMessage = nil
         
-        let prjBaseUrl: String = self.baseURL + org + "/" + project + "/_apis/wit/queries?$depth=2"
+        let prjBaseUrl: String = self.baseURL + org + "/" + project + "/_apis/wit/queries?$depth=0"
         
         let url = NSURL(string: prjBaseUrl)! as URL
         
@@ -122,11 +122,71 @@ class Fetcher: ObservableObject {
                     if HTTP_DATA { print("Fetcher count: \(info.count)") }
                     
                     self.queries = info.value
+                                       
+                    for q in 0...(self.queries.count - 1) {
+                        
+                        if self.queries[q].isFolder {
+                            
+                            self.queries(org: org, pat: pat, email: email, project: project, queryID: self.queries[q].id, completion: { [self] query in
+                                
+                                self.queries[q].children = query
+                            })
+                        }
+                    }
                 }
             }
         }
     }
     
+    // GET https://dev.azure.com/{organization}/{project}/_apis/wit/queries/{query}?$expand={$expand}&$depth={$depth}&$includeDeleted={$includeDeleted}&$useIsoDateFormat={$useIsoDateFormat}&api-version=7.1-preview.2
+    func queries(org: String, pat: String, email: String, project: String, queryID: String, completion: @escaping ([QueryNode]) -> Void) {
+        
+        let header = buildHeader(pat: pat, email: email)
+        
+        self.isLoading = true
+        errorMessage = nil
+        
+        //let prjBaseUrl: String = self.baseURL + org + "/" + project + "/_apis/wit/queries/" + queryID + "?$depth=0"
+        let prjBaseUrl: String = self.baseURL + org + "/" + project + "/_apis/wit/queries/" + queryID + "?"
+        
+        //GET https://dev.azure.com/fabrikam/Fabrikam-Fiber-Git/_apis/wit/queries/{query}?api-version=7.1-preview.2
+        
+        let url = NSURL(string: prjBaseUrl)! as URL
+        
+        self.service.fetch(Queries.self, url: url, headers: header) { [unowned self] result in
+            
+            DispatchQueue.main.async {
+                
+                self.isLoading = false
+                
+                switch result {
+                case .failure(let error):
+                    if HTTP_ERROR { print("Fetcher error: \(error)") }
+                    
+                    self.errorMessage = error.localizedDescription
+                    
+                    completion([QueryNode]())
+                    
+                case .success(let info):
+                    if HTTP_DATA { print("Fetcher count: \(info.count)") }
+                    
+                    for q in 0...(info.value.count - 1) {
+                        
+                        if info.value[q].isFolder {
+                            
+                            self.queries(org: org, pat: pat, email: email, project: project, queryID: info.value[q].id, completion: { query in
+                                
+                                info.value[q].children = query
+                            })
+                        }
+                    }
+
+                    completion(info.value)
+                }
+            }
+        }
+    }
+
     // to get the list of the most recent wits that the user has worked on (limited to 200)
     func activities(org: String, pat: String, email: String) {
         
@@ -438,6 +498,5 @@ class Fetcher: ObservableObject {
                 }
             }
         }
-
     }
 }

@@ -718,7 +718,7 @@ class QueryNode: Codable, Identifiable, Hashable, CustomStringConvertible {
     let lastModifiedDate: String
     let isFolder: Bool
     let hasChildren: Bool
-    let children: [QueryNode]?
+    var children: [QueryNode]?
     let queryType: String
     let isPublic: Bool
     let lastExecutedDate: String
