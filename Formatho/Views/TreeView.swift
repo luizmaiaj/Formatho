@@ -56,7 +56,22 @@ struct TreeView: View {
                     List {
                         OutlineGroup(fetcher.nodes, children: \.children) { item in
                             
-                            Text("\(item.description)")
+                            switch item.fields.SystemWorkItemType {
+                            case workItemType.epic.rawValue:
+                                Text("􀦅 \(item.description)")
+                            case workItemType.feature.rawValue:
+                                Text("􀠏 \(item.description)")
+                            case workItemType.impediment.rawValue:
+                                Text("􀳇 \(item.description)")
+                            case workItemType.pbi.rawValue:
+                                Text("􀉆 \(item.description)")
+                            case workItemType.bug.rawValue:
+                                Text("􀯔 \(item.description)")
+                            case workItemType.task.rawValue:
+                                Text("􀡮 \(item.description)")
+                            default:
+                                Text("\(item.description)")
+                            }
                         }
                     }
                     .padding()

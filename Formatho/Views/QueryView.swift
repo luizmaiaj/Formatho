@@ -50,14 +50,14 @@ struct QueryView: View {
                                 
                                 if !item.isFolder {
                                     
-                                    Button("\(item.description)", action: {
+                                    Button("📄 \(item.description)", action: {
                                         queryid = item.id
                                         
                                         fetchWits()
                                     })
                                     
                                 } else {
-                                    Text("\(item.description)")
+                                    Text("📂 \(item.description)")
                                 }
                             }
                         }

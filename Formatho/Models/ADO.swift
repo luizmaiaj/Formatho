@@ -114,7 +114,6 @@ class Activity: Codable, Identifiable, Hashable {
         teamProject = ""
         activityDate = ""
         activityType = ""
-        html = ""
     }
     
     required init(from decoder: Decoder) throws {
@@ -144,8 +143,6 @@ class Activity: Codable, Identifiable, Hashable {
         
         do { self.activityType = try values.decode(String.self, forKey: .activityType)
         } catch { self.activityType = "" }
-        
-        self.html = "" // to be filled later
     }
     
     // equatable
@@ -166,7 +163,6 @@ class Activity: Codable, Identifiable, Hashable {
     let teamProject: String
     let activityDate: String
     let activityType: String
-    var html: String
 }
 
 class Wits: Codable, Identifiable {
@@ -702,7 +698,7 @@ class QueryNode: Codable, Identifiable, Hashable, CustomStringConvertible {
         do { self.url = try values.decode(String.self, forKey: .url)
         } catch { self.url = "" }
         
-        description = isFolder ? "📂 \(name)" : "📄 \(name)"
+        description = "\(name)"
     }
     
     // equatable
@@ -722,7 +718,7 @@ class QueryNode: Codable, Identifiable, Hashable, CustomStringConvertible {
     let lastModifiedDate: String
     let isFolder: Bool
     let hasChildren: Bool
-    let children: [QueryNode]?
+    var children: [QueryNode]?
     let queryType: String
     let isPublic: Bool
     let lastExecutedDate: String

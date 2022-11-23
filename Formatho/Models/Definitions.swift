@@ -8,7 +8,7 @@
 import Foundation
 
 // for debugging
-let HTTP_DATA = false
+let HTTP_DATA = true
 let HTTP_ERROR = true
 let DEBUG_INFO = false
 let DEBUG_BUTTON = false
@@ -27,4 +27,13 @@ enum relation: String {
     case predecessor = "System.LinkTypes.Dependency-Reverse"
     case pullRequest = "ArtifactLink"
     case file = "AttachedFile"
+}
+
+enum workItemType: String {
+    case epic = "Epic"
+    case feature = "Feature"
+    case pbi = "Product Backlog Item"
+    case impediment = "Impediment"
+    case bug = "Bug"
+    case task = "Task"
 }
