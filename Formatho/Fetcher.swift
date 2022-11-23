@@ -102,7 +102,7 @@ class Fetcher: ObservableObject {
         self.isLoading = true
         errorMessage = nil
         
-        let prjBaseUrl: String = self.baseURL + org + "/" + project + "/_apis/wit/queries?$depth=0"
+        let prjBaseUrl: String = self.baseURL + org + "/" + project + "/_apis/wit/queries?$depth=2"
         
         let url = NSURL(string: prjBaseUrl)! as URL
         
@@ -125,20 +125,34 @@ class Fetcher: ObservableObject {
                                        
                     for q in 0...(self.queries.count - 1) {
                         
-                        if self.queries[q].isFolder {
+                        if self.queries[q].children == nil {
                             
                             self.queries(org: org, pat: pat, email: email, project: project, queryID: self.queries[q].id, completion: { [self] query in
                                 
                                 self.queries[q].children = query
                             })
+                        } else {
+                            
+                            let cMax = max(self.queries[q].children!.count - 1, 0) // cannot be less than zero
+                            
+                            for c in 0...(cMax) {
+                                
+                                if self.queries[q].children![c].isFolder {
+                                    
+                                    self.queries(org: org, pat: pat, email: email, project: project, queryID: self.queries[q].children![c].id, completion: { query in
+                                        
+                                        self.queries[q].children = query
+                                    })
+                                }
+                            }
                         }
+
                     }
                 }
             }
         }
     }
     
-    // GET https://dev.azure.com/{organization}/{project}/_apis/wit/queries/{query}?$expand={$expand}&$depth={$depth}&$includeDeleted={$includeDeleted}&$useIsoDateFormat={$useIsoDateFormat}&api-version=7.1-preview.2
     func queries(org: String, pat: String, email: String, project: String, queryID: String, completion: @escaping ([QueryNode]) -> Void) {
         
         let header = buildHeader(pat: pat, email: email)
@@ -146,10 +160,7 @@ class Fetcher: ObservableObject {
         self.isLoading = true
         errorMessage = nil
         
-        //let prjBaseUrl: String = self.baseURL + org + "/" + project + "/_apis/wit/queries/" + queryID + "?$depth=0"
-        let prjBaseUrl: String = self.baseURL + org + "/" + project + "/_apis/wit/queries/" + queryID + "?"
-        
-        //GET https://dev.azure.com/fabrikam/Fabrikam-Fiber-Git/_apis/wit/queries/{query}?api-version=7.1-preview.2
+        let prjBaseUrl: String = self.baseURL + org + "/" + project + "/_apis/wit/queries/" + queryID + "?$depth=2"
         
         let url = NSURL(string: prjBaseUrl)! as URL
         
@@ -174,10 +185,26 @@ class Fetcher: ObservableObject {
                         
                         if info.value[q].isFolder {
                             
-                            self.queries(org: org, pat: pat, email: email, project: project, queryID: info.value[q].id, completion: { query in
+                            if info.value[q].children == nil {
+                                self.queries(org: org, pat: pat, email: email, project: project, queryID: info.value[q].id, completion: { query in
+                                    
+                                    info.value[q].children = query
+                                })
+                            } else {
                                 
-                                info.value[q].children = query
-                            })
+                                let cMax = max(info.value[q].children!.count - 1, 0) // cannot be less than zero
+                                
+                                for c in 0...(cMax) {
+                                    
+                                    if info.value[q].children![c].isFolder {
+                                        
+                                        self.queries(org: org, pat: pat, email: email, project: project, queryID: info.value[q].children![c].id, completion: { query in
+                                            
+                                            info.value[q].children = query
+                                        })
+                                    }
+                                }
+                            }
                         }
                     }
 
