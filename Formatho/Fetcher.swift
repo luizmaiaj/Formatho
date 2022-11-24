@@ -54,6 +54,12 @@ class Fetcher: ObservableObject {
         return header
     }
     
+    // return a formatted query name and id for the prints
+    private func printQuery(title: String, query: QueryNode) {
+        
+        if DEBUG_INFO { print("\(title) \(query.name):\(query.id)") }
+    }
+    
     // to get the list of projects accessible to the user
     func projects(org: String, pat: String, email: String) {
         
@@ -102,7 +108,7 @@ class Fetcher: ObservableObject {
         self.isLoading = true
         errorMessage = nil
         
-        let prjBaseUrl: String = self.baseURL + org + "/" + project + "/_apis/wit/queries?$depth=2"
+        let prjBaseUrl: String = self.baseURL + org + "/" + project + "/_apis/wit/queries?$depth=1"
         
         let url = NSURL(string: prjBaseUrl)! as URL
         
@@ -122,49 +128,46 @@ class Fetcher: ObservableObject {
                     if HTTP_DATA { print("Fetcher count: \(info.count)") }
                     
                     self.queries = info.value
-                                       
+                    
                     for q in 0...(self.queries.count - 1) {
                         
-                        if self.queries[q].children == nil {
+                        self.printQuery(title: "ROOT", query: self.queries[q])
+                        
+                        if self.queries[q].children != nil { // must have children as this first query is on the root folder
                             
-                            self.queries(org: org, pat: pat, email: email, project: project, queryID: self.queries[q].id, completion: { [self] query in
-                                
-                                self.queries[q].children = query
-                            })
-                        } else {
-                            
-                            let cMax = max(self.queries[q].children!.count - 1, 0) // cannot be less than zero
-                            
-                            for c in 0...(cMax) {
+                            for c in 0...(self.queries[q].children!.count - 1) { // already checked if array is not empty
                                 
                                 if self.queries[q].children![c].isFolder {
                                     
+                                    self.printQuery(title: "GET CHILDREN", query: self.queries[q].children![c])
+                                    
                                     self.queries(org: org, pat: pat, email: email, project: project, queryID: self.queries[q].children![c].id, completion: { query in
                                         
-                                        self.queries[q].children = query
+                                        self.queries[q].children![c] = query
                                     })
                                 }
                             }
                         }
-
                     }
                 }
             }
         }
     }
     
-    func queries(org: String, pat: String, email: String, project: String, queryID: String, completion: @escaping ([QueryNode]) -> Void) {
+    func queries(org: String, pat: String, email: String, project: String, queryID: String, completion: @escaping (QueryNode) -> Void) {
         
         let header = buildHeader(pat: pat, email: email)
         
         self.isLoading = true
         errorMessage = nil
         
-        let prjBaseUrl: String = self.baseURL + org + "/" + project + "/_apis/wit/queries/" + queryID + "?$depth=2"
+        let prjBaseUrl: String = self.baseURL + org + "/" + project + "/_apis/wit/queries/" + queryID + "?$depth=1"
+        
+        print("GET request: \(prjBaseUrl)")
         
         let url = NSURL(string: prjBaseUrl)! as URL
         
-        self.service.fetch(Queries.self, url: url, headers: header) { [unowned self] result in
+        self.service.fetch(QueryNode.self, url: url, headers: header) { [unowned self] result in
             
             DispatchQueue.main.async {
                 
@@ -176,44 +179,36 @@ class Fetcher: ObservableObject {
                     
                     self.errorMessage = error.localizedDescription
                     
-                    completion([QueryNode]())
+                    completion(QueryNode())
                     
                 case .success(let info):
-                    if HTTP_DATA { print("Fetcher count: \(info.count)") }
                     
-                    for q in 0...(info.value.count - 1) {
+                    self.printQuery(title: "REC parent", query: info)
+                    
+                    if info.isFolder && info.children != nil {
                         
-                        if info.value[q].isFolder {
+                        for c in 0...(info.children!.count - 1) {
                             
-                            if info.value[q].children == nil {
-                                self.queries(org: org, pat: pat, email: email, project: project, queryID: info.value[q].id, completion: { query in
-                                    
-                                    info.value[q].children = query
-                                })
-                            } else {
+                            if info.children![c].isFolder {
                                 
-                                let cMax = max(info.value[q].children!.count - 1, 0) // cannot be less than zero
+                                self.printQuery(title: "REC children", query: info.children![c])
                                 
-                                for c in 0...(cMax) {
+                                self.queries(org: org, pat: pat, email: email, project: project, queryID: info.children![c].id, completion: { query in
                                     
-                                    if info.value[q].children![c].isFolder {
-                                        
-                                        self.queries(org: org, pat: pat, email: email, project: project, queryID: info.value[q].children![c].id, completion: { query in
-                                            
-                                            info.value[q].children = query
-                                        })
+                                    if query.children != nil {
+                                        info.children![c] = query
                                     }
-                                }
+                                })
                             }
                         }
                     }
-
-                    completion(info.value)
+                    
+                    completion(info)
                 }
             }
         }
     }
-
+    
     // to get the list of the most recent wits that the user has worked on (limited to 200)
     func activities(org: String, pat: String, email: String) {
         
@@ -476,7 +471,7 @@ class Fetcher: ObservableObject {
     }
     
     func links(org: String, pat: String, email: String, id: Int, completion: @escaping (WitNode) -> Void) {
-
+        
         let header = buildHeader(pat: pat, email: email)
         
         self.isLoading = true
