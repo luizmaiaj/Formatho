@@ -163,8 +163,6 @@ class Fetcher: ObservableObject {
         
         let prjBaseUrl: String = self.baseURL + org + "/" + project + "/_apis/wit/queries/" + queryID + "?$depth=1"
         
-        print("GET request: \(prjBaseUrl)")
-        
         let url = NSURL(string: prjBaseUrl)! as URL
         
         self.service.fetch(QueryNode.self, url: url, headers: header) { [unowned self] result in

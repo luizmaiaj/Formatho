@@ -58,17 +58,33 @@ struct TreeView: View {
                             
                             switch item.fields.SystemWorkItemType {
                             case workItemType.epic.rawValue:
-                                Text("􀦅 \(item.description)")
+                                Text(Image(systemName: "crown.fill"))
+                                    .foregroundColor(.orange)
+                                + Text(" \(item.description)")
+                            case workItemType.userStory.rawValue:
+                                Text(Image(systemName: "book.fill"))
+                                    .foregroundColor(.blue)
+                                + Text(" \(item.description)")
                             case workItemType.feature.rawValue:
-                                Text("􀠏 \(item.description)")
-                            case workItemType.impediment.rawValue:
-                                Text("􀳇 \(item.description)")
+                                Text(Image(systemName: "trophy.fill"))
+                                    .foregroundColor(.purple)
+                                + Text(" \(item.description)")
+                            case workItemType.issue.rawValue, workItemType.impediment.rawValue:
+                                Text(Image(systemName: "cone.fill"))
+                                    .foregroundColor(.purple)
+                                + Text(" \(item.description)")
                             case workItemType.pbi.rawValue:
-                                Text("􀉆 \(item.description)")
+                                Text(Image(systemName: "doc.plaintext.fill"))
+                                    .foregroundColor(.blue)
+                                + Text(" \(item.description)")
                             case workItemType.bug.rawValue:
-                                Text("􀯔 \(item.description)")
+                                Text(Image(systemName: "ladybug.fill"))
+                                    .foregroundColor(.red)
+                                + Text(" \(item.description)")
                             case workItemType.task.rawValue:
-                                Text("􀡮 \(item.description)")
+                                Text(Image(systemName: "checkmark.rectangle.portrait.fill"))
+                                    .foregroundColor(.yellow)
+                                + Text(" \(item.description)")
                             default:
                                 Text("\(item.description)")
                             }
