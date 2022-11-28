@@ -108,6 +108,7 @@ class Fetcher: ObservableObject {
         
         self.isLoading = true
         errorMessage = nil
+        statusMessage = nil
         
         let prjBaseUrl: String = self.baseURL + org + "/" + project + "/_apis/wit/queries?$depth=1"
         
@@ -162,7 +163,7 @@ class Fetcher: ObservableObject {
         let header = buildHeader(pat: pat, email: email)
         
         self.isLoading = true
-        errorMessage = nil
+        self.statusMessage = queryID
         
         let prjBaseUrl: String = self.baseURL + org + "/" + project + "/_apis/wit/queries/" + queryID + "?$depth=1"
         
@@ -194,9 +195,7 @@ class Fetcher: ObservableObject {
                             
                             if info.children![c].isFolder {
                                 
-                                self.printQuery(title: "REC children", query: info.children![c])
-                                
-                                self.statusMessage = info.children![c].name
+                                if DEBUG_INFO { self.printQuery(title: "REC children", query: info.children![c]) }
                                 
                                 self.queries(org: org, pat: pat, email: email, project: project, queryID: info.children![c].id, completion: { query in
                                     
@@ -423,6 +422,7 @@ class Fetcher: ObservableObject {
         
         self.isLoading = true
         errorMessage = nil
+        self.statusMessage = id
         
         self.nodes.removeAll()
         
@@ -482,7 +482,7 @@ class Fetcher: ObservableObject {
         let header = buildHeader(pat: pat, email: email)
         
         self.isLoading = true
-        errorMessage = nil
+        self.statusMessage = "\(id)"
         
         let witBaseUrl: String = self.baseURL + org + "/_apis/wit/workitems/" + "\(id)" + "?$expand=relations"
         
@@ -508,6 +508,7 @@ class Fetcher: ObservableObject {
                     if HTTP_DATA { print("Fetcher count: \([info].count)") }
                     
                     self.fetched.append(info.witID)
+                    
                     if DEBUG_INFO { print("fetched: \(self.fetched)") }
                     
                     let cMax = max((info.children?.count ?? 0) - 1, 0) // cannot be less than zero

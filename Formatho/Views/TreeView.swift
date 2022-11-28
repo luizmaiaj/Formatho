@@ -24,12 +24,41 @@ struct TreeView: View {
         self.fetcher.links(org: organisation, pat: pat, email: email, id: witid)
     }
     
+    func witIcon(type: String) -> Text {
+
+            switch type {
+            case workItemType.epic.rawValue:
+                return Text(Image(systemName: "crown.fill")).foregroundColor(.orange)
+                
+            case workItemType.userStory.rawValue:
+                return Text(Image(systemName: "book.fill")).foregroundColor(.blue)
+                
+            case workItemType.feature.rawValue:
+                return Text(Image(systemName: "trophy.fill")).foregroundColor(.purple)
+
+            case workItemType.issue.rawValue, workItemType.impediment.rawValue:
+                return Text(Image(systemName: "cone.fill")).foregroundColor(.purple)
+
+            case workItemType.pbi.rawValue:
+                return Text(Image(systemName: "doc.plaintext.fill")).foregroundColor(.blue)
+
+            case workItemType.bug.rawValue:
+                return Text(Image(systemName: "ladybug.fill")).foregroundColor(.red)
+
+            case workItemType.task.rawValue:
+                return Text(Image(systemName: "checkmark.rectangle.portrait.fill")).foregroundColor(.yellow)
+
+            default:
+                return Text(Image(systemName: "questionmark.square.dashed")).foregroundColor(.red)
+            }
+    }
+    
     var body: some View {
         VStack {
             
             if self.fetcher.isLoading {
                 
-                Text("Fetching...")
+                Text("Fetching \(self.fetcher.statusMessage ?? "")...")
                 
             } else {
                 
@@ -56,38 +85,8 @@ struct TreeView: View {
                     List {
                         OutlineGroup(fetcher.nodes, children: \.children) { item in
                             
-                            switch item.fields.SystemWorkItemType {
-                            case workItemType.epic.rawValue:
-                                Text(Image(systemName: "crown.fill"))
-                                    .foregroundColor(.orange)
-                                + Text(" \(item.description)")
-                            case workItemType.userStory.rawValue:
-                                Text(Image(systemName: "book.fill"))
-                                    .foregroundColor(.blue)
-                                + Text(" \(item.description)")
-                            case workItemType.feature.rawValue:
-                                Text(Image(systemName: "trophy.fill"))
-                                    .foregroundColor(.purple)
-                                + Text(" \(item.description)")
-                            case workItemType.issue.rawValue, workItemType.impediment.rawValue:
-                                Text(Image(systemName: "cone.fill"))
-                                    .foregroundColor(.purple)
-                                + Text(" \(item.description)")
-                            case workItemType.pbi.rawValue:
-                                Text(Image(systemName: "doc.plaintext.fill"))
-                                    .foregroundColor(.blue)
-                                + Text(" \(item.description)")
-                            case workItemType.bug.rawValue:
-                                Text(Image(systemName: "ladybug.fill"))
-                                    .foregroundColor(.red)
-                                + Text(" \(item.description)")
-                            case workItemType.task.rawValue:
-                                Text(Image(systemName: "checkmark.rectangle.portrait.fill"))
-                                    .foregroundColor(.yellow)
-                                + Text(" \(item.description)")
-                            default:
-                                Text("\(item.description)")
-                            }
+                            witIcon(type: item.fields.SystemWorkItemType)
+                            + Text(" \(item.description)")
                         }
                     }
                     .padding()
