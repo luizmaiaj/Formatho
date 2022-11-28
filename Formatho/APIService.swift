@@ -20,7 +20,6 @@ struct APIService {
         let request = NSMutableURLRequest(url: url,
                                           cachePolicy: .useProtocolCachePolicy,
                                           timeoutInterval: 10.0)
-        //self.errorMessage = APIError.badURL.localizedDescription
         
         request.httpMethod = "GET"
         
@@ -31,7 +30,9 @@ struct APIService {
         let task = URLSession.shared.dataTask(with: request as URLRequest) {(data, response, error) in
             
             if let error = error as? URLError {
+                
                 completion(Result.failure(APIError.url(error)))
+                
             } else if let response = response as? HTTPURLResponse, !(200...299).contains(response.statusCode) {
                 // ERROR
                 if HTTP_ERROR {
@@ -39,6 +40,7 @@ struct APIService {
                 }
                 
                 completion(Result.failure(APIError.badResponse(statusCode: response.statusCode)))
+                
             } else if let data = data {
                 
                 if HTTP_DATA {

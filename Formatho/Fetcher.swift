@@ -28,6 +28,7 @@ class Fetcher: ObservableObject {
     @Published var queries: [QueryNode] = [QueryNode]()     // to store the list of queries in a hierarchy
     
     @Published var isLoading: Bool = false                  // if waiting for the requested data
+    @Published var statusMessage: String? = nil
     @Published var errorMessage: String? = nil              // error message to be displayed on the interface
     @Published var formattedWIT: AttributedString = AttributedString() // to manage the string that is copied to the clipboard
     
@@ -141,6 +142,8 @@ class Fetcher: ObservableObject {
                                     
                                     self.printQuery(title: "GET CHILDREN", query: self.queries[q].children![c])
                                     
+                                    self.statusMessage = self.queries[q].children![c].name
+                                    
                                     self.queries(org: org, pat: pat, email: email, project: project, queryID: self.queries[q].children![c].id, completion: { query in
                                         
                                         self.queries[q].children![c] = query
@@ -169,13 +172,15 @@ class Fetcher: ObservableObject {
             
             DispatchQueue.main.async {
                 
-                self.isLoading = false
+                //self.isLoading = false // moved to just before completion to avoid having the screen flashing
                 
                 switch result {
                 case .failure(let error):
                     if HTTP_ERROR { print("Fetcher error: \(error)") }
                     
                     self.errorMessage = error.localizedDescription
+                    
+                    self.isLoading = false  // under test
                     
                     completion(QueryNode())
                     
@@ -191,6 +196,8 @@ class Fetcher: ObservableObject {
                                 
                                 self.printQuery(title: "REC children", query: info.children![c])
                                 
+                                self.statusMessage = info.children![c].name
+                                
                                 self.queries(org: org, pat: pat, email: email, project: project, queryID: info.children![c].id, completion: { query in
                                     
                                     if query.children != nil {
@@ -200,6 +207,8 @@ class Fetcher: ObservableObject {
                             }
                         }
                     }
+                    
+                    self.isLoading = false // under test
                     
                     completion(info)
                 }
@@ -483,13 +492,15 @@ class Fetcher: ObservableObject {
             
             DispatchQueue.main.async {
                 
-                self.isLoading = false
+                // self.isLoading = false // moved to just before completion to avoid flashing screen
                 
                 switch result {
                 case .failure(let error):
                     if HTTP_ERROR { print("Fetcher error wit id \(id): \(error)") }
                     
                     self.errorMessage = error.localizedDescription
+                    
+                    self.isLoading = false  // under test
                     
                     completion(WitNode())
                     
@@ -513,6 +524,8 @@ class Fetcher: ObservableObject {
                             })
                         }
                     }
+                    
+                    self.isLoading = false // under test
                     
                     completion(info)
                 }
