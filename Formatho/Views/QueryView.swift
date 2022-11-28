@@ -122,11 +122,20 @@ struct WitTable: View {
             TableColumn("Priority") { wit in
                 Text("P" + String(format: "%d", wit.fields.MicrosoftVSTSCommonPriority))
             }
-            TableColumn("Type", value: \.fields.SystemWorkItemType)
+            .width(max: 30)
+            
+            TableColumn("Type") { wit in
+                witIcon(type: wit.fields.SystemWorkItemType)
+            }
+            .width(max: 30)
+            
             TableColumn("Title", value: \.fields.SystemTitle)
+            
             TableColumn("id") { wit in
                 Text(String(format: "%d", wit.witID)) // removing reference
             }
+            .width(max: 50)
+            
             TableColumn("Report") { wit in
                 Text(wit.fields.CustomReport.toRTF())
             }

@@ -54,7 +54,10 @@ struct WitView: View {
                 
                 if !fetcher.wits.isEmpty {
                     
-                    Text(fetcher.wit.html.toRTF())
+                    Group {
+                        witIcon(type: fetcher.wit.fields.SystemWorkItemType)
+                        + Text(fetcher.wit.html.toRTF())
+                    }
                         .frame(minHeight: 30)
                 }
                 

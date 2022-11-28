@@ -5,7 +5,7 @@
 //  Created by Luiz Carlos Maia Junior on 13/10/22.
 //
 
-import Foundation
+import SwiftUI
 
 extension Array: RawRepresentable where Element: Codable {
     public init?(rawValue: String) {
@@ -43,4 +43,33 @@ func getWit(url: String) -> String {
 func getWitNumber(url: String) -> Int {
     
     return Int(getWit(url: url)) ?? 0
+}
+
+func witIcon(type: String) -> Text {
+
+        switch type {
+        case workItemType.epic.rawValue:
+            return Text(Image(systemName: "crown.fill")).foregroundColor(.orange)
+            
+        case workItemType.userStory.rawValue:
+            return Text(Image(systemName: "book.fill")).foregroundColor(.blue)
+            
+        case workItemType.feature.rawValue:
+            return Text(Image(systemName: "trophy.fill")).foregroundColor(.purple)
+
+        case workItemType.issue.rawValue, workItemType.impediment.rawValue:
+            return Text(Image(systemName: "cone.fill")).foregroundColor(.purple)
+
+        case workItemType.pbi.rawValue:
+            return Text(Image(systemName: "doc.plaintext.fill")).foregroundColor(.blue)
+
+        case workItemType.bug.rawValue:
+            return Text(Image(systemName: "ladybug.fill")).foregroundColor(.red)
+
+        case workItemType.task.rawValue:
+            return Text(Image(systemName: "checkmark.rectangle.portrait.fill")).foregroundColor(.yellow)
+
+        default:
+            return Text(Image(systemName: "questionmark.square.dashed")).foregroundColor(.red)
+        }
 }

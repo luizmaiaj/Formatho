@@ -60,12 +60,22 @@ struct ActivityTable: View {
         
         Table(activities) {
             TableColumn("Activity", value: \.activityType.capitalized)
-            TableColumn("Type", value: \.workItemType)
+                .width(max: 50)
+            
+            TableColumn("Type") { activity in
+                witIcon(type: activity.workItemType)
+            }
+            .width(max: 30)
+            
             TableColumn("Title", value: \.title)
+            
             TableColumn("id") { activity in
                 Text(String(format: "%d", activity.id)) // removing reference
             }
+            .width(max: 50)
+            
             TableColumn("State", value: \.state)
+                .width(max: 90)
         }
         .frame(minHeight: 30)
     }
