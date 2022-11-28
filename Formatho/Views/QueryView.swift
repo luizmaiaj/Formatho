@@ -20,21 +20,23 @@ struct QueryView: View {
     @AppStorage("addReport") private var addReport: Bool = false
     
     @ObservedObject var fetcher: Fetcher
+    @StateObject var qFetcher: Fetcher = Fetcher()
     
     private func fetchWits() {
         self.fetcher.query(org: organisation, pat: pat, email: email, queryid: queryid, project: project, cb: copyToCB, addReport: addReport)
     }
     
     private func fetchQueries() {
-        self.fetcher.queries(org: organisation, pat: pat, email: email, project: project)
+        self.qFetcher.queries(org: organisation, pat: pat, email: email, project: project)
     }
     
     var body: some View {
         
         HStack {
-            if fetcher.isLoading {
+            
+            if qFetcher.isLoading {
                 
-                Text("Fetching \(fetcher.statusMessage ?? "")...")
+                Text("Fetching \(qFetcher.statusMessage ?? "")...")
                 
             } else {
                 
@@ -46,7 +48,7 @@ struct QueryView: View {
                     HStack {
                         
                         List {
-                            OutlineGroup(fetcher.queries, children: \.children) { item in
+                            OutlineGroup(qFetcher.queries, children: \.children) { item in
                                 
                                 if !item.isFolder {
                                     
@@ -64,13 +66,20 @@ struct QueryView: View {
                         .onAppear(){
                             
                             // if empty query if not empty user has to refresh
-                            if fetcher.queries.isEmpty {
+                            if qFetcher.queries.isEmpty {
                                 fetchQueries()
                             }
                         }
                     }
                 }
                 .padding()
+            }
+            
+            if fetcher.isLoading {
+                
+                Text("Fetching \(fetcher.statusMessage ?? "")...")
+                
+            } else {
                 
                 VStack {
                     HStack {
