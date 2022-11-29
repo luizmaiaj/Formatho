@@ -36,8 +36,6 @@ struct QueryView: View {
         
         if newWidth < QUERY_TREE_WIDTH { newWidth = QUERY_TREE_WIDTH }
         
-        print(newWidth)
-        
         return newWidth
     }
     

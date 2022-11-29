@@ -8,6 +8,7 @@
 import SwiftUI
 
 enum Tab: Int {
+    case login = 0
     case wit = 1
     case recent = 2
     case query = 3
@@ -25,24 +26,19 @@ struct ContentView: View {
     
     @StateObject var fetcher: Fetcher = Fetcher()
     
-    @State var isPresentedLogin = false
-    
     @State private var selection: Tab = Tab.wit
     
     var body: some View {
         
         VStack {
             
-            if isPresentedLogin {
-                
-                LoginView(fetcher: fetcher)
-                
-            } else if organisation.isEmpty || pat.isEmpty || email.isEmpty || project.isEmpty {
+            if (organisation.isEmpty || pat.isEmpty || email.isEmpty || project.isEmpty) && selection != Tab.login {
                 
                 Text("Please configure login")
                 
                 Button {
-                    isPresentedLogin.toggle()
+                    selection = Tab.login
+                    
                 } label: {
                     
                     HStack {
@@ -55,9 +51,16 @@ struct ContentView: View {
                 }
                 
             } else {
+                
                 TabView(selection: $selection) {
                     
 #if os(OSX)
+                    LoginView(fetcher: fetcher)
+                        .tabItem {
+                            Text("Login")
+                        }
+                        .tag(Tab.login)
+                    
                     WitView(fetcher: fetcher)
                         .tabItem {
                             Text("WIT")
@@ -99,18 +102,6 @@ struct ContentView: View {
 #endif
                 }
             }
-        }
-        .toolbar {
-#if os(OSX)
-            ToolbarItem {
-                ToolbarButton(systemName: "person.circle", email: email, value: self.$isPresentedLogin)
-            }
-#else
-            ToolbarItem(placement: .navigationBarTrailing) {
-                
-                ToolbarButton(systemName: "person.circle", email: email, value: self.$isPresentedLogin)
-            }
-#endif
         }
         .frame(minWidth: 250, idealWidth: 500)
     }
