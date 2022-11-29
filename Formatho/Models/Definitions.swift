@@ -19,6 +19,8 @@ let RELATIONS_LEVELS = 1
 // Azure DevOps limit on the number of wits that can be fetched at once
 let ADO_LIST_LIMIT: Int = 200
 
+let QUERY_TREE_WIDTH: CGFloat = 250
+
 enum relation: String {
     case root = "root"
     case related = "System.LinkTypes.Related"

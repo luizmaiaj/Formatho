@@ -30,84 +30,102 @@ struct QueryView: View {
         self.qFetcher.queries(org: organisation, pat: pat, email: email, project: project)
     }
     
+    private func queryWidth(width: CGFloat) -> CGFloat {
+        
+        var newWidth = width - QUERY_TREE_WIDTH
+        
+        if newWidth < QUERY_TREE_WIDTH { newWidth = QUERY_TREE_WIDTH }
+        
+        print(newWidth)
+        
+        return newWidth
+    }
+    
     var body: some View {
         
-        HStack {
+        GeometryReader { g in
             
-            if qFetcher.isLoading {
-                
-                Text("Fetching \(qFetcher.statusMessage ?? "")...")
-                
-            } else {
+            HStack {
                 
                 VStack {
-                    Button("Refresh queries' list", action: {
-                        fetchQueries()
-                    })
                     
-                    HStack {
+                    if qFetcher.isLoading {
                         
-                        List {
-                            OutlineGroup(qFetcher.queries, children: \.children) { item in
-                                
-                                if !item.isFolder {
+                        Text("Fetching \(qFetcher.statusMessage ?? "")...")
+                        
+                    } else {
+                        
+                        Button("Refresh queries' list", action: {
+                            fetchQueries()
+                        })
+                        
+                        HStack {
+                            
+                            List {
+                                OutlineGroup(qFetcher.queries, children: \.children) { item in
                                     
-                                    Button("📄 \(item.description)", action: {
-                                        queryid = item.id
+                                    if !item.isFolder {
                                         
-                                        fetchWits()
-                                    })
-                                    
-                                } else {
-                                    Text("📂 \(item.description)")
+                                        Button("📄 \(item.description)", action: {
+                                            queryid = item.id
+                                            
+                                            fetchWits()
+                                        })
+                                        
+                                    } else {
+                                        Text("📂 \(item.description)")
+                                    }
+                                }
+                            }
+                            .onAppear(){
+                                
+                                // if empty query if not empty user has to refresh
+                                if qFetcher.queries.isEmpty {
+                                    fetchQueries()
                                 }
                             }
                         }
-                        .onAppear(){
+                    }
+                }
+                .padding([.leading, .top, .bottom])
+                .frame(width: QUERY_TREE_WIDTH, height: g.size.height)
+                
+                VStack {
+                    
+                    if fetcher.isLoading {
+                        
+                        Text("Fetching \(fetcher.statusMessage ?? "")...")
+                        
+                    } else {
+                        
+                        HStack {
+                            Toggle("copy to clipboard", isOn: $copyToCB)
                             
-                            // if empty query if not empty user has to refresh
-                            if qFetcher.queries.isEmpty {
-                                fetchQueries()
-                            }
+                            Toggle("add report", isOn: $addReport)
+                        }
+                        
+                        HStack {
+                            
+                            TextField("QUERY ID", text: $queryid)
+                                .frame(alignment: .trailing)
+                                .frame(maxWidth: 350)
+                                .onSubmit {
+                                    fetchWits()
+                                }
+                            
+                            Button("Query", action: {
+                                fetchWits()
+                            })
+                        }
+                        
+                        if !fetcher.wits.isEmpty {
+                            
+                            WitTable(wits: self.fetcher.wits)
                         }
                     }
                 }
-                .padding()
-            }
-            
-            if fetcher.isLoading {
-                
-                Text("Fetching \(fetcher.statusMessage ?? "")...")
-                
-            } else {
-                
-                VStack {
-                    HStack {
-                        Toggle("copy to clipboard", isOn: $copyToCB)
-                        
-                        Toggle("add report", isOn: $addReport)
-                    }
-                    
-                    HStack {
-                        
-                        TextField("QUERY ID", text: $queryid)
-                            .frame(alignment: .trailing)
-                            .frame(maxWidth: 350)
-                            .onSubmit {
-                                fetchWits()
-                            }
-                        
-                        Button("Query", action: {
-                            fetchWits()
-                        })
-                    }
-                    
-                    if !fetcher.wits.isEmpty {
-                        
-                        WitTable(wits: self.fetcher.wits)
-                    }
-                }
-                .padding()
+                .padding([.trailing, .top, .bottom])
+                .frame(width: queryWidth(width: g.size.width), height: g.size.height)
                 
                 Text(self.fetcher.errorMessage ?? "")
             }

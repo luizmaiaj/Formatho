@@ -60,7 +60,6 @@ struct TreeView: View {
                             + Text(" \(item.description)")
                         }
                     }
-                    .padding()
                 }
                 
                 Text(self.fetcher.errorMessage ?? "")
