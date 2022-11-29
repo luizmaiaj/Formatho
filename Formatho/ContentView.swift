@@ -14,7 +14,6 @@ enum Tab: Int {
     case query = 3
     case graph = 4
     case tree = 5
-    case test = 6
 }
 
 struct ContentView: View {
@@ -28,6 +27,40 @@ struct ContentView: View {
     
     @State private var selection: Tab = Tab.wit
     
+    func getW() -> CGFloat { // WIDTH
+        switch selection {
+        case Tab.login:
+            return 400
+        case Tab.wit:
+            return 250
+        case Tab.recent:
+            return 400
+        case Tab.query:
+            return 600
+        case Tab.graph:
+            return 400
+        case Tab.tree:
+            return 400
+        }
+    }
+
+    func getH() -> CGFloat { // HEIGHT
+        switch selection {
+        case Tab.login:
+            return 250
+        case Tab.wit:
+            return 65
+        case Tab.recent:
+            return 250
+        case Tab.query:
+            return 250
+        case Tab.graph:
+            return 250
+        case Tab.tree:
+            return 250
+        }
+    }
+
     var body: some View {
         
         VStack {
@@ -103,7 +136,7 @@ struct ContentView: View {
                 }
             }
         }
-        .frame(minWidth: 250, idealWidth: 500)
+        .frame(minWidth: getW(), minHeight: getH())
     }
 }
 
