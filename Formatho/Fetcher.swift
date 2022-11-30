@@ -293,7 +293,7 @@ class Fetcher: ObservableObject {
             
             idList = idList.trimmingCharacters(in: [","])
             
-            print(idList)
+            if DEBUG_INFO { print("Fetcher::wits \(idList)") }
             
             let witBaseUrl: String = baseURL + org + "/_apis/wit/workitems?ids=" + idList
             
@@ -357,10 +357,28 @@ class Fetcher: ObservableObject {
                                 self.pboard.writeObjects(NSArray(object: nsAttrString) as! [NSPasteboardWriting])
 #else
                                 
+                                do {
+                                    let rtf = try nsAttrString.data(from: NSMakeRange(0, nsAttrString.length), documentAttributes: [NSAttributedString.DocumentAttributeKey.documentType : NSAttributedString.DocumentType.rtf])
+                                    
+                                    //UIPasteboard.general.setData(rtf, forPasteboardType: kUTTypeRTF as String)
+                                    UIPasteboard.general.setData(rtf, forPasteboardType: "public.rtf")
+                                    
+                                } catch {
+                                    
+                                    print("ERROR on pasteboard")
+                                }
+                                
+                                //print(UIPasteboard.general.string)
+                                
                                 //UIPasteboard.general.string = NSArray(object: nsAttrString)
                                 //UIPasteboard.general.setValue(nsAttrString, forPasteboardType: UTType.rtf as String)
-                                UIPasteboard.general.setValue(NSArray(object: nsAttrString), forPasteboardType: "public.rtf")
-                                //UIPasteboard.setData(NSArray(object: nsAttrString) as Data, forPasteboardType: kUTTypeRTF as String)
+                                //UIPasteboard.general.setValue(NSArray(object: nsAttrString), forPasteboardType: "public.rtf")
+                                
+                                //UIPasteboard.general.setValue(NSArray(object: nsAttrString), forPasteboardType: kUTTypeRTF as String)
+                                
+                                //let data: NSData = NSData(data: nsAttrString)
+                                
+                                //UIPasteboard.setData(nsAttrString, forPasteboardType: rtf) //kUTTypeRTF as String
 #endif
                             }
                         }

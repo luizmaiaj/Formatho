@@ -127,7 +127,7 @@ struct ContentView: View {
                         .tag(Tab.tree)
                     
 #else
-                    WitTab(fetcher: fetcher)
+                    WitView(fetcher: fetcher)
                         .tabItem {
                             Text("WIT")
                         }
