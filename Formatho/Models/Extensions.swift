@@ -47,7 +47,7 @@ func getWitNumber(url: String) -> Int {
 
 func witIcon(type: String) -> Text {
     
-    print(type)
+    //print(type)
     
     switch type {
     case workItemType.epic.rawValue:

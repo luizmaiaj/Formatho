@@ -54,11 +54,13 @@ struct RecentView_Previews: PreviewProvider {
 
 struct ActivityTable: View {
     
-    let activities: [Activity]
+    @State var activities: [Activity]
+    
+    @State private var sortOrder = [KeyPathComparator(\Activity.id)]
     
     var body: some View {
         
-        Table(activities) {
+        Table(activities, sortOrder: $sortOrder) {
             TableColumn("Activity", value: \.activityType.capitalized)
                 .width(max: 50)
             
@@ -69,14 +71,17 @@ struct ActivityTable: View {
             
             TableColumn("Title", value: \.title)
             
-            TableColumn("id") { activity in
-                Text(String(format: "%d", activity.id)) // removing reference
-            }
-            .width(max: 50)
+            TableColumn("id", value: \.textID)
+                .width(max: 50)
             
             TableColumn("State", value: \.state)
                 .width(max: 90)
         }
-        .frame(minHeight: 30)
+        .onChange(of: sortOrder) {
+            
+            print(sortOrder.debugDescription)
+            
+            activities.sort(using: $0)
+        }
     }
 }

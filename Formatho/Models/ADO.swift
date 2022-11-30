@@ -103,10 +103,11 @@ class Activities: Codable, Identifiable {
     let count: Int
 }
 
-class Activity: Codable, Identifiable, Hashable {
+class Activity: Codable, Identifiable, Hashable, Equatable {
     
     init() {
-        id = 0
+        activityID = 0
+        textID = ""
         workItemType = ""
         title = ""
         state = ""
@@ -120,8 +121,10 @@ class Activity: Codable, Identifiable, Hashable {
         
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
-        do { self.id = try values.decode(Int.self, forKey: .id)
-        } catch { self.id = 0 }
+        do { self.activityID = try values.decode(Int.self, forKey: .activityID)
+        } catch { self.activityID = 0 }
+        
+        self.textID = "\(self.activityID)"
         
         do { self.workItemType = try values.decode(String.self, forKey: .workItemType)
         } catch { self.workItemType = "" }
@@ -145,6 +148,17 @@ class Activity: Codable, Identifiable, Hashable {
         } catch { self.activityType = "" }
     }
     
+    enum CodingKeys: String, CodingKey {
+        case activityID = "id"
+        case workItemType = "workItemType"
+        case title = "title"
+        case state = "state"
+        case changedDate = "changedDate"
+        case teamProject = "teamProject"
+        case activityDate = "activityDate"
+        case activityType = "activityType"
+    }
+    
     // equatable
     static func == (lhs: Activity, rhs: Activity) -> Bool {
         return lhs.id == rhs.id
@@ -155,7 +169,9 @@ class Activity: Codable, Identifiable, Hashable {
         hasher.combine(id)
     }
     
-    let id: Int
+    let id = UUID()
+    let activityID: Int
+    let textID: String
     let workItemType: String
     let title: String
     let state: String
