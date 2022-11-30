@@ -139,15 +139,15 @@ struct QueryView_Previews: PreviewProvider {
 
 struct WitTable: View {
     
-    let wits: [Wit]
+    @State var wits: [Wit]
+    
+    @State private var sortOrder = [KeyPathComparator(\Wit.id)]
     
     var body: some View {
         
-        Table(wits) {
-            TableColumn("Priority") { wit in
-                Text("P" + String(format: "%d", wit.fields.MicrosoftVSTSCommonPriority))
-            }
-            .width(max: 30)
+        Table(wits, sortOrder: $sortOrder) {
+            TableColumn("Priority", value: \.fields.textPriority)
+                .width(max: 30)
             
             TableColumn("Type") { wit in
                 witIcon(type: wit.fields.SystemWorkItemType)
@@ -156,15 +156,16 @@ struct WitTable: View {
             
             TableColumn("Title", value: \.fields.SystemTitle)
             
-            TableColumn("id") { wit in
-                Text(String(format: "%d", wit.witID)) // removing reference
-            }
-            .width(max: 50)
+            TableColumn("id", value: \.textWitID)
+                .width(max: 50)
             
             TableColumn("Report") { wit in
                 Text(wit.fields.CustomReport.toRTF())
             }
         }
-        .frame(minHeight: 30)
+        .onChange(of: sortOrder) {
+            
+            wits.sort(using: $0)
+        }
     }
 }

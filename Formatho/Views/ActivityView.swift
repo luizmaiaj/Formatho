@@ -79,8 +79,6 @@ struct ActivityTable: View {
         }
         .onChange(of: sortOrder) {
             
-            print(sortOrder.debugDescription)
-            
             activities.sort(using: $0)
         }
     }

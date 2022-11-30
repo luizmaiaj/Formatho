@@ -207,6 +207,7 @@ class Wit: Codable, Identifiable, Hashable {
     
     init() {
         self.witID = 0
+        self.textWitID = ""
         self.fields = Fields()
         self.url = ""
         self.html = ""
@@ -215,6 +216,7 @@ class Wit: Codable, Identifiable, Hashable {
     
     init(witID: Int) {
         self.witID = witID
+        self.textWitID = "\(self.witID)"
         self.fields = Fields()
         self.url = ""
         self.html = ""
@@ -227,6 +229,8 @@ class Wit: Codable, Identifiable, Hashable {
         
         do { self.witID = try values.decode(Int.self, forKey: .witID)
         } catch { self.witID = 0 }
+        
+        self.textWitID = "\(self.witID)"
         
         do { self.fields = try values.decode(Fields.self, forKey: .fields)
         } catch { self.fields = Fields() }
@@ -258,6 +262,7 @@ class Wit: Codable, Identifiable, Hashable {
     }
     
     let witID: Int
+    let textWitID: String
     let fields: Fields
     let url: String
     var html: String
@@ -301,7 +306,7 @@ class WitNode: Wit, CustomStringConvertible {
         
         try super.init(from: decoder)
         
-        self.description = "\(self.witID): " + self.fields.SystemTitle + ": " + self.fields.SystemState
+        self.description = "\(self.textWitID): " + self.fields.SystemTitle + ": " + self.fields.SystemState
         
         if !relations.isEmpty {
             
@@ -381,6 +386,7 @@ class Fields: Codable, Identifiable {
         self.SystemTitle = ""
         self.SystemDescription = ""
         self.MicrosoftVSTSCommonPriority = 0
+        self.textPriority = ""
         self.CustomReport = ""
     }
     
@@ -421,9 +427,11 @@ class Fields: Codable, Identifiable {
         do { self.MicrosoftVSTSCommonPriority = try values.decode(Int.self, forKey: .MicrosoftVSTSCommonPriority)
         } catch { self.MicrosoftVSTSCommonPriority = 0 }
         
+        self.textPriority = "P\(self.MicrosoftVSTSCommonPriority)"
+        
         // trimming added to remove leading and trailing white spaces and new lines
         
-        var report: String = ""
+        var report: String
         
         do {
             // remove leading and trailing div on report field
@@ -466,6 +474,7 @@ class Fields: Codable, Identifiable {
     let SystemTitle: String
     let SystemDescription: String
     let MicrosoftVSTSCommonPriority: Int
+    let textPriority: String
     let CustomReport: String
 }
 

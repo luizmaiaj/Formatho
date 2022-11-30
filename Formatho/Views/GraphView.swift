@@ -12,10 +12,6 @@ struct GraphView: View {
     
     @ObservedObject var fetcher: Fetcher
     
-    func getPriorityString(priority: Int) -> String {
-        return "P" + String(format: "%d", priority)
-    }
-    
     var body: some View {
 
         Group {
@@ -29,7 +25,7 @@ struct GraphView: View {
                     
                     Chart(fetcher.wits) {
                         
-                        BarMark(x: .value("priority", getPriorityString(priority: $0.fields.MicrosoftVSTSCommonPriority)),
+                        BarMark(x: .value("priority", $0.fields.textPriority),
                                 y: .value("count", 1))
                     }
                 } else {

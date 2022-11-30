@@ -318,7 +318,7 @@ class Fetcher: ObservableObject {
                         
                         for wit in self.wits {
                             
-                            wit.html = "<b>P\(wit.fields.MicrosoftVSTSCommonPriority) \(wit.fields.SystemWorkItemType) \(wit.fields.SystemTitle)</b> <a href=\"\(reqURL)\(String(format: "%d", wit.witID))\">[\(project)-\(String(format: "%d", wit.witID))]</a>"
+                            wit.html = "<b>\(wit.fields.textPriority) \(wit.fields.SystemWorkItemType) \(wit.fields.SystemTitle)</b> <a href=\"\(reqURL)\(wit.textWitID)\">[\(project)-\(wit.textWitID)]</a>"
                             
                             //add report field information if necessary
                             if addReport {
