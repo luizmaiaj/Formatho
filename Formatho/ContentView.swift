@@ -87,7 +87,6 @@ struct ContentView: View {
                 
                 TabView(selection: $selection) {
                     
-#if os(OSX)
                     LoginView(fetcher: fetcher)
                         .tabItem {
                             Text("Login")
@@ -100,6 +99,7 @@ struct ContentView: View {
                         }
                         .tag(Tab.wit)
                     
+#if os(OSX)
                     ActivityView(fetcher: fetcher)
                         .tabItem {
                             Text("Activity")
@@ -119,6 +119,7 @@ struct ContentView: View {
                             }
                             .tag(Tab.graph)
                     }
+#endif
                     
                     TreeView()
                         .tabItem {
@@ -126,13 +127,6 @@ struct ContentView: View {
                         }
                         .tag(Tab.tree)
                     
-#else
-                    WitView(fetcher: fetcher)
-                        .tabItem {
-                            Text("WIT")
-                        }
-                        .tag(Tab.wit)
-#endif
                 }
             }
         }
