@@ -16,7 +16,7 @@ extension Array: RawRepresentable where Element: Codable {
         }
         self = result
     }
-
+    
     public var rawValue: String {
         guard let data = try? JSONEncoder().encode(self),
               let result = String(data: data, encoding: .utf8)
@@ -46,30 +46,32 @@ func getWitNumber(url: String) -> Int {
 }
 
 func witIcon(type: String) -> Text {
-
-        switch type {
-        case workItemType.epic.rawValue:
-            return Text(Image(systemName: "crown.fill")).foregroundColor(.orange)
-            
-        case workItemType.userStory.rawValue:
-            return Text(Image(systemName: "book.fill")).foregroundColor(.blue)
-            
-        case workItemType.feature.rawValue:
-            return Text(Image(systemName: "trophy.fill")).foregroundColor(.purple)
-
-        case workItemType.issue.rawValue, workItemType.impediment.rawValue:
-            return Text(Image(systemName: "cone.fill")).foregroundColor(.purple)
-
-        case workItemType.pbi.rawValue:
-            return Text(Image(systemName: "doc.plaintext.fill")).foregroundColor(.blue)
-
-        case workItemType.bug.rawValue:
-            return Text(Image(systemName: "ladybug.fill")).foregroundColor(.red)
-
-        case workItemType.task.rawValue:
-            return Text(Image(systemName: "checkmark.rectangle.portrait.fill")).foregroundColor(.yellow)
-
-        default:
-            return Text(Image(systemName: "questionmark.square.dashed")).foregroundColor(.red)
-        }
+    
+    print(type)
+    
+    switch type {
+    case workItemType.epic.rawValue:
+        return Text(Image(systemName: "crown.fill")).foregroundColor(.orange)
+        
+    case workItemType.userStory.rawValue:
+        return Text(Image(systemName: "book.fill")).foregroundColor(.blue)
+        
+    case workItemType.feature.rawValue:
+        return Text(Image(systemName: "trophy.fill")).foregroundColor(.purple)
+        
+    case workItemType.issue.rawValue, workItemType.impediment.rawValue:
+        return Text(Image(systemName: "cone.fill")).foregroundColor(.purple)
+        
+    case workItemType.pbi.rawValue:
+        return Text(Image(systemName: "doc.plaintext.fill")).foregroundColor(.blue)
+        
+    case workItemType.bug.rawValue:
+        return Text(Image(systemName: "ladybug.fill")).foregroundColor(.red)
+        
+    case workItemType.task.rawValue:
+        return Text(Image(systemName: "checkmark.rectangle.portrait.fill")).foregroundColor(.yellow)
+        
+    default:
+        return Text(Image(systemName: "questionmark.square.dashed")).foregroundColor(.red)
+    }
 }
