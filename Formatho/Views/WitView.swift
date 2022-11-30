@@ -33,23 +33,23 @@ struct WitView: View {
                 
             } else {
                 
-                Form {
-                    HStack {
-                        
-                        TextField("WIT ID", text: $witid)
-                            .frame(maxWidth: 125, alignment: .trailing)
-                            .onReceive(Just(witid)) { newValue in
-                                let filtered = newValue.filter { "0123456789".contains($0) }
-                                if filtered != newValue { witid = filtered }
-                            }
-                            .onSubmit {
-                                fetch()
-                            }
-                        
-                        Button("Get WIT", action: {
+                HStack {
+                    
+                    TextField("WIT ID", text: $witid)
+                        .frame(maxWidth: 125, alignment: .trailing)
+                        .onReceive(Just(witid)) { newValue in
+                            let filtered = newValue.filter { "0123456789".contains($0) }
+                            if filtered != newValue { witid = filtered }
+                        }
+                        .disableAutocorrection(true)
+                        .border(.secondary)
+                        .onSubmit {
                             fetch()
-                        })
-                    }
+                        }
+                    
+                    Button("Get WIT", action: {
+                        fetch()
+                    })
                 }
                 
                 if !fetcher.wits.isEmpty {
@@ -58,7 +58,7 @@ struct WitView: View {
                         witIcon(type: fetcher.wit.fields.SystemWorkItemType)
                         + Text(fetcher.wit.html.toRTF())
                     }
-                        .frame(minHeight: 30)
+                    .frame(minHeight: 30)
                 }
                 
                 Text(self.fetcher.errorMessage ?? "")

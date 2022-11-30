@@ -34,30 +34,33 @@ struct TreeView: View {
             } else {
                 
                 VStack {
-                    Form {
-                        HStack {
-                            
-                            TextField("WIT ID", text: $witid)
-                                .frame(maxWidth: 125, alignment: .trailing)
-                                .onReceive(Just(witid)) { newValue in
-                                    let filtered = newValue.filter { "0123456789".contains($0) }
-                                    if filtered != newValue { witid = filtered }
-                                }
-                                .onSubmit {
-                                    fetch()
-                                }
-                            
-                            Button("Get WIT", action: {
+                    HStack {
+                        
+                        TextField("WIT ID", text: $witid)
+                            .frame(maxWidth: 125, alignment: .trailing)
+                            .onReceive(Just(witid)) { newValue in
+                                let filtered = newValue.filter { "0123456789".contains($0) }
+                                if filtered != newValue { witid = filtered }
+                            }
+                            .disableAutocorrection(true)
+                            .border(.secondary)
+                            .onSubmit {
                                 fetch()
-                            })
-                        }
+                            }
+                        
+                        Button("Get WIT", action: {
+                            fetch()
+                        })
                     }
+                    .padding()
                     
-                    List {
-                        OutlineGroup(fetcher.nodes, children: \.children) { item in
-                            
-                            witIcon(type: item.fields.SystemWorkItemType)
-                            + Text(" \(item.description)")
+                    if !fetcher.nodes.isEmpty {
+                        List {
+                            OutlineGroup(fetcher.nodes, children: \.children) { item in
+                                
+                                witIcon(type: item.fields.SystemWorkItemType)
+                                + Text(" \(item.description)")
+                            }
                         }
                     }
                 }

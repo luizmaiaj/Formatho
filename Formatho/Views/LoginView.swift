@@ -27,14 +27,18 @@ struct LoginView: View {
     var body: some View {
         Form {
             TextField("organisation", text: $organisation)
+                .disableAutocorrection(true)
             
             TextField("email", text: $email)
+                .disableAutocorrection(true)
             
             if #available(macOS 13.0, *) {
                 TextField("PAT", text: $pat, axis: .vertical)
                     .lineLimit(2...5)
+                    .disableAutocorrection(true)
             } else {
                 TextField("PAT", text: $pat)
+                    .disableAutocorrection(true)
             }
             
             if fetcher.isLoading {
@@ -103,7 +107,9 @@ struct LoginView: View {
                 Text(self.fetcher.errorMessage ?? "")
             }
         }
+#if os(OSX)
         .frame(maxWidth: 300, minHeight: 30)
+#endif
         .onAppear() {
             
             if !organisation.isEmpty && !pat.isEmpty && !email.isEmpty {
