@@ -36,7 +36,7 @@ struct ContentView: View {
         case Tab.recent:
             return 400
         case Tab.query:
-            return 600
+            return 400
         case Tab.graph:
             return 400
         case Tab.tree:
