@@ -28,17 +28,21 @@ struct LoginView: View {
         Form {
             TextField("organisation", text: $organisation)
                 .disableAutocorrection(true)
+                .textInputAutocapitalization(.never)
             
             TextField("email", text: $email)
                 .disableAutocorrection(true)
+                .textInputAutocapitalization(.never)
             
             if #available(macOS 13.0, *) {
                 TextField("PAT", text: $pat, axis: .vertical)
                     .lineLimit(2...5)
                     .disableAutocorrection(true)
+                    .textInputAutocapitalization(.never)
             } else {
                 TextField("PAT", text: $pat)
                     .disableAutocorrection(true)
+                    .textInputAutocapitalization(.never)
             }
             
             if fetcher.isLoading {
