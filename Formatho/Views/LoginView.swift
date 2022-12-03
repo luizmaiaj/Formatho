@@ -25,40 +25,23 @@ struct LoginView: View {
     }
     
     var body: some View {
+        
         Form {
-            TextField("organisation", text: $organisation)
-                .disableAutocorrection(true)
-                .textInputAutocapitalization(.never)
-            
-            TextField("email", text: $email)
-                .disableAutocorrection(true)
-                .textInputAutocapitalization(.never)
-            
-            if #available(macOS 13.0, *) {
-                TextField("PAT", text: $pat, axis: .vertical)
-                    .lineLimit(2...5)
-                    .disableAutocorrection(true)
-                    .textInputAutocapitalization(.never)
-            } else {
-                TextField("PAT", text: $pat)
-                    .disableAutocorrection(true)
-                    .textInputAutocapitalization(.never)
-            }
             
             if fetcher.isLoading {
                 
                 Text("Fetching...")
-                    .padding()
                 
             } else {
+                
+                LoginDetails()
                 
                 HStack {
                     Button("Get project list", action: {
                         fetch()
                     })
-                    .padding()
                     
-                    if connectionTested == false {
+                    if self.connectionTested == false {
                         
                         Text(Image(systemName: "checkmark.circle.badge.questionmark.fill"))
                             .foregroundColor(.yellow)
@@ -77,43 +60,21 @@ struct LoginView: View {
                             .fontWeight(.heavy)
                     }
                 }
-            }
-            
-#if DEBUG
-            if DEBUG_BUTTON {
-                Button("Reset AppStorage", action: {
-                    organisation = String("")
-                    email = String("")
-                    pat = String("")
-                    project = String("")
-                    queryid = String("")
-                    
-                    fetcher.projects.removeAll()
-                })
-                .padding()
-            }
-#endif
-            
-            if DEBUG_INFO {
-                let _ = print(project)
-            }
-            
-            if fetcher.projects.count > 0 {
                 
-                Picker("Project", selection: $project) {
+                if fetcher.projects.count > 0 {
                     
-                    ForEach(fetcher.projectNames, id: \.self) {
-                        Text($0)
+                    Picker("Project", selection: $project) {
+                        
+                        ForEach(fetcher.projectNames, id: \.self) {
+                            Text($0)
+                        }
                     }
+#if os(OSX)
+                    .frame(maxWidth: 300)
+#endif
                 }
-            } else {
-                
-                Text(self.fetcher.errorMessage ?? "")
             }
         }
-#if os(OSX)
-        .frame(maxWidth: 300, minHeight: 30)
-#endif
         .onAppear() {
             
             if !organisation.isEmpty && !pat.isEmpty && !email.isEmpty {
@@ -121,7 +82,7 @@ struct LoginView: View {
                 fetch()
             }
             
-            connectionTested = true
+            self.connectionTested = true
         }
     }
 }
@@ -129,5 +90,47 @@ struct LoginView: View {
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
         LoginView(fetcher: Fetcher())
+    }
+}
+
+struct LoginDetails: View {
+    
+    @AppStorage("organisation") private var organisation: String = String()
+    @AppStorage("email") private var email: String = String()
+    @AppStorage("pat") private var pat: String = String()
+    
+    var body: some View {
+        
+        VStack {
+            
+            LoginField(name: "organisation", value: $organisation)
+            
+            LoginField(name: "email", value: $email)
+            
+            if #available(macOS 13.0, *) {
+                LoginField(name: "PAT", value: $pat)
+                    .lineLimit(2...5)
+            } else {
+                LoginField(name: "PAT", value: $pat)
+            }
+        }
+#if os(OSX)
+        .frame(maxWidth: 300)
+#endif
+    }
+}
+
+struct LoginField: View {
+    let name: String
+    
+    @Binding var value: String
+    
+    var body: some View {
+        
+        TextField(name, text: $value)
+            .disableAutocorrection(true)
+#if os(iOS)
+            .textInputAutocapitalization(.never)
+#endif
     }
 }

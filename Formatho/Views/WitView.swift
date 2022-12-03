@@ -60,8 +60,6 @@ struct WitView: View {
                     }
                     .frame(minHeight: 30)
                 }
-                
-                Text(self.fetcher.errorMessage ?? "")
             }
         }
     }

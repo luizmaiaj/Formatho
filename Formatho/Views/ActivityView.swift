@@ -34,8 +34,6 @@ struct ActivityView: View {
                 })
                 
                 ActivityTable(activities: fetcher.activities)
-                
-                Text(self.fetcher.errorMessage ?? "")
             }
         }
         .onAppear() {

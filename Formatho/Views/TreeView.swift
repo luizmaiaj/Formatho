@@ -15,7 +15,7 @@ struct TreeView: View {
     @AppStorage("email") private var email: String = String()
     @AppStorage("pat") private var pat: String = String()
     
-    @StateObject var fetcher: Fetcher = Fetcher()
+    @ObservedObject var fetcher: Fetcher
     
     @State var witid: String = String("")
     
@@ -64,8 +64,6 @@ struct TreeView: View {
                         }
                     }
                 }
-                
-                Text(self.fetcher.errorMessage ?? "")
             }
         }
     }
@@ -73,6 +71,6 @@ struct TreeView: View {
 
 struct TreeView_Previews: PreviewProvider {
     static var previews: some View {
-        TreeView()
+        TreeView(fetcher: Fetcher())
     }
 }

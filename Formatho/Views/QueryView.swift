@@ -75,7 +75,7 @@ struct QueryView: View {
                                     }
                                 }
                             }
-                            .onAppear(){
+                            .onAppear() {
                                 
                                 // if empty query if not empty user has to refresh
                                 if qFetcher.queries.isEmpty {
@@ -85,7 +85,6 @@ struct QueryView: View {
                         }
                     }
                 }
-                .padding([.leading, .top, .bottom])
                 .frame(width: QUERY_TREE_WIDTH, height: g.size.height)
                 
                 VStack {
@@ -124,8 +123,6 @@ struct QueryView: View {
                 }
                 .padding([.trailing, .top, .bottom])
                 .frame(width: queryWidth(width: g.size.width), height: g.size.height)
-                
-                Text(self.fetcher.errorMessage ?? "")
             }
         }
     }

@@ -121,7 +121,7 @@ struct ContentView: View {
                     }
 #endif
                     
-                    TreeView()
+                    TreeView(fetcher: fetcher)
                         .tabItem {
                             Text("Tree")
                         }
@@ -129,6 +129,8 @@ struct ContentView: View {
                     
                 }
             }
+            
+            Text(self.fetcher.errorMessage ?? "")
         }
         .frame(minWidth: getW(), minHeight: getH())
     }
