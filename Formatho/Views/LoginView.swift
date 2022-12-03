@@ -26,7 +26,7 @@ struct LoginView: View {
     
     var body: some View {
         
-        Form {
+        VStack {
             
             if fetcher.isLoading {
                 
@@ -80,10 +80,22 @@ struct LoginView: View {
             if !organisation.isEmpty && !pat.isEmpty && !email.isEmpty {
                 
                 fetch()
+                
+            } else if organisation.isEmpty || pat.isEmpty || email.isEmpty { // if information is missing clear project list
+                
+                self.project = ""
+                self.queryid = ""
+                
+                fetcher.projects.removeAll()
             }
             
             self.connectionTested = true
         }
+#if !os(OSX)
+        .onTapGesture {
+            hideKeyboard()
+        }
+#endif
     }
 }
 
@@ -101,7 +113,7 @@ struct LoginDetails: View {
     
     var body: some View {
         
-        VStack {
+        Form {
             
             LoginField(name: "organisation", value: $organisation)
             

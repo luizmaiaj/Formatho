@@ -75,3 +75,12 @@ func witIcon(type: String) -> Text {
         return Text(Image(systemName: "questionmark.square.dashed")).foregroundColor(.red)
     }
 }
+
+// to hide keyboard if user taps outside of if
+#if canImport(UIKit)
+extension View {
+    func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+}
+#endif
