@@ -52,7 +52,6 @@ struct TreeView: View {
                             fetch()
                         })
                     }
-                    .padding()
                     
                     if !fetcher.nodes.isEmpty {
                         List {

@@ -121,7 +121,7 @@ struct QueryView: View {
                         }
                     }
                 }
-                .padding([.trailing, .top, .bottom])
+                .padding([.trailing, .top])
                 .frame(width: queryWidth(width: g.size.width), height: g.size.height)
             }
         }
