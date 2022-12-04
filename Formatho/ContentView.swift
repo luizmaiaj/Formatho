@@ -43,7 +43,7 @@ struct ContentView: View {
             return 400
         }
     }
-
+    
     func getH() -> CGFloat { // HEIGHT
         switch selection {
         case Tab.login:
@@ -60,7 +60,7 @@ struct ContentView: View {
             return 250
         }
     }
-
+    
     var body: some View {
         
         VStack {
@@ -90,12 +90,22 @@ struct ContentView: View {
                     LoginView(fetcher: fetcher)
                         .tabItem {
                             Text("Login")
+                            
+                            if #available(iOS 15.0, *) {
+                                Image(systemName: "person.circle")
+                                    .font(.title2)
+                            }
                         }
                         .tag(Tab.login)
                     
                     WitView(fetcher: fetcher)
                         .tabItem {
                             Text("WIT")
+
+                            if #available(iOS 15.0, *) {
+                                Image(systemName: "crown.fill")
+                                    .font(.title2)
+                            }
                         }
                         .tag(Tab.wit)
                     
@@ -124,6 +134,11 @@ struct ContentView: View {
                     TreeView(fetcher: fetcher)
                         .tabItem {
                             Text("Tree")
+                            
+                            if #available(iOS 15.0, *) {
+                                Image(systemName: "tree")
+                                    .font(.title2)
+                            }
                         }
                         .tag(Tab.tree)
                     

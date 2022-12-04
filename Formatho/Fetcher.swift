@@ -285,7 +285,7 @@ class Fetcher: ObservableObject {
         var iEnd: Int = max(min(ids.count - 1, ADO_LIST_LIMIT - 1), 0) // cannot be less than zero, protection for the for block inside the batch in case the id list count at the top does not filter this error out
         let batches: Int = Int(ceil(Double(ids.count / ADO_LIST_LIMIT)))
         
-        print(batches)
+        if DEBUG_INFO { print(batches) }
         
         for _ in 0...batches {
             
@@ -439,7 +439,7 @@ class Fetcher: ObservableObject {
         
         self.isLoading = true
         errorMessage = nil
-        //self.statusMessage = id
+        self.statusMessage = id
         
         self.nodes.removeAll()
         
@@ -502,7 +502,7 @@ class Fetcher: ObservableObject {
         let header = buildHeader(pat: pat, email: email)
         
         self.isLoading = true
-        //self.statusMessage = "\(id)"
+        self.statusMessage = "\(id)"
         
         let witBaseUrl: String = self.baseURL + org + "/_apis/wit/workitems/" + "\(id)" + "?$expand=relations"
         
