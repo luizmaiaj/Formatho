@@ -16,6 +16,8 @@ import MobileCoreServices
 
 class Fetcher: ObservableObject {
     
+    @AppStorage("project") private var project: String = String()
+    
     @Published var projects: [Project] = [Project]()        // to store the list of projects in the organisation
     @Published var projectNames: [String] = [String]()      // list of project names to display in the interface picker
     
@@ -95,6 +97,12 @@ class Fetcher: ObservableObject {
                     
                     for project in self.projects {
                         self.projectNames.append(project.name)
+                    }
+                    
+                    // if there's no project set, set it as the first on the list retrieved
+                    if self.project.count == 0 && !self.projects.isEmpty {
+                        
+                        self.project = self.projects.first?.name ?? ""
                     }
                 }
             }
@@ -318,7 +326,10 @@ class Fetcher: ObservableObject {
                         
                         for wit in self.wits {
                             
-                            wit.html = "<b>\(wit.fields.textPriority) \(wit.fields.SystemWorkItemType) \(wit.fields.SystemTitle)</b> <a href=\"\(reqURL)\(wit.textWitID)\">[\(project)-\(wit.textWitID)]</a>"
+                            // splitting between link and name to correctly display in dark mode
+                            wit.link = "<a href=\"\(reqURL)\(wit.textWitID)\">[\(project)-\(wit.textWitID)]</a>"
+                            
+                            wit.html = wit.name + " " + wit.link
                             
                             //add report field information if necessary
                             if addReport {
@@ -367,18 +378,6 @@ class Fetcher: ObservableObject {
                                     
                                     print("ERROR on pasteboard")
                                 }
-                                
-                                //print(UIPasteboard.general.string)
-                                
-                                //UIPasteboard.general.string = NSArray(object: nsAttrString)
-                                //UIPasteboard.general.setValue(nsAttrString, forPasteboardType: UTType.rtf as String)
-                                //UIPasteboard.general.setValue(NSArray(object: nsAttrString), forPasteboardType: "public.rtf")
-                                
-                                //UIPasteboard.general.setValue(NSArray(object: nsAttrString), forPasteboardType: kUTTypeRTF as String)
-                                
-                                //let data: NSData = NSData(data: nsAttrString)
-                                
-                                //UIPasteboard.setData(nsAttrString, forPasteboardType: rtf) //kUTTypeRTF as String
 #endif
                             }
                         }
@@ -440,7 +439,7 @@ class Fetcher: ObservableObject {
         
         self.isLoading = true
         errorMessage = nil
-        self.statusMessage = id
+        //self.statusMessage = id
         
         self.nodes.removeAll()
         
@@ -454,9 +453,10 @@ class Fetcher: ObservableObject {
             
             DispatchQueue.main.async {
                 
-                self.isLoading = false
+                // self.isLoading = false // testing
                 
                 switch result {
+                    
                 case .failure(let error):
                     if HTTP_ERROR { print("Fetcher error: \(error)") }
                     
@@ -491,6 +491,8 @@ class Fetcher: ObservableObject {
                         }
                     }
                 }
+                
+                self.isLoading = false
             }
         }
     }
@@ -500,7 +502,7 @@ class Fetcher: ObservableObject {
         let header = buildHeader(pat: pat, email: email)
         
         self.isLoading = true
-        self.statusMessage = "\(id)"
+        //self.statusMessage = "\(id)"
         
         let witBaseUrl: String = self.baseURL + org + "/_apis/wit/workitems/" + "\(id)" + "?$expand=relations"
         
@@ -510,15 +512,14 @@ class Fetcher: ObservableObject {
             
             DispatchQueue.main.async {
                 
-                // self.isLoading = false // moved to just before completion to avoid flashing screen
+                self.isLoading = false
                 
                 switch result {
+                    
                 case .failure(let error):
                     if HTTP_ERROR { print("Fetcher error wit id \(id): \(error)") }
                     
                     self.errorMessage = error.localizedDescription
-                    
-                    self.isLoading = false  // under test
                     
                     completion(WitNode())
                     
@@ -543,9 +544,7 @@ class Fetcher: ObservableObject {
                             })
                         }
                     }
-                    
-                    self.isLoading = false // under test
-                    
+                                        
                     completion(info)
                 }
             }

@@ -42,6 +42,9 @@ struct WitView: View {
                             if filtered != newValue { witid = filtered }
                         }
                         .disableAutocorrection(true)
+#if os(iOS)
+                        .keyboardType(.numberPad)
+#endif
                         .border(.secondary)
                         .onSubmit {
                             fetch()
@@ -51,14 +54,17 @@ struct WitView: View {
                         fetch()
                     })
                 }
+#if os(iOS)
+                .padding([.top])
+#endif
                 
                 if !fetcher.wits.isEmpty {
                     
                     Group {
                         witIcon(type: fetcher.wit.fields.SystemWorkItemType)
-                        + Text(fetcher.wit.html.toRTF())
+                        + Text("\(fetcher.wit.fields.textPriority) \(fetcher.wit.fields.SystemTitle) \(fetcher.wit.link.toRTF())")
                     }
-                    .frame(minHeight: 30)
+                    //.background(Color.gray)
                 }
             }
         }

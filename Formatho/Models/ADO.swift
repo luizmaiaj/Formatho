@@ -210,6 +210,8 @@ class Wit: Codable, Identifiable, Hashable {
         self.textWitID = ""
         self.fields = Fields()
         self.url = ""
+        self.name = ""
+        self.link = ""
         self.html = ""
         self.relations = [Relations]()
     }
@@ -219,6 +221,8 @@ class Wit: Codable, Identifiable, Hashable {
         self.textWitID = "\(self.witID)"
         self.fields = Fields()
         self.url = ""
+        self.name = ""
+        self.link = ""
         self.html = ""
         self.relations = [Relations]()
     }
@@ -238,7 +242,11 @@ class Wit: Codable, Identifiable, Hashable {
         do { self.url = try values.decode(String.self, forKey: .url)
         } catch { self.url = "" }
         
-        self.html = "" // to be filled later
+        self.name = "<b>\(self.fields.textPriority) \(self.fields.SystemWorkItemType) \(self.fields.SystemTitle)</b>"
+        
+        self.link = ""
+        
+        self.html = ""
         
         do { self.relations = try values.decode([Relations].self, forKey: .relations)
         } catch { self.relations = [Relations]() }
@@ -265,7 +273,9 @@ class Wit: Codable, Identifiable, Hashable {
     let textWitID: String
     let fields: Fields
     let url: String
-    var html: String
+    var name: String // wit name in html format
+    var link: String // link in html format
+    var html: String // full html formatted wit
     let relations: [Relations]
     let id = UUID()
 }

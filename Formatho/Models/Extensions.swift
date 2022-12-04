@@ -76,6 +76,23 @@ func witIcon(type: String) -> Text {
     }
 }
 
+extension String {
+    func toRTF() -> AttributedString {
+                
+        if let data = self.data(using: .unicode),
+           let nsAttrString = try? NSMutableAttributedString(data: data,
+                                                      options: [.documentType: NSAttributedString.DocumentType.html],
+                                                      documentAttributes: nil) {
+            
+            nsAttrString.addAttribute(.font, value: Font.body, range: NSRange(location: 0, length: nsAttrString.length))
+            
+            return AttributedString(nsAttrString) // string to be displayed in Text()
+        }
+        
+        return AttributedString("")
+    }
+}
+
 // to hide keyboard if user taps outside of if
 #if canImport(UIKit)
 extension View {

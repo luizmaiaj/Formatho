@@ -43,6 +43,9 @@ struct TreeView: View {
                                 if filtered != newValue { witid = filtered }
                             }
                             .disableAutocorrection(true)
+#if os(iOS)
+                            .keyboardType(.numberPad)
+#endif
                             .border(.secondary)
                             .onSubmit {
                                 fetch()
@@ -52,6 +55,9 @@ struct TreeView: View {
                             fetch()
                         })
                     }
+#if os(iOS)
+                    .padding([.top])
+#endif
                     
                     if !fetcher.nodes.isEmpty {
                         List {
