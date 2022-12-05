@@ -70,6 +70,9 @@ struct TreeView: View {
                     }
                 }
             }
+#if os(iOS)
+            Text(self.fetcher.errorMessage ?? "") // only on iOS
+#endif
         }
     }
 }

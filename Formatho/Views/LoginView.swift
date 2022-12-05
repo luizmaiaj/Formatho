@@ -74,6 +74,9 @@ struct LoginView: View {
 #endif
                 }
             }
+#if os(iOS)
+            Text(self.fetcher.errorMessage ?? "") // only on iOS
+#endif
         }
         .onAppear() {
             

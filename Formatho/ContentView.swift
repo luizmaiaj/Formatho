@@ -85,7 +85,7 @@ struct ContentView: View {
                     WitView(fetcher: fetcher)
                         .tabItem {
                             Text("WIT")
-
+                            
                             if #available(iOS 15.0, *) {
                                 Image(systemName: "crown.fill")
                                     .font(.title2)
@@ -120,7 +120,7 @@ struct ContentView: View {
                             Text("Tree")
                             
                             if #available(iOS 15.0, *) {
-                                Image(systemName: "tree")
+                                Image(systemName: "rectangle.3.group.fill")
                                     .font(.title2)
                             }
                         }
@@ -128,8 +128,9 @@ struct ContentView: View {
                     
                 }
             }
-            
-            Text(self.fetcher.errorMessage ?? "")
+#if os(OSX)
+            Text(self.fetcher.errorMessage ?? "") // only on macOS
+#endif
         }
         .frame(minWidth: getW(), minHeight: getH())
     }

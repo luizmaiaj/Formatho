@@ -67,6 +67,10 @@ struct WitView: View {
                     //.background(Color.gray)
                 }
             }
+            
+#if os(iOS)
+            Text(self.fetcher.errorMessage ?? "") // only on iOS
+#endif
         }
     }
 }
