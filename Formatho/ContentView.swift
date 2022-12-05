@@ -29,34 +29,18 @@ struct ContentView: View {
     
     func getW() -> CGFloat { // WIDTH
         switch selection {
-        case Tab.login:
-            return 400
         case Tab.wit:
             return 250
-        case Tab.recent:
-            return 400
-        case Tab.query:
-            return 400
-        case Tab.graph:
-            return 400
-        case Tab.tree:
+        default:
             return 400
         }
     }
     
     func getH() -> CGFloat { // HEIGHT
         switch selection {
-        case Tab.login:
-            return 250
-        case Tab.wit:
-            return 65
-        case Tab.recent:
-            return 250
-        case Tab.query:
-            return 250
         case Tab.graph:
             return 250
-        case Tab.tree:
+        default:
             return 250
         }
     }
