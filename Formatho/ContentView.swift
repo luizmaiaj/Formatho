@@ -114,13 +114,18 @@ struct ContentView: View {
                             }
                             .tag(Tab.graph)
                     }
+#endif
                     
                     ListView(fetcher: fetcher)
                         .tabItem {
-                            Text("List")                            
+                            Text("List")
+                            
+                            if #available(iOS 15.0, *) {
+                                Image(systemName: "list.dash")
+                                    .font(.title2)
+                            }
                         }
                         .tag(Tab.list)
-#endif
                     
                     TreeView(fetcher: fetcher)
                         .tabItem {

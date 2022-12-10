@@ -50,7 +50,6 @@ struct ListView: View {
             } else {
                 
                 HStack {
-                    
                     VStack {
                         TextField("WIT ID", text: $witid)
                             .frame(maxWidth: 125, alignment: .trailing)
