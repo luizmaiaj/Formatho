@@ -340,9 +340,9 @@ class Fetcher: ObservableObject {
                             wit.html = wit.name + " " + wit.link
                             
                             //add report field information if necessary
-                            if includeReport && !wit.fields.CustomReport.isEmpty {
+                            if includeReport {
                                 
-                                wit.html +=  ": \(wit.fields.CustomReport)"
+                                wit.html +=  ": \(wit.fields.CustomReport)<br>"
                                 
                             } else {
                                 
