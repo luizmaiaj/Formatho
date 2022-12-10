@@ -61,6 +61,13 @@ struct WitView: View {
                 if !fetcher.wits.isEmpty {
                     
                     Group {
+                        HStack {
+                            Text("State: \(fetcher.wit.fields.SystemState)")
+                            
+                            if !fetcher.wit.fields.CustomCORequestor.isEmpty {
+                                Text("CO: \(fetcher.wit.fields.CustomCORequestor)")
+                            }
+                        }
                         witIcon(type: fetcher.wit.fields.SystemWorkItemType)
                         + Text("\(fetcher.wit.fields.textPriority) \(fetcher.wit.fields.SystemTitle) \(fetcher.wit.link.toRTF())")
                         + Text(": \(fetcher.wit.fields.CustomReport.toRTF())")

@@ -394,6 +394,7 @@ class Fields: Codable, Identifiable {
         self.SystemCreatedDate = ""
         self.SystemChangedDate = ""
         self.SystemTitle = ""
+        self.CustomCORequestor = ""
         self.SystemDescription = ""
         self.MicrosoftVSTSCommonPriority = 0
         self.textPriority = ""
@@ -430,6 +431,9 @@ class Fields: Codable, Identifiable {
         
         do { self.SystemTitle = try values.decode(String.self, forKey: .SystemTitle)
         } catch { self.SystemTitle = "" }
+        
+        do { self.CustomCORequestor = try values.decode(String.self, forKey: .CustomCORequestor)
+        } catch { self.CustomCORequestor = "" }
         
         do { self.SystemDescription = try values.decode(String.self, forKey: .SystemDescription)
         } catch { self.SystemDescription = "" }
@@ -468,6 +472,7 @@ class Fields: Codable, Identifiable {
         case SystemCreatedDate = "System.CreatedDate"
         case SystemChangedDate = "System.ChangedDate"
         case SystemTitle = "System.Title"
+        case CustomCORequestor = "Custom.CORequestor"
         case SystemDescription = "System.Description"
         case MicrosoftVSTSCommonPriority = "Microsoft.VSTS.Common.Priority"
         case CustomReport = "Custom.Report"
@@ -482,6 +487,7 @@ class Fields: Codable, Identifiable {
     let SystemCreatedDate: String
     let SystemChangedDate: String
     let SystemTitle: String
+    let CustomCORequestor: String
     let SystemDescription: String
     let MicrosoftVSTSCommonPriority: Int
     let textPriority: String
