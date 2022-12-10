@@ -114,7 +114,6 @@ struct ContentView: View {
                             }
                             .tag(Tab.graph)
                     }
-#endif
                     
                     ListView(fetcher: fetcher)
                         .tabItem {
@@ -126,6 +125,7 @@ struct ContentView: View {
                             }
                         }
                         .tag(Tab.list)
+#endif
                     
                     TreeView(fetcher: fetcher)
                         .tabItem {
