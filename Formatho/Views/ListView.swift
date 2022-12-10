@@ -17,6 +17,7 @@ struct ListView: View {
     
     @AppStorage("copyToCB") private var copyToCB: Bool = false
     @AppStorage("includeReport") private var includeReport: Bool = false
+    @AppStorage("sortPriority") private var sortPriority: Bool = false
     
     @ObservedObject var fetcher: Fetcher
     
@@ -75,13 +76,15 @@ struct ListView: View {
                             Toggle("copy to clipboard", isOn: $copyToCB)
                             
                             Toggle("include report", isOn: $includeReport)
+                            
+                            Toggle("sort by priority", isOn: $sortPriority)
                         }
                         
                         List {
                             ForEach(Array(witList.enumerated()), id: \.element) { index, element in
                                 
                                 Text("\(element)")
-                                    .contextMenu {
+                                    .contextMenu { // right click menu for MacOS
                                         Button(action: {
                                             self.witList.remove(atOffsets: [index])
                                         }){
@@ -89,7 +92,7 @@ struct ListView: View {
                                         }
                                     }
                             }
-                            .onDelete(perform: self.removeItem)
+                            .onDelete(perform: self.removeItem) // swipe left action
                         }
                         
                         HStack {

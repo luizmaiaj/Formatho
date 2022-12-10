@@ -17,6 +17,7 @@ import MobileCoreServices
 class Fetcher: ObservableObject {
     
     @AppStorage("project") private var project: String = String()
+    @AppStorage("sortPriority") private var sortPriority: Bool = false
     
     @Published var projects: [Project] = [Project]()        // to store the list of projects in the organisation
     @Published var projectNames: [String] = [String]()      // list of project names to display in the interface picker
@@ -323,6 +324,13 @@ class Fetcher: ObservableObject {
                         if HTTP_DATA { print("Fetcher count: \(info.count)") }
                         
                         self.wits += info.value
+                        
+                        if self.sortPriority { // sorting by priority
+                            
+                            self.wits = self.wits.sorted(by: {first,second in
+                                return first.fields.MicrosoftVSTSCommonPriority < second.fields.MicrosoftVSTSCommonPriority
+                            })
+                        }
                         
                         for wit in self.wits {
                             

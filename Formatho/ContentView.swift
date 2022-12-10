@@ -137,7 +137,6 @@ struct ContentView: View {
                             }
                         }
                         .tag(Tab.tree)
-                    
                 }
             }
 #if os(OSX)
