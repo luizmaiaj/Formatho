@@ -63,6 +63,7 @@ struct WitView: View {
                     Group {
                         witIcon(type: fetcher.wit.fields.SystemWorkItemType)
                         + Text("\(fetcher.wit.fields.textPriority) \(fetcher.wit.fields.SystemTitle) \(fetcher.wit.link.toRTF())")
+                        + Text(": \(fetcher.wit.fields.CustomReport.toRTF())")
                     }
                     //.background(Color.gray)
                 }

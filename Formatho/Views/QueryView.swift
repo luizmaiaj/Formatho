@@ -17,13 +17,13 @@ struct QueryView: View {
     @AppStorage("queryid") private var queryid: String = String()
     
     @AppStorage("copyToCB") private var copyToCB: Bool = false
-    @AppStorage("addReport") private var addReport: Bool = false
+    @AppStorage("includeReport") private var includeReport: Bool = false
     
     @ObservedObject var fetcher: Fetcher
     @StateObject var qFetcher: Fetcher = Fetcher()
     
     private func fetchWits() {
-        self.fetcher.query(org: organisation, pat: pat, email: email, queryid: queryid, project: project, cb: copyToCB, addReport: addReport)
+        self.fetcher.query(org: organisation, pat: pat, email: email, queryid: queryid, project: project, cb: copyToCB, addReport: includeReport)
     }
     
     private func fetchQueries() {
@@ -98,7 +98,7 @@ struct QueryView: View {
                         HStack {
                             Toggle("copy to clipboard", isOn: $copyToCB)
                             
-                            Toggle("add report", isOn: $addReport)
+                            Toggle("include report", isOn: $includeReport)
                         }
                         
                         HStack {

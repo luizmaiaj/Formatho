@@ -261,7 +261,7 @@ class Fetcher: ObservableObject {
         self.wits(org: org, pat: pat, email: email, ids: [witid], project: project)
     }
     
-    func wits(org: String, pat: String, email: String, ids: [String], project: String, cb: Bool = false, addReport: Bool = true) {
+    func wits(org: String, pat: String, email: String, ids: [String], project: String, cb: Bool = true, includeReport: Bool = true) {
         
         if ids.isEmpty { // if no ids in the list then simply return *** add some error handling ? ***
             
@@ -332,7 +332,7 @@ class Fetcher: ObservableObject {
                             wit.html = wit.name + " " + wit.link
                             
                             //add report field information if necessary
-                            if addReport {
+                            if includeReport && !wit.fields.CustomReport.isEmpty {
                                 
                                 wit.html +=  ": \(wit.fields.CustomReport)"
                                 
@@ -426,7 +426,7 @@ class Fetcher: ObservableObject {
                     if DEBUG_INFO { print(ids) }
                     
                     // call wits function to get information about the wits
-                    self.wits(org: org, pat: pat, email: email, ids: ids, project: project, cb: cb, addReport: addReport)
+                    self.wits(org: org, pat: pat, email: email, ids: ids, project: project, cb: cb, includeReport: addReport)
                 }
             }
         }

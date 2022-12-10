@@ -14,6 +14,7 @@ enum Tab: Int {
     case query = 3
     case graph = 4
     case tree = 5
+    case list = 6
 }
 
 struct ContentView: View {
@@ -113,6 +114,12 @@ struct ContentView: View {
                             }
                             .tag(Tab.graph)
                     }
+                    
+                    ListView(fetcher: fetcher)
+                        .tabItem {
+                            Text("List")                            
+                        }
+                        .tag(Tab.list)
 #endif
                     
                     TreeView(fetcher: fetcher)
