@@ -66,6 +66,7 @@ struct ListView: View {
                             .onSubmit {
                                 addItem()
                             }
+                            .padding([.leading], 10)
                         
                         Button("Add to list", action: { addItem() })
                     }

@@ -64,10 +64,13 @@ struct WitView: View {
                         HStack {
                             Text("State: \(fetcher.wit.fields.SystemState)")
                             
+                            Text("Area: \(fetcher.wit.fields.SystemAreaPath)")
+                            
                             if !fetcher.wit.fields.CustomCORequestor.isEmpty {
                                 Text("CO: \(fetcher.wit.fields.CustomCORequestor)")
                             }
                         }
+                        
                         witIcon(type: fetcher.wit.fields.SystemWorkItemType)
                         + Text("\(fetcher.wit.fields.textPriority) \(fetcher.wit.fields.SystemTitle) \(fetcher.wit.link.toRTF())")
                         + Text(": \(fetcher.wit.fields.CustomReport.toRTF())")
