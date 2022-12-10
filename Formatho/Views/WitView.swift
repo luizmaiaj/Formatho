@@ -65,7 +65,6 @@ struct WitView: View {
                         + Text("\(fetcher.wit.fields.textPriority) \(fetcher.wit.fields.SystemTitle) \(fetcher.wit.link.toRTF())")
                         + Text(": \(fetcher.wit.fields.CustomReport.toRTF())")
                     }
-                    //.background(Color.gray)
                 }
             }
             

@@ -23,17 +23,21 @@ struct ListView: View {
     @State var witid: String = String()
     @State var witList: [String] = [String]()
     
-    func fetch() {
+    private func fetch() {
         fetcher.wits(org: organisation, pat: pat, email: email, ids: witList, project: project, cb: copyToCB, includeReport: includeReport)
     }
     
-    func addToList() {
+    private func addItem() {
         if !witList.contains(witid) {
             
             witList.append(witid)
             
             witid = ""
         }
+    }
+    
+    private func removeItem(at indexSet: IndexSet) {
+        self.witList.remove(atOffsets: indexSet)
     }
     
     var body: some View {
@@ -60,12 +64,10 @@ struct ListView: View {
 #endif
                             .border(.secondary)
                             .onSubmit {
-                                addToList()
+                                addItem()
                             }
                         
-                        Button("Add to list", action: {
-                            addToList()
-                        })
+                        Button("Add to list", action: { addItem() })
                     }
                     
                     VStack {
@@ -77,15 +79,25 @@ struct ListView: View {
                         }
                         
                         List {
-                            ForEach(witList, id: \.self) {
+                            ForEach(Array(witList.enumerated()), id: \.element) { index, element in
                                 
-                                Text("\($0)")
+                                Text("\(element)")
+                                    .contextMenu {
+                                        Button(action: {
+                                            self.witList.remove(atOffsets: [index])
+                                        }){
+                                            Text("Delete")
+                                        }
+                                    }
                             }
+                            .onDelete(perform: self.removeItem)
                         }
                         
-                        Button("Get WITs", action: {
-                            fetch()
-                        })
+                        HStack {
+                            Button("Clear list", action: { witList.removeAll() })
+                            
+                            Button("Get WITs", action: { fetch() })
+                        }
                     }
                 }
 #if os(iOS)
