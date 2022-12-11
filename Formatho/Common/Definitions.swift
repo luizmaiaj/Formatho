@@ -41,3 +41,13 @@ enum workItemType: String {
     case bug = "Bug"
     case task = "Task"
 }
+
+enum Tab: Int {
+    case login = 0
+    case wit = 1
+    case recent = 2
+    case query = 3
+    case graph = 4
+    case tree = 5
+    case list = 6
+}

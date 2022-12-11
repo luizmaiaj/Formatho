@@ -1,8 +1,8 @@
 //
 //  ContentView.swift
-//  Formatho
+//  formathoPhone
 //
-//  Created by Luiz Carlos Maia Junior on 11/9/22.
+//  Created by Luiz Carlos Maia Junior on 11/12/22.
 //
 
 import SwiftUI
@@ -84,37 +84,6 @@ struct ContentView: View {
                         }
                         .tag(Tab.wit)
                     
-                    ActivityView(fetcher: fetcher)
-                        .tabItem {
-                            Text("Activity")
-                        }
-                        .tag(Tab.recent)
-                    
-                    QueryView(fetcher: fetcher)
-                        .tabItem {
-                            Text("Query")
-                        }
-                        .tag(Tab.query)
-                    
-                    if #available(macOS 13.0, *) {
-                        GraphView(fetcher: fetcher)
-                            .tabItem {
-                                Text("Graph")
-                            }
-                            .tag(Tab.graph)
-                    }
-                    
-                    ListView(fetcher: fetcher)
-                        .tabItem {
-                            Text("List")
-                            
-                            if #available(iOS 15.0, *) {
-                                Image(systemName: "list.dash")
-                                    .font(.title2)
-                            }
-                        }
-                        .tag(Tab.list)
-                    
                     TreeView(fetcher: fetcher)
                         .tabItem {
                             Text("Tree")
@@ -127,7 +96,6 @@ struct ContentView: View {
                         .tag(Tab.tree)
                 }
             }
-            Text(self.fetcher.errorMessage ?? "") // only on macOS
         }
         .frame(minWidth: getW(), minHeight: getH())
     }
