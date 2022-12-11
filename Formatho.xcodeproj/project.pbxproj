@@ -14,6 +14,16 @@
 		BB5C369128CE2BBC00A973E4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB5C369028CE2BBC00A973E4 /* Preview Assets.xcassets */; };
 		BB66E26428E5215F004F731D /* QueryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB66E26328E5215F004F731D /* QueryView.swift */; };
 		BB79FCEF28EFE92800F12473 /* TreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB79FCEE28EFE92800F12473 /* TreeView.swift */; };
+		BB99F3632945C5FB00959611 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB99F3622945C5FA00959611 /* WidgetKit.framework */; };
+		BB99F3652945C5FB00959611 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB99F3642945C5FB00959611 /* SwiftUI.framework */; };
+		BB99F3682945C5FB00959611 /* formathoWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB99F3672945C5FB00959611 /* formathoWidget.swift */; };
+		BB99F36A2945C5FC00959611 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB99F3692945C5FC00959611 /* Assets.xcassets */; };
+		BB99F36F2945C5FC00959611 /* formathoWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = BB99F3602945C5FA00959611 /* formathoWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		BB99F3742945C62E00959611 /* ADO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1EA0AB28D6362300644D5F /* ADO.swift */; };
+		BB99F3752945C63E00959611 /* Definitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7D8CE28F7C44500CD9A16 /* Definitions.swift */; };
+		BB99F3762945C64200959611 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7D8D028F7C75700CD9A16 /* Extensions.swift */; };
+		BB99F3772945C65900959611 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC3A61828D5645800143EA4 /* APIService.swift */; };
+		BB99F3782945C65C00959611 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC3A61A28D564D600143EA4 /* APIError.swift */; };
 		BBC3A61928D5645800143EA4 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC3A61828D5645800143EA4 /* APIService.swift */; };
 		BBC3A61B28D564D600143EA4 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC3A61A28D564D600143EA4 /* APIError.swift */; };
 		BBC8B2F0293DB721007C898E /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC8B2EF293DB721007C898E /* ListView.swift */; };
@@ -27,6 +37,30 @@
 		EE9A4FD328DF775B006BEC27 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9A4FD228DF775B006BEC27 /* LoginView.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		BB99F36D2945C5FC00959611 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BB5C367D28CE2BBA00A973E4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BB99F35F2945C5FA00959611;
+			remoteInfo = formathoWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		BB99F3702945C5FC00959611 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				BB99F36F2945C5FC00959611 /* formathoWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		BB2919D129122F0F00CD9A79 /* WitTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WitTab.swift; sourceTree = "<group>"; };
 		BB5C368528CE2BBA00A973E4 /* Formatho.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Formatho.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -37,6 +71,13 @@
 		BB5C369028CE2BBC00A973E4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BB66E26328E5215F004F731D /* QueryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryView.swift; sourceTree = "<group>"; };
 		BB79FCEE28EFE92800F12473 /* TreeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeView.swift; sourceTree = "<group>"; };
+		BB99F3602945C5FA00959611 /* formathoWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = formathoWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB99F3622945C5FA00959611 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		BB99F3642945C5FB00959611 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		BB99F3672945C5FB00959611 /* formathoWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = formathoWidget.swift; sourceTree = "<group>"; };
+		BB99F3692945C5FC00959611 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BB99F36B2945C5FC00959611 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BB99F36C2945C5FC00959611 /* formathoWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = formathoWidget.entitlements; sourceTree = "<group>"; };
 		BBC3A61828D5645800143EA4 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		BBC3A61A28D564D600143EA4 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		BBC8B2EF293DB721007C898E /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
@@ -56,6 +97,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB99F35D2945C5FA00959611 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB99F3652945C5FB00959611 /* SwiftUI.framework in Frameworks */,
+				BB99F3632945C5FB00959611 /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,6 +138,8 @@
 			isa = PBXGroup;
 			children = (
 				BB5C368728CE2BBA00A973E4 /* Formatho */,
+				BB99F3662945C5FB00959611 /* formathoWidget */,
+				BB99F3612945C5FA00959611 /* Frameworks */,
 				BB5C368628CE2BBA00A973E4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -96,6 +148,7 @@
 			isa = PBXGroup;
 			children = (
 				BB5C368528CE2BBA00A973E4 /* Formatho.app */,
+				BB99F3602945C5FA00959611 /* formathoWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -137,6 +190,26 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		BB99F3612945C5FA00959611 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BB99F3622945C5FA00959611 /* WidgetKit.framework */,
+				BB99F3642945C5FB00959611 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BB99F3662945C5FB00959611 /* formathoWidget */ = {
+			isa = PBXGroup;
+			children = (
+				BB99F3672945C5FB00959611 /* formathoWidget.swift */,
+				BB99F3692945C5FC00959611 /* Assets.xcassets */,
+				BB99F36B2945C5FC00959611 /* Info.plist */,
+				BB99F36C2945C5FC00959611 /* formathoWidget.entitlements */,
+			);
+			path = formathoWidget;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -147,15 +220,34 @@
 				BB5C368128CE2BBA00A973E4 /* Sources */,
 				BB5C368228CE2BBA00A973E4 /* Frameworks */,
 				BB5C368328CE2BBA00A973E4 /* Resources */,
+				BB99F3702945C5FC00959611 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				BB99F36E2945C5FC00959611 /* PBXTargetDependency */,
 			);
 			name = Formatho;
 			productName = Formatho;
 			productReference = BB5C368528CE2BBA00A973E4 /* Formatho.app */;
 			productType = "com.apple.product-type.application";
+		};
+		BB99F35F2945C5FA00959611 /* formathoWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BB99F3732945C5FC00959611 /* Build configuration list for PBXNativeTarget "formathoWidgetExtension" */;
+			buildPhases = (
+				BB99F35C2945C5FA00959611 /* Sources */,
+				BB99F35D2945C5FA00959611 /* Frameworks */,
+				BB99F35E2945C5FA00959611 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = formathoWidgetExtension;
+			productName = formathoWidgetExtension;
+			productReference = BB99F3602945C5FA00959611 /* formathoWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -164,11 +256,14 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1400;
+				LastSwiftUpdateCheck = 1410;
 				LastUpgradeCheck = 1410;
 				TargetAttributes = {
 					BB5C368428CE2BBA00A973E4 = {
 						CreatedOnToolsVersion = 14.0;
+					};
+					BB99F35F2945C5FA00959611 = {
+						CreatedOnToolsVersion = 14.1;
 					};
 				};
 			};
@@ -186,6 +281,7 @@
 			projectRoot = "";
 			targets = (
 				BB5C368428CE2BBA00A973E4 /* Formatho */,
+				BB99F35F2945C5FA00959611 /* formathoWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -197,6 +293,14 @@
 			files = (
 				BB5C369128CE2BBC00A973E4 /* Preview Assets.xcassets in Resources */,
 				BB5C368D28CE2BBC00A973E4 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BB99F35E2945C5FA00959611 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB99F36A2945C5FC00959611 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -226,7 +330,28 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BB99F35C2945C5FA00959611 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BB99F3742945C62E00959611 /* ADO.swift in Sources */,
+				BB99F3772945C65900959611 /* APIService.swift in Sources */,
+				BB99F3752945C63E00959611 /* Definitions.swift in Sources */,
+				BB99F3682945C5FB00959611 /* formathoWidget.swift in Sources */,
+				BB99F3762945C64200959611 /* Extensions.swift in Sources */,
+				BB99F3782945C65C00959611 /* APIError.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		BB99F36E2945C5FC00959611 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = BB99F35F2945C5FA00959611 /* formathoWidgetExtension */;
+			targetProxy = BB99F36D2945C5FC00959611 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		BB5C369228CE2BBC00A973E4 /* Debug */ = {
@@ -343,6 +468,7 @@
 		BB5C369528CE2BBC00A973E4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Formatho/Formatho.entitlements;
@@ -350,7 +476,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 19;
+				CURRENT_PROJECT_VERSION = 20;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Formatho/Preview Content\"";
 				DEVELOPMENT_TEAM = 9T8V5DM9MV;
@@ -373,7 +499,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 12.3;
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = io.red8.Formatho;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -389,6 +515,7 @@
 		BB5C369628CE2BBC00A973E4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Formatho/Formatho.entitlements;
@@ -396,7 +523,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 19;
+				CURRENT_PROJECT_VERSION = 20;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Formatho/Preview Content\"";
 				DEVELOPMENT_TEAM = 9T8V5DM9MV;
@@ -419,7 +546,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 12.3;
-				MARKETING_VERSION = 1.4;
+				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = io.red8.Formatho;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -429,6 +556,72 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		BB99F3712945C5FC00959611 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = formathoWidget/formathoWidget.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 20;
+				DEVELOPMENT_TEAM = 9T8V5DM9MV;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = formathoWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = formathoWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.5;
+				PRODUCT_BUNDLE_IDENTIFIER = io.red8.Formatho.formathoWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		BB99F3722945C5FC00959611 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = formathoWidget/formathoWidget.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 20;
+				DEVELOPMENT_TEAM = 9T8V5DM9MV;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = formathoWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = formathoWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.5;
+				PRODUCT_BUNDLE_IDENTIFIER = io.red8.Formatho.formathoWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -449,6 +642,15 @@
 			buildConfigurations = (
 				BB5C369528CE2BBC00A973E4 /* Debug */,
 				BB5C369628CE2BBC00A973E4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BB99F3732945C5FC00959611 /* Build configuration list for PBXNativeTarget "formathoWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BB99F3712945C5FC00959611 /* Debug */,
+				BB99F3722945C5FC00959611 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
