@@ -65,22 +65,12 @@ struct ContentView: View {
                     LoginView(fetcher: fetcher)
                         .tabItem {
                             Text("Login")
-                            
-                            if #available(iOS 15.0, *) {
-                                Image(systemName: "person.circle")
-                                    .font(.title2)
-                            }
                         }
                         .tag(Tab.login)
                     
                     WitView(fetcher: fetcher)
                         .tabItem {
                             Text("WIT")
-                            
-                            if #available(iOS 15.0, *) {
-                                Image(systemName: "crown.fill")
-                                    .font(.title2)
-                            }
                         }
                         .tag(Tab.wit)
                     
@@ -107,22 +97,12 @@ struct ContentView: View {
                     ListView(fetcher: fetcher)
                         .tabItem {
                             Text("List")
-                            
-                            if #available(iOS 15.0, *) {
-                                Image(systemName: "list.dash")
-                                    .font(.title2)
-                            }
                         }
                         .tag(Tab.list)
                     
                     TreeView(fetcher: fetcher)
                         .tabItem {
                             Text("Tree")
-                            
-                            if #available(iOS 15.0, *) {
-                                Image(systemName: "rectangle.3.group.fill")
-                                    .font(.title2)
-                            }
                         }
                         .tag(Tab.tree)
                 }

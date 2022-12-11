@@ -18,24 +18,6 @@ struct ContentView: View {
     
     @State private var selection: Tab = Tab.wit
     
-    func getW() -> CGFloat { // WIDTH
-        switch selection {
-        case Tab.wit:
-            return 250
-        default:
-            return 400
-        }
-    }
-    
-    func getH() -> CGFloat { // HEIGHT
-        switch selection {
-        case Tab.wit:
-            return 65
-        default:
-            return 250
-        }
-    }
-    
     var body: some View {
         
         VStack {
@@ -66,10 +48,8 @@ struct ContentView: View {
                         .tabItem {
                             Text("Login")
                             
-                            if #available(iOS 15.0, *) {
-                                Image(systemName: "person.circle")
-                                    .font(.title2)
-                            }
+                            Image(systemName: "person.circle")
+                                .font(.title2)
                         }
                         .tag(Tab.login)
                     
@@ -77,10 +57,9 @@ struct ContentView: View {
                         .tabItem {
                             Text("WIT")
                             
-                            if #available(iOS 15.0, *) {
-                                Image(systemName: "crown.fill")
-                                    .font(.title2)
-                            }
+                            
+                            Image(systemName: "crown.fill")
+                                .font(.title2)
                         }
                         .tag(Tab.wit)
                     
@@ -88,16 +67,13 @@ struct ContentView: View {
                         .tabItem {
                             Text("Tree")
                             
-                            if #available(iOS 15.0, *) {
-                                Image(systemName: "rectangle.3.group.fill")
-                                    .font(.title2)
-                            }
+                            Image(systemName: "rectangle.3.group.fill")
+                                .font(.title2)
                         }
                         .tag(Tab.tree)
                 }
             }
         }
-        .frame(minWidth: getW(), minHeight: getH())
     }
 }
 
