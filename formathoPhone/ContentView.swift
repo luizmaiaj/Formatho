@@ -57,7 +57,6 @@ struct ContentView: View {
                         .tabItem {
                             Text("WIT")
                             
-                            
                             Image(systemName: "crown.fill")
                                 .font(.title2)
                         }
