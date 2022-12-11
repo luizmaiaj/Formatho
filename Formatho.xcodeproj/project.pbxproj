@@ -24,6 +24,7 @@
 		BB99F3762945C64200959611 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7D8D028F7C75700CD9A16 /* Extensions.swift */; };
 		BB99F3772945C65900959611 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC3A61828D5645800143EA4 /* APIService.swift */; };
 		BB99F3782945C65C00959611 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC3A61A28D564D600143EA4 /* APIError.swift */; };
+		BB99F3792945C74000959611 /* Fetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1EA0A928D615E800644D5F /* Fetcher.swift */; };
 		BBC3A61928D5645800143EA4 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC3A61828D5645800143EA4 /* APIService.swift */; };
 		BBC3A61B28D564D600143EA4 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC3A61A28D564D600143EA4 /* APIError.swift */; };
 		BBC8B2F0293DB721007C898E /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC8B2EF293DB721007C898E /* ListView.swift */; };
@@ -158,13 +159,10 @@
 			children = (
 				BB2919D029122E9000CD9A79 /* Tabs */,
 				BB2919CF29122E8500CD9A79 /* Views */,
-				BB66E26528E52499004F731D /* Models */,
+				BB66E26528E52499004F731D /* Common */,
 				EE32BE5128DA2169009EBC6F /* Info.plist */,
 				BB5C368828CE2BBA00A973E4 /* FormathoApp.swift */,
 				BB5C368A28CE2BBA00A973E4 /* ContentView.swift */,
-				BBC3A61828D5645800143EA4 /* APIService.swift */,
-				BBC3A61A28D564D600143EA4 /* APIError.swift */,
-				EE1EA0A928D615E800644D5F /* Fetcher.swift */,
 				BB5C368C28CE2BBC00A973E4 /* Assets.xcassets */,
 				BB5C368E28CE2BBC00A973E4 /* Formatho.entitlements */,
 				BB5C368F28CE2BBC00A973E4 /* Preview Content */,
@@ -180,14 +178,17 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		BB66E26528E52499004F731D /* Models */ = {
+		BB66E26528E52499004F731D /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				BBC3A61828D5645800143EA4 /* APIService.swift */,
+				BBC3A61A28D564D600143EA4 /* APIError.swift */,
 				BBF7D8CE28F7C44500CD9A16 /* Definitions.swift */,
 				BBF7D8D028F7C75700CD9A16 /* Extensions.swift */,
+				EE1EA0A928D615E800644D5F /* Fetcher.swift */,
 				EE1EA0AB28D6362300644D5F /* ADO.swift */,
 			);
-			path = Models;
+			path = Common;
 			sourceTree = "<group>";
 		};
 		BB99F3612945C5FA00959611 /* Frameworks */ = {
@@ -334,6 +335,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB99F3792945C74000959611 /* Fetcher.swift in Sources */,
 				BB99F3742945C62E00959611 /* ADO.swift in Sources */,
 				BB99F3772945C65900959611 /* APIService.swift in Sources */,
 				BB99F3752945C63E00959611 /* Definitions.swift in Sources */,
