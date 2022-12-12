@@ -9,15 +9,38 @@
 			<key>orderHint</key>
 			<integer>1</integer>
 		</dict>
-		<key>formathoPhone.xcscheme_^#shared#^_</key>
+		<key>formatho.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
-		<key>formathoWidgetExtension.xcscheme_^#shared#^_</key>
+		<key>formathoPhone.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
+		</dict>
+		<key>formathoWidgetExtension.xcscheme_^#shared#^_</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>BB5C368428CE2BBA00A973E4</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>BB99F35F2945C5FA00959611</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>BB99F37D2945C83200959611</key>
+		<dict>
+			<key>primary</key>
+			<true/>
 		</dict>
 	</dict>
 </dict>
