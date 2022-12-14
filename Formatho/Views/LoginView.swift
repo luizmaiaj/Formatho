@@ -9,7 +9,8 @@ import SwiftUI
 
 struct LoginView: View {
     
-    @AppStorage("organisation") private var organisation: String = String()
+    //@AppStorage("organisation") private var organisation: String = String()
+    @AppStorage("organisation", store: UserDefaults(suiteName: "group.io.red8.formatho")) private var organisation: String = String()
     @AppStorage("email") private var email: String = String()
     @AppStorage("pat") private var pat: String = String()
     
@@ -110,7 +111,8 @@ struct LoginView_Previews: PreviewProvider {
 
 struct LoginDetails: View {
     
-    @AppStorage("organisation") private var organisation: String = String()
+    //@AppStorage("organisation") private var organisation: String = String()
+    @AppStorage("organisation", store: UserDefaults(suiteName: "group.io.red8.formatho")) private var organisation: String = String()
     @AppStorage("email") private var email: String = String()
     @AppStorage("pat") private var pat: String = String()
     

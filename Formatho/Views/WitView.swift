@@ -11,7 +11,8 @@ import Combine
 
 struct WitView: View {
     
-    @AppStorage("organisation") private var organisation: String = String()
+    //@AppStorage("organisation") private var organisation: String = String()
+    @AppStorage("organisation", store: UserDefaults(suiteName: "group.io.red8.formatho")) private var organisation: String = String()
     @AppStorage("email") private var email: String = String()
     @AppStorage("pat") private var pat: String = String()
     @AppStorage("project") private var project: String = String()

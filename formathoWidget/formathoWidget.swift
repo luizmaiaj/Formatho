@@ -10,13 +10,13 @@ import SwiftUI
 
 struct Provider: TimelineProvider {
     
-    @AppStorage("organisation") private var organisation: String = ""
+    //@AppStorage("organisation") private var organisation: String = ""
+    @AppStorage("organisation", store: UserDefaults(suiteName: "group.io.red8.formatho")) private var organisation: String = String()
     @AppStorage("email") private var email: String = ""
     @AppStorage("pat") private var pat: String = ""
     @AppStorage("project") private var project: String = ""
     
-    var isLoading: Bool = false                  // if waiting for the requested data
-    private var errorMessage: String? = nil              // error message
+    var isLoading: Bool = false     // if waiting for the requested data
     
     private let baseURL: String = "https://dev.azure.com/"
     private let service = APIService()
@@ -87,13 +87,14 @@ struct Provider: TimelineProvider {
 }
 
 struct SimpleEntry: TimelineEntry {
-    let date: Date
-    let wit: Wit
+    let date: Date                  // current date
+    let wit: Wit                    // information about the WIT
 }
 
 struct formathoWidgetEntryView : View {
     
-    @AppStorage("organisation") private var organisation: String = String()
+    //@AppStorage("organisation") private var organisation: String = String()
+    @AppStorage("organisation", store: UserDefaults(suiteName: "group.io.red8.formatho")) private var organisation: String = String()
     
     var entry: Provider.Entry
     
@@ -104,7 +105,7 @@ struct formathoWidgetEntryView : View {
             
             Text("organisation: \(organisation)")
             
-            Text(entry.wit.fields.SystemState)
+            Text("state: \(entry.wit.fields.SystemState)")
         }
     }
 }
