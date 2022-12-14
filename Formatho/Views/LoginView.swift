@@ -9,12 +9,18 @@ import SwiftUI
 
 struct LoginView: View {
     
-    //@AppStorage("organisation") private var organisation: String = String()
-    @AppStorage("organisation", store: UserDefaults(suiteName: "group.io.red8.formatho")) private var organisation: String = String()
-    @AppStorage("email") private var email: String = String()
-    @AppStorage("pat") private var pat: String = String()
+    @AppStorage("organisation", store: UserDefaults(suiteName: APP_GROUP)) var organisation: String = String()
+    @AppStorage("email", store: UserDefaults(suiteName: APP_GROUP)) var email: String = String()
+    @AppStorage("pat", store: UserDefaults(suiteName: APP_GROUP)) var pat: String = String()
+    @AppStorage("project", store: UserDefaults(suiteName: APP_GROUP)) var project: String = String()
     
-    @AppStorage("project") private var project: String = String()
+    // for compatibility with older version to be removed in the next release
+    @AppStorage("organisation") private var local_organisation: String = String()
+    @AppStorage("email") private var local_email: String = String()
+    @AppStorage("pat") private var local_pat: String = String()
+    @AppStorage("project") private var local_project: String = String()
+    // for compatibility with older version to be removed in the next release
+    
     @AppStorage("queryid") private var queryid: String = String() // to use the reset AppStorage
     
     @State private var connectionTested: Bool = false
@@ -22,7 +28,7 @@ struct LoginView: View {
     @ObservedObject var fetcher: Fetcher
     
     func fetch() {
-        fetcher.projects(org: organisation, pat: pat, email: email)
+        fetcher.projects(org: organisation, email: email, pat: pat)
     }
     
     var body: some View {
@@ -35,7 +41,7 @@ struct LoginView: View {
                 
             } else {
                 
-                LoginDetails()
+                LoginDetails(organisation: $organisation, email: $email, pat: $pat)
                 
                 HStack {
                     Button("Get project list", action: {
@@ -81,6 +87,28 @@ struct LoginView: View {
         }
         .onAppear() {
             
+            // for compatibility with older version to be removed in next release
+            if organisation.isEmpty {
+                organisation = local_organisation
+                local_organisation = ""
+            }
+            
+            if organisation.isEmpty {
+                pat = local_pat
+                local_pat = ""
+            }
+            
+            if email.isEmpty {
+                email = local_email
+                local_email = ""
+            }
+            
+            if project.isEmpty {
+                project = local_project
+                local_project = ""
+            }
+            // for compatibility with older version to be removed in next release
+            
             if !organisation.isEmpty && !pat.isEmpty && !email.isEmpty {
                 
                 fetch()
@@ -94,6 +122,9 @@ struct LoginView: View {
             }
             
             self.connectionTested = true
+        }
+        .onDisappear() {
+            fetcher.setProject(project: project)
         }
 #if !os(OSX)
         .onTapGesture {
@@ -111,10 +142,9 @@ struct LoginView_Previews: PreviewProvider {
 
 struct LoginDetails: View {
     
-    //@AppStorage("organisation") private var organisation: String = String()
-    @AppStorage("organisation", store: UserDefaults(suiteName: "group.io.red8.formatho")) private var organisation: String = String()
-    @AppStorage("email") private var email: String = String()
-    @AppStorage("pat") private var pat: String = String()
+    @Binding var organisation: String
+    @Binding var email: String
+    @Binding var pat: String
     
     var body: some View {
         

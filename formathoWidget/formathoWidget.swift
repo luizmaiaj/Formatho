@@ -11,7 +11,7 @@ import SwiftUI
 struct Provider: TimelineProvider {
     
     //@AppStorage("organisation") private var organisation: String = ""
-    @AppStorage("organisation", store: UserDefaults(suiteName: "group.io.red8.formatho")) private var organisation: String = String()
+    @AppStorage("organisation", store: UserDefaults(suiteName: APP_GROUP)) var organisation: String = String()
     @AppStorage("email") private var email: String = ""
     @AppStorage("pat") private var pat: String = ""
     @AppStorage("project") private var project: String = ""
@@ -93,8 +93,8 @@ struct SimpleEntry: TimelineEntry {
 
 struct formathoWidgetEntryView : View {
     
-    //@AppStorage("organisation") private var organisation: String = String()
-    @AppStorage("organisation", store: UserDefaults(suiteName: "group.io.red8.formatho")) private var organisation: String = String()
+    @AppStorage("organisation", store: UserDefaults(suiteName: APP_GROUP)) var organisation: String = String()
+    @AppStorage("project", store: UserDefaults(suiteName: APP_GROUP)) var project: String = String()
     
     var entry: Provider.Entry
     
@@ -104,6 +104,8 @@ struct formathoWidgetEntryView : View {
             Text(entry.date, style: .time)
             
             Text("organisation: \(organisation)")
+            
+            Text("project: \(project)")
             
             Text("state: \(entry.wit.fields.SystemState)")
         }

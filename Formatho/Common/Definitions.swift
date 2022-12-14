@@ -10,8 +10,9 @@ import Foundation
 // for debugging
 let HTTP_DATA = false
 let HTTP_ERROR = true
-let DEBUG_INFO = false
+let DEBUG_INFO = true
 let DEBUG_BUTTON = false
+let APP_GROUP = "group.io.red8.formatho"
 
 // how many levels from the current node to fetch for the links
 let RELATIONS_LEVELS = 1

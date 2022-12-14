@@ -16,7 +16,6 @@ import MobileCoreServices
 
 class Fetcher: ObservableObject {
     
-    @AppStorage("project") private var project: String = String()
     @AppStorage("sortPriority") private var sortPriority: Bool = false
     
     @Published var projects: [Project] = [Project]()        // to store the list of projects in the organisation
@@ -37,6 +36,11 @@ class Fetcher: ObservableObject {
     
     private var fetched: [Int] = [Int]()                    // list fetched for the wit links' tree
     
+    private var organisation: String = String()
+    private var email: String = String()
+    private var pat: String = String()
+    private var project: String = String()
+    
     let baseURL: String = "https://dev.azure.com/"
     
 #if os(OSX)
@@ -45,9 +49,9 @@ class Fetcher: ObservableObject {
     
     let service = APIService()
     
-    private func buildHeader(pat: String, email: String) -> [String : String] {
+    private func buildHeader() -> [String : String] {
         
-        let authorisation = "Basic " + (String(email + ":" + pat).data(using: .utf8)?.base64EncodedString() ?? "")
+        let authorisation = "Basic " + (String(self.email + ":" + self.pat).data(using: .utf8)?.base64EncodedString() ?? "")
         
         let header = ["accept": "application/json", "authorization": authorisation]
         
@@ -64,10 +68,19 @@ class Fetcher: ObservableObject {
         if DEBUG_INFO { print("\(title) \(query.name):\(query.id)") }
     }
     
-    // to get the list of projects accessible to the user
-    func projects(org: String, pat: String, email: String) {
+    func setProject(project: String) {
         
-        let header = buildHeader(pat: pat, email: email)
+        self.project = project
+    }
+    
+    // to get the list of projects accessible to the user
+    func projects(org: String, email: String, pat: String) {
+        
+        self.organisation = org
+        self.email = email
+        self.pat = pat
+        
+        let header = buildHeader()
         
         self.isLoading = true
         self.errorMessage = nil
@@ -113,7 +126,7 @@ class Fetcher: ObservableObject {
     // to get the list of queries accessible to the user
     func queries(org: String, pat: String, email: String, project: String) {
         
-        let header = buildHeader(pat: pat, email: email)
+        let header = buildHeader()
         
         self.isLoading = true
         errorMessage = nil
@@ -169,7 +182,7 @@ class Fetcher: ObservableObject {
     
     func queries(org: String, pat: String, email: String, project: String, queryID: String, completion: @escaping (QueryNode) -> Void) {
         
-        let header = buildHeader(pat: pat, email: email)
+        let header = buildHeader()
         
         self.isLoading = true
         self.statusMessage = queryID
@@ -227,7 +240,7 @@ class Fetcher: ObservableObject {
     // to get the list of the most recent wits that the user has worked on (limited to 200)
     func activities(org: String, pat: String, email: String) {
         
-        let header = buildHeader(pat: pat, email: email)
+        let header = buildHeader()
         
         self.isLoading = true
         self.errorMessage = nil
@@ -271,7 +284,7 @@ class Fetcher: ObservableObject {
             return
         }
         
-        let header = buildHeader(pat: pat, email: email)
+        let header = buildHeader()
         var report: String = String("")
         
         self.isLoading = true
@@ -398,7 +411,7 @@ class Fetcher: ObservableObject {
     // use a query id to get the list of wit ids and then use the wits fectcher function to get information for each wit
     func query(org: String, pat: String, email: String, queryid: String, project: String, cb: Bool, addReport: Bool) {
         
-        let header = buildHeader(pat: pat, email: email)
+        let header = buildHeader()
         
         self.isLoading = true
         self.errorMessage = nil
@@ -443,7 +456,7 @@ class Fetcher: ObservableObject {
     // queries for all the links contained in one wit
     func links(org: String, pat: String, email: String, id: String) {
         
-        let header = buildHeader(pat: pat, email: email)
+        let header = buildHeader()
         
         self.isLoading = true
         errorMessage = nil
@@ -507,7 +520,7 @@ class Fetcher: ObservableObject {
     
     func links(org: String, pat: String, email: String, id: Int, completion: @escaping (WitNode) -> Void) {
         
-        let header = buildHeader(pat: pat, email: email)
+        let header = buildHeader()
         
         self.isLoading = true
         self.statusMessage = "\(id)"

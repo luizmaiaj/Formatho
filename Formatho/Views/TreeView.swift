@@ -11,11 +11,11 @@ import Combine
 
 struct TreeView: View {
     
-    //@AppStorage("organisation") private var organisation: String = String()
-    @AppStorage("organisation", store: UserDefaults(suiteName: "group.io.red8.formatho")) private var organisation: String = String()
-    @AppStorage("email") private var email: String = String()
-    @AppStorage("pat") private var pat: String = String()
-    
+    @AppStorage("organisation", store: UserDefaults(suiteName: APP_GROUP)) var organisation: String = String()
+    @AppStorage("email", store: UserDefaults(suiteName: APP_GROUP)) var email: String = String()
+    @AppStorage("pat", store: UserDefaults(suiteName: APP_GROUP)) var pat: String = String()
+    @AppStorage("project", store: UserDefaults(suiteName: APP_GROUP)) var project: String = String()
+
     @ObservedObject var fetcher: Fetcher
     
     @State var witid: String = String("")

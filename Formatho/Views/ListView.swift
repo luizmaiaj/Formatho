@@ -10,12 +10,11 @@ import Combine
 
 struct ListView: View {
     
-    //@AppStorage("organisation") private var organisation: String = String()
-    @AppStorage("organisation", store: UserDefaults(suiteName: "group.io.red8.formatho")) private var organisation: String = String()
-    @AppStorage("email") private var email: String = String()
-    @AppStorage("pat") private var pat: String = String()
-    @AppStorage("project") private var project: String = String()
-    
+    @AppStorage("organisation", store: UserDefaults(suiteName: APP_GROUP)) var organisation: String = String()
+    @AppStorage("email", store: UserDefaults(suiteName: APP_GROUP)) var email: String = String()
+    @AppStorage("pat", store: UserDefaults(suiteName: APP_GROUP)) var pat: String = String()
+    @AppStorage("project", store: UserDefaults(suiteName: APP_GROUP)) var project: String = String()
+
     @AppStorage("copyToCB") private var copyToCB: Bool = false
     @AppStorage("includeReport") private var includeReport: Bool = false
     @AppStorage("sortPriority") private var sortPriority: Bool = false
