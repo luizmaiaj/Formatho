@@ -36,12 +36,14 @@ class Fetcher: ObservableObject {
     
     private var fetched: [Int] = [Int]()                    // list fetched for the wit links' tree
     
-    private var organisation: String = String()
-    private var email: String = String()
-    private var pat: String = String()
-    private var project: String = String()
+    var organisation: String = String()
+    var email: String = String()
+    var pat: String = String()
+    var project: String = String()
     
-    let baseURL: String = "https://dev.azure.com/"
+    private var header: [String : String] = [String : String]()
+    
+    let BASE_URL: String = "https://dev.azure.com/"
     
 #if os(OSX)
     let pboard = NSPasteboard.general // reference to pasteboard
@@ -73,14 +75,25 @@ class Fetcher: ObservableObject {
         self.project = project
     }
     
+    func initialise(org: String, email: String, pat: String, project: String) {
+        
+        self.organisation = org
+        self.email = email
+        self.pat = pat
+        self.project = project
+        
+        self.header = buildHeader()
+    }
+    
     // to get the list of projects accessible to the user
-    func projects(org: String, email: String, pat: String) {
+    // as it's being called from the login view the login info can also be updated inside the class
+    func getProjects(org: String, email: String, pat: String) {
         
         self.organisation = org
         self.email = email
         self.pat = pat
         
-        let header = buildHeader()
+        self.header = buildHeader()
         
         self.isLoading = true
         self.errorMessage = nil
@@ -88,7 +101,7 @@ class Fetcher: ObservableObject {
         self.projects.removeAll()
         self.projectNames.removeAll()
         
-        let prjBaseUrl: String = self.baseURL + org + "/_apis/projects"
+        let prjBaseUrl: String = BASE_URL + org + "/_apis/projects"
         
         let url = NSURL(string: prjBaseUrl)! as URL
         
@@ -124,19 +137,17 @@ class Fetcher: ObservableObject {
     }
     
     // to get the list of queries accessible to the user
-    func queries(org: String, pat: String, email: String, project: String) {
-        
-        let header = buildHeader()
+    func getQueries() {
         
         self.isLoading = true
-        errorMessage = nil
-        statusMessage = nil
+        self.errorMessage = nil
+        self.statusMessage = nil
         
-        let prjBaseUrl: String = self.baseURL + org + "/" + project + "/_apis/wit/queries?$depth=1"
+        let prjBaseUrl: String = BASE_URL + self.organisation + "/" + self.project + "/_apis/wit/queries?$depth=1"
         
         let url = NSURL(string: prjBaseUrl)! as URL
         
-        self.service.fetch(Queries.self, url: url, headers: header) { [unowned self] result in
+        self.service.fetch(Queries.self, url: url, headers: self.header) { [unowned self] result in
             
             DispatchQueue.main.async {
                 
@@ -167,7 +178,7 @@ class Fetcher: ObservableObject {
                                     
                                     self.statusMessage = self.queries[q].children![c].name
                                     
-                                    self.queries(org: org, pat: pat, email: email, project: project, queryID: self.queries[q].children![c].id, completion: { query in
+                                    self.getSubQueries(queryID: self.queries[q].children![c].id, completion: { query in
                                         
                                         self.queries[q].children![c] = query
                                     })
@@ -180,18 +191,16 @@ class Fetcher: ObservableObject {
         }
     }
     
-    func queries(org: String, pat: String, email: String, project: String, queryID: String, completion: @escaping (QueryNode) -> Void) {
-        
-        let header = buildHeader()
+    func getSubQueries(queryID: String, completion: @escaping (QueryNode) -> Void) {
         
         self.isLoading = true
         self.statusMessage = queryID
         
-        let prjBaseUrl: String = self.baseURL + org + "/" + project + "/_apis/wit/queries/" + queryID + "?$depth=1"
+        let prjBaseUrl: String = BASE_URL + self.organisation + "/" + self.project + "/_apis/wit/queries/" + queryID + "?$depth=1"
         
         let url = NSURL(string: prjBaseUrl)! as URL
         
-        self.service.fetch(QueryNode.self, url: url, headers: header) { [unowned self] result in
+        self.service.fetch(QueryNode.self, url: url, headers: self.header) { [unowned self] result in
             
             DispatchQueue.main.async {
                 
@@ -219,7 +228,7 @@ class Fetcher: ObservableObject {
                                 
                                 if DEBUG_INFO { self.printQuery(title: "REC children", query: info.children![c]) }
                                 
-                                self.queries(org: org, pat: pat, email: email, project: project, queryID: info.children![c].id, completion: { query in
+                                self.getSubQueries(queryID: info.children![c].id, completion: { query in
                                     
                                     if query.children != nil {
                                         info.children![c] = query
@@ -238,18 +247,16 @@ class Fetcher: ObservableObject {
     }
     
     // to get the list of the most recent wits that the user has worked on (limited to 200)
-    func activities(org: String, pat: String, email: String) {
-        
-        let header = buildHeader()
+    func getActivities() {
         
         self.isLoading = true
         self.errorMessage = nil
         
-        let prjBaseUrl: String = self.baseURL + org + "/_apis/work/accountmyworkrecentactivity"
+        let prjBaseUrl: String = BASE_URL + self.organisation + "/_apis/work/accountmyworkrecentactivity"
         
         let url = NSURL(string: prjBaseUrl)! as URL
         
-        self.service.fetch(Activities.self, url: url, headers: header) { [unowned self] result in
+        self.service.fetch(Activities.self, url: url, headers: self.header) { [unowned self] result in
             
             DispatchQueue.main.async {
                 
@@ -270,12 +277,12 @@ class Fetcher: ObservableObject {
         }
     }
     
-    func wit(org: String, pat: String, email: String, witid: String, project: String) {
+    func getWit(witid: String) {
         
-        self.wits(org: org, pat: pat, email: email, ids: [witid], project: project)
+        self.getWits(ids: [witid])
     }
     
-    func wits(org: String, pat: String, email: String, ids: [String], project: String, cb: Bool = true, includeReport: Bool = true) {
+    func getWits(ids: [String], cb: Bool = true, includeReport: Bool = true) {
         
         if ids.isEmpty { // if no ids in the list then simply return *** add some error handling ? ***
             
@@ -284,15 +291,14 @@ class Fetcher: ObservableObject {
             return
         }
         
-        let header = buildHeader()
         var report: String = String("")
         
         self.isLoading = true
-        errorMessage = nil
+        self.errorMessage = nil
         
         self.wits.removeAll()
         
-        let reqURL: String = self.baseURL + org + "/" + project + "/_workitems/edit/" // removing reference to name
+        let reqURL: String = BASE_URL + self.organisation + "/" + self.project + "/_workitems/edit/" // removing reference to name
         
         // build id list limited to ADO_LIST_LIMIT = 200 wits
         var iStart: Int = 0
@@ -317,11 +323,11 @@ class Fetcher: ObservableObject {
             
             if DEBUG_INFO { print("Fetcher::wits \(idList)") }
             
-            let witBaseUrl: String = baseURL + org + "/_apis/wit/workitems?ids=" + idList
+            let witBaseUrl: String = BASE_URL + self.organisation + "/_apis/wit/workitems?ids=" + idList
             
             let url = NSURL(string: witBaseUrl)! as URL
             
-            self.service.fetch(Wits.self, url: url, headers: header) { [unowned self] result in
+            self.service.fetch(Wits.self, url: url, headers: self.header) { [unowned self] result in
                 
                 DispatchQueue.main.async {
                     
@@ -348,7 +354,7 @@ class Fetcher: ObservableObject {
                         for wit in self.wits {
                             
                             // splitting between link and name to correctly display in dark mode
-                            wit.link = "<a href=\"\(reqURL)\(wit.textWitID)\">[\(project)-\(wit.textWitID)]</a>"
+                            wit.link = "<a href=\"\(reqURL)\(wit.textWitID)\">[\(self.project)-\(wit.textWitID)]</a>"
                             
                             wit.html = wit.name + " " + wit.link
                             
@@ -409,18 +415,16 @@ class Fetcher: ObservableObject {
     }
     
     // use a query id to get the list of wit ids and then use the wits fectcher function to get information for each wit
-    func query(org: String, pat: String, email: String, queryid: String, project: String, cb: Bool, addReport: Bool) {
-        
-        let header = buildHeader()
+    func query(queryid: String, cb: Bool, addReport: Bool) {
         
         self.isLoading = true
         self.errorMessage = nil
         
-        let prjBaseUrl: String = self.baseURL + org + "/_apis/wit/wiql?id=" + queryid
+        let prjBaseUrl: String = BASE_URL + self.organisation + "/_apis/wit/wiql?id=" + queryid
         
         let url = NSURL(string: prjBaseUrl)! as URL
         
-        self.service.fetch(Query.self, url: url, headers: header) { [unowned self] result in
+        self.service.fetch(Query.self, url: url, headers: self.header) { [unowned self] result in
             
             DispatchQueue.main.async {
                 
@@ -447,30 +451,28 @@ class Fetcher: ObservableObject {
                     if DEBUG_INFO { print(ids) }
                     
                     // call wits function to get information about the wits
-                    self.wits(org: org, pat: pat, email: email, ids: ids, project: project, cb: cb, includeReport: addReport)
+                    self.getWits(ids: ids, cb: cb, includeReport: addReport)
                 }
             }
         }
     }
     
     // queries for all the links contained in one wit
-    func links(org: String, pat: String, email: String, id: String) {
-        
-        let header = buildHeader()
+    func getWitLinks(id: String) {
         
         self.isLoading = true
-        errorMessage = nil
+        self.errorMessage = nil
         self.statusMessage = id
         
         self.nodes.removeAll()
         
         self.fetched.removeAll()
         
-        let witBaseUrl: String = self.baseURL + org + "/_apis/wit/workitems/" + id + "?$expand=relations"
+        let witBaseUrl: String = BASE_URL + self.organisation + "/_apis/wit/workitems/" + id + "?$expand=relations"
         
         let url = NSURL(string: witBaseUrl)! as URL
         
-        self.service.fetch(WitNode.self, url: url, headers: header) { [unowned self] result in
+        self.service.fetch(WitNode.self, url: url, headers: self.header) { [unowned self] result in
             
             DispatchQueue.main.async {
                 
@@ -501,7 +503,7 @@ class Fetcher: ObservableObject {
                                 
                                 if !self.fetched.contains(self.nodes[n].children![c].witID) && self.nodes[n].children![c].nodeType != relation.file && self.nodes[n].children![c].nodeType != relation.pullRequest {
                                     
-                                    self.links(org: org, pat: pat, email: email, id: self.nodes[n].children![c].witID, completion: { [self] node in
+                                    self.getSubWitLinks(id: self.nodes[n].children![c].witID, completion: { [self] node in
                                         
                                         if node.witID != 0 {
                                             self.nodes[n].children![c] = node
@@ -518,18 +520,16 @@ class Fetcher: ObservableObject {
         }
     }
     
-    func links(org: String, pat: String, email: String, id: Int, completion: @escaping (WitNode) -> Void) {
-        
-        let header = buildHeader()
+    func getSubWitLinks(id: Int, completion: @escaping (WitNode) -> Void) {
         
         self.isLoading = true
         self.statusMessage = "\(id)"
         
-        let witBaseUrl: String = self.baseURL + org + "/_apis/wit/workitems/" + "\(id)" + "?$expand=relations"
+        let witBaseUrl: String = BASE_URL + self.organisation + "/_apis/wit/workitems/" + "\(id)" + "?$expand=relations"
         
         let url = NSURL(string: witBaseUrl)! as URL
         
-        self.service.fetch(WitNode.self, url: url, headers: header) { [unowned self] result in
+        self.service.fetch(WitNode.self, url: url, headers: self.header) { [unowned self] result in
             
             DispatchQueue.main.async {
                 
@@ -557,7 +557,7 @@ class Fetcher: ObservableObject {
                         
                         if !self.fetched.contains(info.children![c].witID) && info.children![c].nodeType != relation.file && info.children![c].nodeType != relation.pullRequest {
                             
-                            self.links(org: org, pat: pat, email: email, id: info.children![c].witID, completion: { node in
+                            self.getSubWitLinks(id: info.children![c].witID, completion: { node in
                                 
                                 if node.witID != 0 {
                                     info.children![c] = node

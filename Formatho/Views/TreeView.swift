@@ -11,18 +11,13 @@ import Combine
 
 struct TreeView: View {
     
-    @AppStorage("organisation", store: UserDefaults(suiteName: APP_GROUP)) var organisation: String = String()
-    @AppStorage("email", store: UserDefaults(suiteName: APP_GROUP)) var email: String = String()
-    @AppStorage("pat", store: UserDefaults(suiteName: APP_GROUP)) var pat: String = String()
-    @AppStorage("project", store: UserDefaults(suiteName: APP_GROUP)) var project: String = String()
-
     @ObservedObject var fetcher: Fetcher
     
     @State var witid: String = String("")
     
     func fetch() {
         
-        self.fetcher.links(org: organisation, pat: pat, email: email, id: witid)
+        self.fetcher.getWitLinks(id: witid)
     }
     
     var body: some View {

@@ -17,7 +17,7 @@ struct ActivityView: View {
     @ObservedObject var fetcher: Fetcher
     
     private func fetchActivities() {
-        fetcher.activities(org: organisation, pat: pat, email: email)
+        fetcher.getActivities()
     }
     
     var body: some View {

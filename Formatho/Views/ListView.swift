@@ -10,11 +10,6 @@ import Combine
 
 struct ListView: View {
     
-    @AppStorage("organisation", store: UserDefaults(suiteName: APP_GROUP)) var organisation: String = String()
-    @AppStorage("email", store: UserDefaults(suiteName: APP_GROUP)) var email: String = String()
-    @AppStorage("pat", store: UserDefaults(suiteName: APP_GROUP)) var pat: String = String()
-    @AppStorage("project", store: UserDefaults(suiteName: APP_GROUP)) var project: String = String()
-
     @AppStorage("copyToCB") private var copyToCB: Bool = false
     @AppStorage("includeReport") private var includeReport: Bool = false
     @AppStorage("sortPriority") private var sortPriority: Bool = false
@@ -25,7 +20,7 @@ struct ListView: View {
     @State var witList: [String] = [String]()
     
     private func fetch() {
-        fetcher.wits(org: organisation, pat: pat, email: email, ids: witList, project: project, cb: copyToCB, includeReport: includeReport)
+        fetcher.getWits(ids: witList, cb: copyToCB, includeReport: includeReport)
     }
     
     private func addItem() {

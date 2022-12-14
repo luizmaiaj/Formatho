@@ -28,7 +28,7 @@ struct LoginView: View {
     @ObservedObject var fetcher: Fetcher
     
     func fetch() {
-        fetcher.projects(org: organisation, email: email, pat: pat)
+        fetcher.getProjects(org: organisation, email: email, pat: pat)
     }
     
     var body: some View {

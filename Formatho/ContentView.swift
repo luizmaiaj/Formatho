@@ -9,12 +9,11 @@ import SwiftUI
 
 struct ContentView: View {
     
-    //@AppStorage("organisation") private var organisation: String = String()
     @AppStorage("organisation", store: UserDefaults(suiteName: APP_GROUP)) var organisation: String = String()
-    @AppStorage("email") private var email: String = String()
-    @AppStorage("pat") private var pat: String = String()
-    @AppStorage("project") var project: String = String()
-    
+    @AppStorage("email", store: UserDefaults(suiteName: APP_GROUP)) var email: String = String()
+    @AppStorage("pat", store: UserDefaults(suiteName: APP_GROUP)) var pat: String = String()
+    @AppStorage("project", store: UserDefaults(suiteName: APP_GROUP)) var project: String = String()
+
     @StateObject var fetcher: Fetcher = Fetcher()
     
     @State private var selection: Tab = Tab.wit
@@ -111,6 +110,10 @@ struct ContentView: View {
             Text(self.fetcher.errorMessage ?? "") // only on macOS
         }
         .frame(minWidth: getW(), minHeight: getH())
+        .onAppear() {
+            
+            self.fetcher.initialise(org: organisation, email: email, pat: pat, project: project)
+        }
     }
 }
 

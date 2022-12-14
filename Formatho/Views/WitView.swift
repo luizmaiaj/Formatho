@@ -11,17 +11,12 @@ import Combine
 
 struct WitView: View {
     
-    @AppStorage("organisation", store: UserDefaults(suiteName: APP_GROUP)) var organisation: String = String()
-    @AppStorage("email", store: UserDefaults(suiteName: APP_GROUP)) var email: String = String()
-    @AppStorage("pat", store: UserDefaults(suiteName: APP_GROUP)) var pat: String = String()
-    @AppStorage("project", store: UserDefaults(suiteName: APP_GROUP)) var project: String = String()
-    
     @ObservedObject var fetcher: Fetcher
     
     @State var witid: String = String()
     
     func fetch() {
-        fetcher.wit(org: organisation, pat: pat, email: email, witid: witid, project: project)
+        fetcher.getWit(witid: witid)
     }
     
     var body: some View {

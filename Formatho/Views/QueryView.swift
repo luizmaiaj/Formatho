@@ -9,11 +9,6 @@ import SwiftUI
 
 struct QueryView: View {
     
-    @AppStorage("organisation", store: UserDefaults(suiteName: APP_GROUP)) var organisation: String = String()
-    @AppStorage("email", store: UserDefaults(suiteName: APP_GROUP)) var email: String = String()
-    @AppStorage("pat", store: UserDefaults(suiteName: APP_GROUP)) var pat: String = String()
-    @AppStorage("project", store: UserDefaults(suiteName: APP_GROUP)) var project: String = String()
-
     @AppStorage("queryid") private var queryid: String = String()
     
     @AppStorage("copyToCB") private var copyToCB: Bool = false
@@ -23,11 +18,11 @@ struct QueryView: View {
     @StateObject var qFetcher: Fetcher = Fetcher()
     
     private func fetchWits() {
-        self.fetcher.query(org: organisation, pat: pat, email: email, queryid: queryid, project: project, cb: copyToCB, addReport: includeReport)
+        self.fetcher.query(queryid: queryid, cb: copyToCB, addReport: includeReport)
     }
     
     private func fetchQueries() {
-        self.qFetcher.queries(org: organisation, pat: pat, email: email, project: project)
+        self.qFetcher.getQueries()
     }
     
     private func queryWidth(width: CGFloat) -> CGFloat {
@@ -123,6 +118,10 @@ struct QueryView: View {
                 }
                 .padding([.trailing, .top])
                 .frame(width: queryWidth(width: g.size.width), height: g.size.height)
+            }
+            .onAppear() {
+                
+                self.qFetcher.initialise(org: self.fetcher.organisation, email: self.fetcher.email, pat: self.fetcher.pat, project: self.fetcher.project)
             }
         }
     }
