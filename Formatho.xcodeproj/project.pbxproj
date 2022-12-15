@@ -14,6 +14,12 @@
 		BB01CE52294B438F00B5482E /* macWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = BB01CE4D294B438D00B5482E /* macWidget.intentdefinition */; };
 		BB01CE53294B438F00B5482E /* macWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = BB01CE4D294B438D00B5482E /* macWidget.intentdefinition */; };
 		BB01CE56294B438F00B5482E /* macWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = BB01CE47294B438D00B5482E /* macWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		BB01CE5A294B460900B5482E /* Definitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7D8CE28F7C44500CD9A16 /* Definitions.swift */; };
+		BB01CE5B294B460E00B5482E /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC3A61A28D564D600143EA4 /* APIError.swift */; };
+		BB01CE5C294B460E00B5482E /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC3A61828D5645800143EA4 /* APIService.swift */; };
+		BB01CE5D294B461200B5482E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7D8D028F7C75700CD9A16 /* Extensions.swift */; };
+		BB01CE5E294B461500B5482E /* Fetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1EA0A928D615E800644D5F /* Fetcher.swift */; };
+		BB01CE5F294B461800B5482E /* ADO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1EA0AB28D6362300644D5F /* ADO.swift */; };
 		BB2919D229122F0F00CD9A79 /* WitTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2919D129122F0F00CD9A79 /* WitTab.swift */; };
 		BB5C368928CE2BBA00A973E4 /* FormathoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5C368828CE2BBA00A973E4 /* FormathoApp.swift */; };
 		BB5C368B28CE2BBA00A973E4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5C368A28CE2BBA00A973E4 /* ContentView.swift */; };
@@ -386,7 +392,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB01CE5F294B461800B5482E /* ADO.swift in Sources */,
+				BB01CE5E294B461500B5482E /* Fetcher.swift in Sources */,
 				BB01CE52294B438F00B5482E /* macWidget.intentdefinition in Sources */,
+				BB01CE5D294B461200B5482E /* Extensions.swift in Sources */,
+				BB01CE5C294B460E00B5482E /* APIService.swift in Sources */,
+				BB01CE5B294B460E00B5482E /* APIError.swift in Sources */,
+				BB01CE5A294B460900B5482E /* Definitions.swift in Sources */,
 				BB01CE4C294B438D00B5482E /* macWidget.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -454,7 +466,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = 9T8V5DM9MV;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -467,7 +479,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = io.red8.Formatho.macWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -487,7 +499,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 20;
 				DEVELOPMENT_TEAM = 9T8V5DM9MV;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -500,7 +512,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = io.red8.Formatho.macWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
