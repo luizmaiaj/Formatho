@@ -48,7 +48,7 @@ struct Provider: IntentTimelineProvider {
         
         //self.isLoading = true
         
-        let witBaseUrl: String = BASE_URL + organisation + "/_apis/wit/workitems?ids=" + "181586" // witID
+        let witBaseUrl: String = BASE_URL + organisation + "/_apis/wit/workitems?ids=" + "\(configuration.witID ?? 0)" // witID
         
         let url = NSURL(string: witBaseUrl)! as URL
         
@@ -98,6 +98,8 @@ struct macWidgetEntryView : View {
         Text(entry.wit.fields.SystemTitle)
         
         Text(entry.wit.fields.SystemState)
+        
+        Text("\(entry.configuration.witID ?? 0)")
     }
 }
 
