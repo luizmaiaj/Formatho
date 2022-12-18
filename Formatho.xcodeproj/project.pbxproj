@@ -11,8 +11,8 @@
 		BB01CE49294B438D00B5482E /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB99F3642945C5FB00959611 /* SwiftUI.framework */; };
 		BB01CE4C294B438D00B5482E /* macWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB01CE4B294B438D00B5482E /* macWidget.swift */; };
 		BB01CE4F294B438F00B5482E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB01CE4E294B438F00B5482E /* Assets.xcassets */; };
-		BB01CE52294B438F00B5482E /* macWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = BB01CE4D294B438D00B5482E /* macWidget.intentdefinition */; };
-		BB01CE53294B438F00B5482E /* macWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = BB01CE4D294B438D00B5482E /* macWidget.intentdefinition */; };
+		BB01CE52294B438F00B5482E /* macWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = BB01CE4D294B438D00B5482E /* macWidget.intentdefinition */; settings = {ATTRIBUTES = (codegen, ); }; };
+		BB01CE53294B438F00B5482E /* macWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = BB01CE4D294B438D00B5482E /* macWidget.intentdefinition */; settings = {ATTRIBUTES = (codegen, ); }; };
 		BB01CE56294B438F00B5482E /* macWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = BB01CE47294B438D00B5482E /* macWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BB01CE5A294B460900B5482E /* Definitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7D8CE28F7C44500CD9A16 /* Definitions.swift */; };
 		BB01CE5B294B460E00B5482E /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC3A61A28D564D600143EA4 /* APIError.swift */; };
