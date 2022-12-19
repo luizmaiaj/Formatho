@@ -113,7 +113,7 @@ struct macWidget: Widget {
         }
         .configurationDisplayName("formatho widget")
         .description("To display information about your wits")
-        .supportedFamilies([.systemMedium])
+        //.supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
 }
 
