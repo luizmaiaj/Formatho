@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "BB5C368428CE2BBA00A973E4"
-               BuildableName = "Formatho.app"
-               BlueprintName = "Formatho"
+               BuildableName = "formatho.app"
+               BlueprintName = "formatho"
                ReferencedContainer = "container:Formatho.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,8 +45,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "BB5C368428CE2BBA00A973E4"
-            BuildableName = "Formatho.app"
-            BlueprintName = "Formatho"
+            BuildableName = "formatho.app"
+            BlueprintName = "formatho"
             ReferencedContainer = "container:Formatho.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -62,8 +62,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "BB5C368428CE2BBA00A973E4"
-            BuildableName = "Formatho.app"
-            BlueprintName = "Formatho"
+            BuildableName = "formatho.app"
+            BlueprintName = "formatho"
             ReferencedContainer = "container:Formatho.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
