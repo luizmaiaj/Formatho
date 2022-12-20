@@ -19,6 +19,8 @@ struct Provider: IntentTimelineProvider {
     private let service = APIService()
     private var wit: Wit = Wit()
     
+    let fakeWit: Wit = Wit(witID: 123456, fields: Fields(areaPath: "Area Path", workItemType: "Epic", state: "New", assignedTo: User(displayName: "User", uniqueName: "user@email.com"), commentCount: 5, title: "System Title", requestor: "Custom Requestor", priority: 1))
+    
     private func buildHeader(pat: String, email: String) -> [String : String] {
         
         let authorisation = "Basic " + (String(email + ":" + pat).data(using: .utf8)?.base64EncodedString() ?? "")
@@ -33,11 +35,12 @@ struct Provider: IntentTimelineProvider {
     }
     
     func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: ConfigurationIntent(), wit: Wit())
+        SimpleEntry(date: Date(), configuration: ConfigurationIntent(), wit: fakeWit)
     }
     
     func getSnapshot(for configuration: ConfigurationIntent, in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(), configuration: configuration, wit: Wit())
+        
+        let entry = SimpleEntry(date: Date(), configuration: configuration, wit: fakeWit)
         completion(entry)
     }
     
@@ -90,16 +93,45 @@ struct SimpleEntry: TimelineEntry {
 }
 
 struct macWidgetEntryView : View {
+    @AppStorage("project", store: UserDefaults(suiteName: APP_GROUP)) var project: String = String()
+    
     var entry: Provider.Entry
     
     var body: some View {
-        Text(entry.date, style: .time)
-        
-        Text(entry.wit.fields.SystemTitle)
-        
-        Text(entry.wit.fields.SystemState)
-        
-        Text("\(entry.configuration.witID ?? 0)")
+        VStack {
+            HStack {
+                witIcon(type: entry.wit.fields.SystemWorkItemType)
+                + Text("\(entry.wit.fields.textPriority) \(entry.wit.fields.SystemTitle) [\(project)-\(entry.wit.textWitID)]")
+                    .fontWeight(.medium)
+                + Text(": \(entry.wit.fields.SystemState)")
+                    .fontWeight(.heavy)
+            }
+            .padding([.top, .bottom])
+            
+            HStack {
+                Text("\(entry.wit.fields.SystemAreaPath)")
+                
+                if !entry.wit.fields.CustomCORequestor.isEmpty {
+                    Text("\(entry.wit.fields.CustomCORequestor)")
+                }
+            }
+            .padding([.bottom])
+            
+            HStack {
+                Text("Assigned To: \(entry.wit.fields.SystemAssignedTo.uniqueName)")
+                Text("Comments: \(entry.wit.fields.SystemCommentCount)")
+            }
+            .padding([.bottom], 10)
+            
+            HStack {
+                
+                Text(entry.date, style: .time)
+                    .padding([.trailing])
+                    .frame(alignment: .trailing)
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(.orange.gradient.opacity(0.3))
     }
 }
 
@@ -113,7 +145,7 @@ struct macWidget: Widget {
         }
         .configurationDisplayName("formatho widget")
         .description("To display information about your wits")
-        //.supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
+        .supportedFamilies([.systemMedium])
     }
 }
 

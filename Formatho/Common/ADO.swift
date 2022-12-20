@@ -226,6 +226,18 @@ class Wit: Codable, Identifiable, Hashable {
         self.html = ""
         self.relations = [Relations]()
     }
+
+    // new constructor for widget placeholder and snapshot
+    init(witID: Int, fields: Fields) {
+        self.witID = witID
+        self.textWitID = "\(self.witID)"
+        self.fields = fields
+        self.url = ""
+        self.name = ""
+        self.link = ""
+        self.html = ""
+        self.relations = [Relations]()
+    }
     
     required init(from decoder: Decoder) throws {
         
@@ -391,13 +403,39 @@ class Fields: Codable, Identifiable {
         self.SystemWorkItemType = ""
         self.SystemState = ""
         self.SystemReason = ""
+        self.SystemAssignedTo = User()
         self.SystemCreatedDate = ""
+        self.SystemCreatedBy = User()
         self.SystemChangedDate = ""
+        self.SystemChangedBy = User()
+        self.SystemCommentCount = 0
         self.SystemTitle = ""
         self.CustomCORequestor = ""
         self.SystemDescription = ""
         self.MicrosoftVSTSCommonPriority = 0
         self.textPriority = ""
+        self.CustomReport = ""
+    }
+    
+    // new constructor for widget placeholder and snapshot
+    init(areaPath: String, workItemType: String, state: String, assignedTo: User, commentCount: Int, title: String, requestor: String, priority: Int) {
+        self.SystemAreaPath = areaPath
+        self.SystemTeamProject = ""
+        self.SystemIterationPath = ""
+        self.SystemWorkItemType = workItemType
+        self.SystemState = state
+        self.SystemReason = ""
+        self.SystemAssignedTo = assignedTo
+        self.SystemCreatedDate = ""
+        self.SystemCreatedBy = User()
+        self.SystemChangedDate = ""
+        self.SystemChangedBy = User()
+        self.SystemCommentCount = commentCount
+        self.SystemTitle = title
+        self.CustomCORequestor = requestor
+        self.SystemDescription = ""
+        self.MicrosoftVSTSCommonPriority = priority
+        self.textPriority = "P\(self.MicrosoftVSTSCommonPriority)"
         self.CustomReport = ""
     }
     
@@ -423,11 +461,23 @@ class Fields: Codable, Identifiable {
         do { self.SystemReason = try values.decode(String.self, forKey: .SystemReason)
         } catch { self.SystemReason = "" }
         
+        do { self.SystemAssignedTo = try values.decode(User.self, forKey: .SystemAssignedTo)
+        } catch { self.SystemAssignedTo = User() }
+
         do { self.SystemCreatedDate = try values.decode(String.self, forKey: .SystemCreatedDate)
         } catch { self.SystemCreatedDate = "" }
         
+        do { self.SystemCreatedBy = try values.decode(User.self, forKey: .SystemCreatedBy)
+        } catch { self.SystemCreatedBy = User() }
+
         do { self.SystemChangedDate = try values.decode(String.self, forKey: .SystemChangedDate)
         } catch { self.SystemChangedDate = "" }
+        
+        do { self.SystemChangedBy = try values.decode(User.self, forKey: .SystemChangedBy)
+        } catch { self.SystemChangedBy = User() }
+
+        do { self.SystemCommentCount = try values.decode(Int.self, forKey: .SystemCommentCount)
+        } catch { self.SystemCommentCount = 0 }
         
         do { self.SystemTitle = try values.decode(String.self, forKey: .SystemTitle)
         } catch { self.SystemTitle = "" }
@@ -469,8 +519,12 @@ class Fields: Codable, Identifiable {
         case SystemWorkItemType = "System.WorkItemType"
         case SystemState = "System.State"
         case SystemReason = "System.Reason"
+        case SystemAssignedTo = "System.AssignedTo"
         case SystemCreatedDate = "System.CreatedDate"
+        case SystemCreatedBy = "System.CreatedBy"
         case SystemChangedDate = "System.ChangedDate"
+        case SystemChangedBy = "System.ChangedBy"
+        case SystemCommentCount = "System.CommentCount"
         case SystemTitle = "System.Title"
         case CustomCORequestor = "Custom.CORequestor"
         case SystemDescription = "System.Description"
@@ -484,14 +538,69 @@ class Fields: Codable, Identifiable {
     let SystemWorkItemType: String
     let SystemState: String
     let SystemReason: String
+    let SystemAssignedTo: User
     let SystemCreatedDate: String
+    let SystemCreatedBy: User
     let SystemChangedDate: String
+    let SystemChangedBy: User
+    let SystemCommentCount: Int
     let SystemTitle: String
     let CustomCORequestor: String
     let SystemDescription: String
     let MicrosoftVSTSCommonPriority: Int
     let textPriority: String
     let CustomReport: String
+}
+
+class User: Codable, Identifiable {
+    init() {
+        self.displayName = ""
+        self.url = ""
+        self.id = ""
+        self.uniqueName = ""
+        self.imageUrl = ""
+        self.descriptor = ""
+    }
+    
+    // new constructor for widget placeholder and snapshot
+    init(displayName: String, uniqueName: String) {
+        self.displayName = ""
+        self.url = ""
+        self.id = ""
+        self.uniqueName = uniqueName
+        self.imageUrl = ""
+        self.descriptor = ""
+    }
+    
+    required init(from decoder: Decoder) throws {
+        
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        
+        do { self.displayName = try values.decode(String.self, forKey: .displayName)
+        } catch { self.displayName = "" }
+        
+        do { self.url = try values.decode(String.self, forKey: .url)
+        } catch { self.url = "" }
+        
+        do { self.id = try values.decode(String.self, forKey: .id)
+        } catch { self.id = "" }
+        
+        do { self.uniqueName = try values.decode(String.self, forKey: .uniqueName)
+        } catch { self.uniqueName = "" }
+        
+        do { self.imageUrl = try values.decode(String.self, forKey: .imageUrl)
+        } catch { self.imageUrl = "" }
+        
+        do { self.descriptor = try values.decode(String.self, forKey: .descriptor)
+        } catch { self.descriptor = "" }
+    }
+    
+    let displayName: String
+    let url: String
+    let id: String
+    let uniqueName: String
+    let imageUrl: String
+    let descriptor: String
 }
 
 class Relations: Codable, Identifiable, Hashable {

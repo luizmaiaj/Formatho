@@ -13,7 +13,7 @@
 		BB01CE4F294B438F00B5482E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB01CE4E294B438F00B5482E /* Assets.xcassets */; };
 		BB01CE52294B438F00B5482E /* macWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = BB01CE4D294B438D00B5482E /* macWidget.intentdefinition */; settings = {ATTRIBUTES = (codegen, ); }; };
 		BB01CE53294B438F00B5482E /* macWidget.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = BB01CE4D294B438D00B5482E /* macWidget.intentdefinition */; settings = {ATTRIBUTES = (codegen, ); }; };
-		BB01CE56294B438F00B5482E /* macWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = BB01CE47294B438D00B5482E /* macWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		BB01CE56294B438F00B5482E /* macWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = BB01CE47294B438D00B5482E /* macWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BB01CE5A294B460900B5482E /* Definitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7D8CE28F7C44500CD9A16 /* Definitions.swift */; };
 		BB01CE5B294B460E00B5482E /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC3A61A28D564D600143EA4 /* APIError.swift */; };
 		BB01CE5C294B460E00B5482E /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC3A61828D5645800143EA4 /* APIService.swift */; };
@@ -82,7 +82,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				BBE8129A29504BD400811F80 /* formathoIntent.appex in Embed Foundation Extensions */,
-				BB01CE56294B438F00B5482E /* macWidgetExtension.appex in Embed Foundation Extensions */,
+				BB01CE56294B438F00B5482E /* macWidget.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -90,7 +90,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		BB01CE47294B438D00B5482E /* macWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = macWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB01CE47294B438D00B5482E /* macWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = macWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB01CE4B294B438D00B5482E /* macWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macWidget.swift; sourceTree = "<group>"; };
 		BB01CE4D294B438D00B5482E /* macWidget.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = macWidget.intentdefinition; sourceTree = "<group>"; };
 		BB01CE4E294B438F00B5482E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -218,7 +218,7 @@
 			children = (
 				BB5C368528CE2BBA00A973E4 /* formatho.app */,
 				BB99F37E2945C83200959611 /* formathoPhone.app */,
-				BB01CE47294B438D00B5482E /* macWidgetExtension.appex */,
+				BB01CE47294B438D00B5482E /* macWidget.appex */,
 				BBE8129029504BD300811F80 /* formathoIntent.appex */,
 			);
 			name = Products;
@@ -304,9 +304,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		BB01CE46294B438D00B5482E /* macWidgetExtension */ = {
+		BB01CE46294B438D00B5482E /* macWidget */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = BB01CE57294B438F00B5482E /* Build configuration list for PBXNativeTarget "macWidgetExtension" */;
+			buildConfigurationList = BB01CE57294B438F00B5482E /* Build configuration list for PBXNativeTarget "macWidget" */;
 			buildPhases = (
 				BB01CE43294B438D00B5482E /* Sources */,
 				BB01CE44294B438D00B5482E /* Frameworks */,
@@ -316,9 +316,9 @@
 			);
 			dependencies = (
 			);
-			name = macWidgetExtension;
+			name = macWidget;
 			productName = macWidgetExtension;
-			productReference = BB01CE47294B438D00B5482E /* macWidgetExtension.appex */;
+			productReference = BB01CE47294B438D00B5482E /* macWidget.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 		BB5C368428CE2BBA00A973E4 /* formatho */ = {
@@ -414,7 +414,7 @@
 			targets = (
 				BB5C368428CE2BBA00A973E4 /* formatho */,
 				BB99F37D2945C83200959611 /* formathoPhone */,
-				BB01CE46294B438D00B5482E /* macWidgetExtension */,
+				BB01CE46294B438D00B5482E /* macWidget */,
 				BBE8128F29504BD300811F80 /* formathoIntent */,
 			);
 		};
@@ -528,7 +528,7 @@
 /* Begin PBXTargetDependency section */
 		BB01CE55294B438F00B5482E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = BB01CE46294B438D00B5482E /* macWidgetExtension */;
+			target = BB01CE46294B438D00B5482E /* macWidget */;
 			targetProxy = BB01CE54294B438F00B5482E /* PBXContainerItemProxy */;
 		};
 		BBE8129929504BD400811F80 /* PBXTargetDependency */ = {
@@ -950,7 +950,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		BB01CE57294B438F00B5482E /* Build configuration list for PBXNativeTarget "macWidgetExtension" */ = {
+		BB01CE57294B438F00B5482E /* Build configuration list for PBXNativeTarget "macWidget" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BB01CE58294B438F00B5482E /* Debug */,
