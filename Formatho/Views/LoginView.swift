@@ -31,6 +31,13 @@ struct LoginView: View {
         fetcher.getProjects(org: organisation, email: email, pat: pat)
     }
     
+    func initProject() {
+        
+        if project.isEmpty {
+            project = fetcher.projectNames.first ?? ""
+        }
+    }
+    
     var body: some View {
         
         VStack {
@@ -69,6 +76,8 @@ struct LoginView: View {
                 }
                 
                 if fetcher.projects.count > 0 {
+                    
+                    let _ = initProject()
                     
                     Picker("Project", selection: $project) {
                         
