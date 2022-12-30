@@ -13,14 +13,7 @@ struct LoginView: View {
     @AppStorage("email", store: UserDefaults(suiteName: APP_GROUP)) var email: String = String()
     @AppStorage("pat", store: UserDefaults(suiteName: APP_GROUP)) var pat: String = String()
     @AppStorage("project", store: UserDefaults(suiteName: APP_GROUP)) var project: String = String()
-    
-    // for compatibility with older version to be removed in the next release
-    @AppStorage("organisation") private var local_organisation: String = String()
-    @AppStorage("email") private var local_email: String = String()
-    @AppStorage("pat") private var local_pat: String = String()
-    @AppStorage("project") private var local_project: String = String()
-    // for compatibility with older version to be removed in the next release
-    
+        
     @AppStorage("queryid") private var queryid: String = String() // to use the reset AppStorage
     
     @State private var connectionTested: Bool = false
@@ -43,8 +36,8 @@ struct LoginView: View {
         VStack {
             
             if fetcher.isLoading {
-                
-                Text("Fetching...")
+    
+                FetchingView()
                 
             } else {
                 
@@ -95,29 +88,7 @@ struct LoginView: View {
 #endif
         }
         .onAppear() {
-            
-            // for compatibility with older version to be removed in next release
-            if organisation.isEmpty {
-                organisation = local_organisation
-                local_organisation = ""
-            }
-            
-            if organisation.isEmpty {
-                pat = local_pat
-                local_pat = ""
-            }
-            
-            if email.isEmpty {
-                email = local_email
-                local_email = ""
-            }
-            
-            if project.isEmpty {
-                project = local_project
-                local_project = ""
-            }
-            // for compatibility with older version to be removed in next release
-            
+                        
             if !organisation.isEmpty && !pat.isEmpty && !email.isEmpty {
                 
                 fetch()

@@ -55,6 +55,8 @@
 		EE9A4FCF28DF721D006BEC27 /* WitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9A4FCE28DF721D006BEC27 /* WitView.swift */; };
 		EE9A4FD128DF768F006BEC27 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9A4FD028DF768F006BEC27 /* ActivityView.swift */; };
 		EE9A4FD328DF775B006BEC27 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9A4FD228DF775B006BEC27 /* LoginView.swift */; };
+		EEB340E0295E9A7C008F6D96 /* FetchingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEB340DF295E9A7C008F6D96 /* FetchingView.swift */; };
+		EEB340E1295E9A7C008F6D96 /* FetchingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEB340DF295E9A7C008F6D96 /* FetchingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -130,6 +132,7 @@
 		EE9A4FCE28DF721D006BEC27 /* WitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WitView.swift; sourceTree = "<group>"; };
 		EE9A4FD028DF768F006BEC27 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		EE9A4FD228DF775B006BEC27 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		EEB340DF295E9A7C008F6D96 /* FetchingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchingView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,6 +192,7 @@
 				EE9A4FD228DF775B006BEC27 /* LoginView.swift */,
 				EE00AE5328E71B0B00500331 /* GraphView.swift */,
 				BBC8B2EF293DB721007C898E /* ListView.swift */,
+				EEB340DF295E9A7C008F6D96 /* FetchingView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -484,6 +488,7 @@
 				EE00AE5428E71B0B00500331 /* GraphView.swift in Sources */,
 				BBC3A61928D5645800143EA4 /* APIService.swift in Sources */,
 				BB2919D229122F0F00CD9A79 /* WitTab.swift in Sources */,
+				EEB340E0295E9A7C008F6D96 /* FetchingView.swift in Sources */,
 				BB01CE53294B438F00B5482E /* macWidget.intentdefinition in Sources */,
 				EE1EA0AA28D615E800644D5F /* Fetcher.swift in Sources */,
 				EE1EA0AC28D6362300644D5F /* ADO.swift in Sources */,
@@ -508,6 +513,7 @@
 				BB99F3922945C90200959611 /* WitView.swift in Sources */,
 				BB99F38C2945C8C400959611 /* ADO.swift in Sources */,
 				BB99F3912945C8C400959611 /* APIError.swift in Sources */,
+				EEB340E1295E9A7C008F6D96 /* FetchingView.swift in Sources */,
 				BB99F3942945C90200959611 /* LoginView.swift in Sources */,
 				BB99F3812945C83200959611 /* formathoPhoneApp.swift in Sources */,
 				BB99F38F2945C8C400959611 /* Fetcher.swift in Sources */,

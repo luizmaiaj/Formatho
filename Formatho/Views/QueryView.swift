@@ -44,7 +44,7 @@ struct QueryView: View {
                     
                     if qFetcher.isLoading {
                         
-                        Text("Fetching \(qFetcher.statusMessage ?? "")...")
+                        FetchingView()
                         
                     } else {
                         

@@ -41,7 +41,7 @@ struct ListView: View {
             
             if fetcher.isLoading {
                 
-                Text("Fetching...")
+                FetchingView()
                 
             } else {
                 
