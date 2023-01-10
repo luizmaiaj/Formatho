@@ -57,14 +57,17 @@ struct WitView: View {
                     
                     Group {
                         HStack {
-                            Text("State: \(fetcher.wit.fields.SystemState)")
-                            
-                            Text("Area: \(fetcher.wit.fields.SystemAreaPath)")
-                            
                             if !fetcher.wit.fields.CustomCORequestor.isEmpty {
                                 Text("CO: \(fetcher.wit.fields.CustomCORequestor)")
                             }
+                            
+                            Text("Area: \(fetcher.wit.fields.SystemAreaPath)")
+                            
+                            Text("Last change: \(fetcher.wit.fields.SystemChangedDate)")
+                            
+                            Text("State: \(fetcher.wit.fields.SystemState)")
                         }
+                        .padding([.bottom])
                         
                         witIcon(type: fetcher.wit.fields.SystemWorkItemType)
                         + Text("\(fetcher.wit.fields.textPriority) \(fetcher.wit.fields.SystemTitle) \(fetcher.wit.link.toRTF())")
