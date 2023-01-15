@@ -118,7 +118,7 @@ struct macWidgetEntryView : View {
             .padding([.bottom])
             
             HStack {
-                Text("Assigned To: \(entry.wit.fields.SystemAssignedTo.uniqueName)")
+                Text("Assigned To: \(entry.wit.fields.SystemAssignedTo.displayName)")
                 Text("Comments: \(entry.wit.fields.SystemCommentCount)")
             }
             .padding([.bottom], 10)

@@ -404,9 +404,9 @@ class Fields: Codable, Identifiable {
         self.SystemState = ""
         self.SystemReason = ""
         self.SystemAssignedTo = User()
-        self.SystemCreatedDate = ""
+        self.SystemCreatedDate = Date()
         self.SystemCreatedBy = User()
-        self.SystemChangedDate = ""
+        self.SystemChangedDate = Date()
         self.SystemChangedBy = User()
         self.SystemCommentCount = 0
         self.SystemTitle = ""
@@ -426,9 +426,9 @@ class Fields: Codable, Identifiable {
         self.SystemState = state
         self.SystemReason = ""
         self.SystemAssignedTo = assignedTo
-        self.SystemCreatedDate = ""
+        self.SystemCreatedDate = Date()
         self.SystemCreatedBy = User()
-        self.SystemChangedDate = ""
+        self.SystemChangedDate = Date()
         self.SystemChangedBy = User()
         self.SystemCommentCount = commentCount
         self.SystemTitle = title
@@ -442,6 +442,9 @@ class Fields: Codable, Identifiable {
     required init(from decoder: Decoder) throws {
         
         let values = try decoder.container(keyedBy: CodingKeys.self)
+        
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
+        dateFormatter.calendar = Calendar(identifier: .iso8601)
         
         do { self.SystemAreaPath = try values.decode(String.self, forKey: .SystemAreaPath)
         } catch { self.SystemAreaPath = "" }
@@ -464,14 +467,14 @@ class Fields: Codable, Identifiable {
         do { self.SystemAssignedTo = try values.decode(User.self, forKey: .SystemAssignedTo)
         } catch { self.SystemAssignedTo = User() }
 
-        do { self.SystemCreatedDate = try values.decode(String.self, forKey: .SystemCreatedDate)
-        } catch { self.SystemCreatedDate = "" }
+        do { self.SystemCreatedDate = dateFormatter.date(from: try values.decode(String.self, forKey: .SystemCreatedDate)) ?? Date()
+        } catch { self.SystemCreatedDate = Date() }
         
         do { self.SystemCreatedBy = try values.decode(User.self, forKey: .SystemCreatedBy)
         } catch { self.SystemCreatedBy = User() }
 
-        do { self.SystemChangedDate = try values.decode(String.self, forKey: .SystemChangedDate)
-        } catch { self.SystemChangedDate = "" }
+        do { self.SystemChangedDate = dateFormatter.date(from: try values.decode(String.self, forKey: .SystemChangedDate)) ?? Date()
+        } catch { self.SystemChangedDate = Date() }
         
         do { self.SystemChangedBy = try values.decode(User.self, forKey: .SystemChangedBy)
         } catch { self.SystemChangedBy = User() }
@@ -539,9 +542,9 @@ class Fields: Codable, Identifiable {
     let SystemState: String
     let SystemReason: String
     let SystemAssignedTo: User
-    let SystemCreatedDate: String
+    let SystemCreatedDate: Date
     let SystemCreatedBy: User
-    let SystemChangedDate: String
+    let SystemChangedDate: Date
     let SystemChangedBy: User
     let SystemCommentCount: Int
     let SystemTitle: String
@@ -550,6 +553,8 @@ class Fields: Codable, Identifiable {
     let MicrosoftVSTSCommonPriority: Int
     let textPriority: String
     let CustomReport: String
+    
+    let dateFormatter = DateFormatter()
 }
 
 class User: Codable, Identifiable {
