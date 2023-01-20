@@ -13,10 +13,15 @@ struct ContentView: View {
     @AppStorage("email", store: UserDefaults(suiteName: APP_GROUP)) var email: String = String()
     @AppStorage("pat", store: UserDefaults(suiteName: APP_GROUP)) var pat: String = String()
     @AppStorage("project", store: UserDefaults(suiteName: APP_GROUP)) var project: String = String()
-
+    
     @StateObject var fetcher: Fetcher = Fetcher()
     
     @State private var selection: Tab = Tab.wit
+    
+    init() {
+        
+        UITabBar.appearance().isTranslucent = false
+    }
     
     var body: some View {
         
@@ -62,6 +67,15 @@ struct ContentView: View {
                         }
                         .tag(Tab.wit)
                     
+                    ActivityView(fetcher: fetcher)
+                        .tabItem {
+                            Text("Activity")
+                            
+                            Image(systemName: "list.bullet")
+                                .font(.title2)
+                        }
+                        .tag(Tab.recent)
+                    
                     TreeView(fetcher: fetcher)
                         .tabItem {
                             Text("Tree")
@@ -72,6 +86,10 @@ struct ContentView: View {
                         .tag(Tab.tree)
                 }
             }
+        }
+        .onAppear() {
+            
+            self.fetcher.initialise(org: organisation, email: email, pat: pat, project: project)
         }
     }
 }

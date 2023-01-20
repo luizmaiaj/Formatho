@@ -9,11 +9,6 @@ import SwiftUI
 
 struct ActivityView: View {
     
-    @AppStorage("organisation", store: UserDefaults(suiteName: APP_GROUP)) var organisation: String = String()
-    @AppStorage("email", store: UserDefaults(suiteName: APP_GROUP)) var email: String = String()
-    @AppStorage("pat", store: UserDefaults(suiteName: APP_GROUP)) var pat: String = String()
-    @AppStorage("project", store: UserDefaults(suiteName: APP_GROUP)) var project: String = String()
-
     @ObservedObject var fetcher: Fetcher
     
     private func fetchActivities() {
