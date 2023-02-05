@@ -302,6 +302,150 @@ class Wit: Codable, Identifiable, Hashable {
     let id = UUID()
 }
 
+class Updates: Codable, Identifiable {
+    
+    init() {
+        self.value = [Update]()
+        self.count = 0
+    }
+    
+    required init(from decoder: Decoder) throws {
+        
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        
+        do { self.value = try values.decode([Update].self, forKey: .value)
+        } catch { self.value = [Update]() }
+        
+        do { self.count = try values.decode(Int.self, forKey: .count)
+        } catch { self.count = 0 }
+    }
+    
+    let value: [Update]
+    let count: Int
+}
+
+class Update: Codable, Identifiable, Hashable {
+    
+    init() {
+        self.updateID = 0
+        self.workItemId = 0
+        self.rev = 0
+        self.revisedBy = User()
+        self.revisedDate = Date()
+        self.fields = FieldsUpdate()
+    }
+    
+    required init(from decoder: Decoder) throws {
+        
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
+        dateFormatter.calendar = Calendar(identifier: .iso8601)
+        
+        do { self.updateID = try values.decode(Int.self, forKey: .updateID)
+        } catch { self.updateID = 0 }
+                
+        do { self.workItemId = try values.decode(Int.self, forKey: .workItemId)
+        } catch { self.workItemId = 0 }
+
+        do { self.rev = try values.decode(Int.self, forKey: .rev)
+        } catch { self.rev = 0 }
+
+        do { self.revisedBy = try values.decode(User.self, forKey: .revisedBy)
+        } catch { self.revisedBy = User() }
+        
+        do { self.revisedDate = dateFormatter.date(from: try values.decode(String.self, forKey: .revisedDate)) ?? Date()
+        } catch { self.revisedDate = Date() }
+        
+        do { self.fields = try values.decode(FieldsUpdate.self, forKey: .fields)
+        } catch { self.fields = FieldsUpdate() }
+    }
+    
+    // equatable
+    static func == (lhs: Update, rhs: Update) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
+    // hashable
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case updateID = "id"
+        case workItemId = "workItemId"
+        case rev = "rev"
+        case revisedBy = "revisedBy"
+        case revisedDate = "revisedDate"
+        case fields = "fields"
+    }
+    
+    let updateID: Int
+    let workItemId: Int
+    let rev: Int
+    let revisedBy: User
+    let revisedDate: Date
+    let fields: FieldsUpdate
+    
+    let id = UUID()
+    
+    let dateFormatter = DateFormatter()
+}
+
+class FieldsUpdate: Codable, Identifiable {
+    
+    init() {
+        
+        CustomReport = FieldUpdate()
+    }
+    
+    required init(from decoder: Decoder) throws {
+        
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        
+        do { self.CustomReport = try values.decode(FieldUpdate.self, forKey: .CustomReport)
+        } catch { self.CustomReport = FieldUpdate() }
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case CustomReport = "Custom.Report"
+    }
+    
+    let CustomReport: FieldUpdate
+    
+    let id = UUID()
+}
+
+class FieldUpdate: Codable, Identifiable {
+    
+    init() {
+        
+        oldValue = ""
+        newValue = ""
+    }
+    
+    required init(from decoder: Decoder) throws {
+        
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        
+        do { self.oldValue = try values.decode(String.self, forKey: .oldValue)
+        } catch { self.oldValue = "" }
+        
+        do { self.newValue = try values.decode(String.self, forKey: .newValue)
+        } catch { self.newValue = "" }
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case oldValue = "oldValue"
+        case newValue = "newValue"
+    }
+    
+    let oldValue: String
+    let newValue: String
+    
+    let id = UUID()
+}
+
 class WitNode: Wit, CustomStringConvertible {
     
     var description: String

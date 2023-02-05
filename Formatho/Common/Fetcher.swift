@@ -22,6 +22,7 @@ class Fetcher: ObservableObject {
     @Published var projectNames: [String] = [String]()      // list of project names to display in the interface picker
     
     @Published var wits: [Wit] = [Wit]()                    // to store the list of wits from the result of a query
+    @Published var updates: [Update] = [Update]()           // to store the list of updates for a wit
     @Published var nodes: [WitNode] = [WitNode]()           // to store the list of wits in a hierarchy
     
     @Published var wit: Wit = Wit()                         // single wit
@@ -577,6 +578,37 @@ class Fetcher: ObservableObject {
                     }
                                         
                     completion(info)
+                }
+            }
+        }
+    }
+    
+    func getUpdates(id: Int, completion: @escaping (Update) -> Void) {
+        
+        self.isLoading = true
+        self.errorMessage = nil
+        
+        //GET https://dev.azure.com/{organization}/{project}/_apis/wit/workItems/{id}/updates?api-version=7.0
+        let prjBaseUrl: String = BASE_URL + self.organisation + "/_apis/wit/workItems/" + "\(id)" + "/updates?"
+        
+        let url = NSURL(string: prjBaseUrl)! as URL
+        
+        self.service.fetch(Updates.self, url: url, headers: self.header) { [unowned self] result in
+            
+            DispatchQueue.main.async {
+                
+                self.isLoading = false
+                
+                switch result {
+                case .failure(let error):
+                    if HTTP_ERROR { print("Fetcher error: \(error)") }
+                    
+                    self.errorMessage = error.localizedDescription
+                    
+                case .success(let info):
+                    if HTTP_DATA { print("Fetcher count: \(info.count)") }
+                    
+                    self.updates = info.value
                 }
             }
         }
