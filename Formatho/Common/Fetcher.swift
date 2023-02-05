@@ -272,6 +272,14 @@ class Fetcher: ObservableObject {
                     if HTTP_DATA { print("Fetcher count: \(info.count)") }
                     
                     self.activities = info.value
+                    
+                    let reqURL: String = self.BASE_URL + self.organisation + "/" + self.project + "/_workitems/edit/"
+                    
+                    for activity in self.activities {
+
+                        // splitting between link and name to correctly display in dark mode
+                        activity.idLink = "<a href=\"\(reqURL)\(activity.textID)\">\(activity.textID)</a>"
+                    }
                 }
             }
         }
@@ -298,7 +306,7 @@ class Fetcher: ObservableObject {
         
         self.wits.removeAll()
         
-        let reqURL: String = BASE_URL + self.organisation + "/" + self.project + "/_workitems/edit/" // removing reference to name
+        let reqURL: String = BASE_URL + self.organisation + "/" + self.project + "/_workitems/edit/"
         
         // build id list limited to ADO_LIST_LIMIT = 200 wits
         var iStart: Int = 0
@@ -323,7 +331,7 @@ class Fetcher: ObservableObject {
             
             if DEBUG_INFO { print("Fetcher::wits \(idList)") }
             
-            let witBaseUrl: String = BASE_URL + self.organisation + "/_apis/wit/workitems?ids=" + idList
+            let witBaseUrl: String = BASE_URL + self.organisation + "/_apis/wit/workitems?ids=" + idList //"&$expand=all"
             
             let url = NSURL(string: witBaseUrl)! as URL
             
@@ -351,12 +359,14 @@ class Fetcher: ObservableObject {
                             })
                         }
                         
+                        // create and add a link with the project name
+                        // add report
                         for wit in self.wits {
                             
                             // splitting between link and name to correctly display in dark mode
-                            wit.link = "<a href=\"\(reqURL)\(wit.textWitID)\">[\(self.project)-\(wit.textWitID)]</a>"
+                            wit.projectLink = "<a href=\"\(reqURL)\(wit.textWitID)\">[\(self.project)-\(wit.textWitID)]</a>"
                             
-                            wit.html = wit.name + " " + wit.link
+                            wit.html = wit.name + " " + wit.projectLink
                             
                             //add report field information if necessary
                             if includeReport {

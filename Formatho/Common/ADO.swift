@@ -115,6 +115,7 @@ class Activity: Codable, Identifiable, Hashable, Equatable {
         teamProject = ""
         activityDate = ""
         activityType = ""
+        idLink = ""
     }
     
     required init(from decoder: Decoder) throws {
@@ -146,6 +147,8 @@ class Activity: Codable, Identifiable, Hashable, Equatable {
         
         do { self.activityType = try values.decode(String.self, forKey: .activityType)
         } catch { self.activityType = "" }
+        
+        idLink = ""
     }
     
     enum CodingKeys: String, CodingKey {
@@ -179,6 +182,7 @@ class Activity: Codable, Identifiable, Hashable, Equatable {
     let teamProject: String
     let activityDate: String
     let activityType: String
+    var idLink: String
 }
 
 class Wits: Codable, Identifiable {
@@ -211,7 +215,8 @@ class Wit: Codable, Identifiable, Hashable {
         self.fields = Fields()
         self.url = ""
         self.name = ""
-        self.link = ""
+        self.projectLink = ""
+        self.idLink = ""
         self.html = ""
         self.relations = [Relations]()
     }
@@ -222,7 +227,8 @@ class Wit: Codable, Identifiable, Hashable {
         self.fields = Fields()
         self.url = ""
         self.name = ""
-        self.link = ""
+        self.projectLink = ""
+        self.idLink = ""
         self.html = ""
         self.relations = [Relations]()
     }
@@ -234,7 +240,8 @@ class Wit: Codable, Identifiable, Hashable {
         self.fields = fields
         self.url = ""
         self.name = ""
-        self.link = ""
+        self.projectLink = ""
+        self.idLink = ""
         self.html = ""
         self.relations = [Relations]()
     }
@@ -256,7 +263,9 @@ class Wit: Codable, Identifiable, Hashable {
         
         self.name = "<b>\(self.fields.textPriority) \(self.fields.SystemWorkItemType) \(self.fields.SystemTitle)</b>"
         
-        self.link = ""
+        self.projectLink = ""
+        
+        self.idLink = "<a href=\"\(self.url)\">\(self.textWitID)</a>"
         
         self.html = ""
         
@@ -286,7 +295,8 @@ class Wit: Codable, Identifiable, Hashable {
     let fields: Fields
     let url: String
     var name: String // wit name in html format
-    var link: String // link in html format
+    var projectLink: String // project-id link in html format
+    var idLink: String // id link in html format
     var html: String // full html formatted wit
     let relations: [Relations]
     let id = UUID()

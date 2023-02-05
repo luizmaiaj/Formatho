@@ -65,8 +65,10 @@ struct ActivityTable: View {
             
             TableColumn("Title", value: \.title)
             
-            TableColumn("id", value: \.textID)
-                .width(max: 50)
+            TableColumn("id") { activity in
+                Text("\(activity.idLink.toRTF())")
+            }
+            .width(max: 50)
             
             TableColumn("State", value: \.state)
                 .width(max: 90)

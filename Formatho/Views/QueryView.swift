@@ -152,7 +152,9 @@ struct WitTable: View {
             
             TableColumn("Title", value: \.fields.SystemTitle)
             
-            TableColumn("id", value: \.textWitID)
+            TableColumn("id") { wit in
+                Text(wit.idLink.toRTF())
+            }
                 .width(max: 50)
             
             TableColumn("Report") { wit in

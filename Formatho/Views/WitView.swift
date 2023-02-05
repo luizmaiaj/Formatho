@@ -80,7 +80,7 @@ struct WitView: View {
                         .padding([.bottom], 10)
                         
                         witIcon(type: fetcher.wit.fields.SystemWorkItemType)
-                        + Text("\(fetcher.wit.fields.textPriority) \(fetcher.wit.fields.SystemTitle) \(fetcher.wit.link.toRTF())")
+                        + Text("\(fetcher.wit.fields.textPriority) \(fetcher.wit.fields.SystemTitle) \(fetcher.wit.projectLink.toRTF())")
                         + Text(": \(fetcher.wit.fields.CustomReport.toRTF())")
                     }
                     .padding([.leading, .trailing])
