@@ -583,7 +583,7 @@ class Fetcher: ObservableObject {
         }
     }
     
-    func getUpdates(id: Int, completion: @escaping (Update) -> Void) {
+    func getUpdates(id: Int, completion: @escaping () -> Void) {
         
         self.isLoading = true
         self.errorMessage = nil
@@ -610,6 +610,8 @@ class Fetcher: ObservableObject {
                     
                     self.updates = info.value
                 }
+                
+                completion()
             }
         }
     }

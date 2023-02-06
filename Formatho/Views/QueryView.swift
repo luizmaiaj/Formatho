@@ -112,7 +112,7 @@ struct QueryView: View {
                         
                         if !fetcher.wits.isEmpty {
                             
-                            WitTable(wits: self.fetcher.wits)
+                            WitTable(wits: self.fetcher.wits, org: self.fetcher.organisation, email: self.fetcher.email, pat: self.fetcher.pat, project: self.fetcher.project)
                         }
                     }
                 }
@@ -139,6 +139,11 @@ struct WitTable: View {
     
     @State private var sortOrder = [KeyPathComparator(\Wit.id)]
     
+    var org: String
+    var email: String
+    var pat: String
+    var project: String
+    
     var body: some View {
         
         Table(wits, sortOrder: $sortOrder) {
@@ -160,6 +165,11 @@ struct WitTable: View {
             TableColumn("Report") { wit in
                 Text(wit.fields.CustomReport.toRTF())
             }
+            
+            TableColumn("Updated") { wit in
+                ReportDateView(org: org, email: email, pat: pat, project: project, witid: wit.witID)
+            }
+            .width(max: 130)
         }
         .onChange(of: sortOrder) {
             

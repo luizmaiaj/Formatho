@@ -71,7 +71,7 @@ struct WitView: View {
                             Text("State: \(fetcher.wit.fields.SystemState)")
                         }
                         .padding([.bottom], 10)
-
+                        
                         HStack {
                             Text("Created By: \(fetcher.wit.fields.SystemCreatedBy.displayName)")
                             
@@ -82,6 +82,9 @@ struct WitView: View {
                         witIcon(type: fetcher.wit.fields.SystemWorkItemType)
                         + Text("\(fetcher.wit.fields.textPriority) \(fetcher.wit.fields.SystemTitle) \(fetcher.wit.projectLink.toRTF())")
                         + Text(": \(fetcher.wit.fields.CustomReport.toRTF())")
+                        
+                        ReportDateView(org: fetcher.organisation, email: fetcher.email, pat: fetcher.pat, project: fetcher.project, witid: fetcher.wit.witID, onlyDate: false)
+                            .padding([.top])
                     }
                     .padding([.leading, .trailing])
                 }
@@ -90,6 +93,73 @@ struct WitView: View {
 #if os(iOS)
             Text(self.fetcher.errorMessage ?? "") // only on iOS
 #endif
+        }
+    }
+}
+
+struct ReportDateView: View {
+    
+    @StateObject var updates: Fetcher = Fetcher()
+    
+    var org: String
+    var email: String
+    var pat: String
+    var project: String
+    
+    var witid: Int
+    
+    var onlyDate: Bool = true
+    
+    @State var lastReportUpdate: String = "no date"
+    
+    func findLastReportUpdate() {
+        
+        updates.updates.reverse() // the updates list starts with the oldest
+        
+        for update in updates.updates {
+            
+            if !update.fields.CustomReport.newValue.isEmpty {
+                
+                lastReportUpdate = update.revisedDate.formatted()
+                
+                break
+            }
+        }
+    }
+    
+    var body: some View {
+        
+        HStack {
+            if updates.isLoading {
+                
+                if onlyDate {
+                    
+                    Text("Fething...")
+                    
+                } else {
+                    FetchingView()
+                }
+                
+            } else {
+                
+                if onlyDate {
+                    Text("\(lastReportUpdate)")
+                } else {
+                    Text("Report updated on: \(lastReportUpdate)")
+                }
+            }
+        }
+        .onAppear() {
+            
+            if updates.updates.isEmpty {
+                
+                updates.initialise(org: self.org, email: self.email, pat: self.pat, project: self.project)
+                
+                updates.getUpdates(id: witid) {
+                    
+                    findLastReportUpdate()
+                }
+            }
         }
     }
 }
