@@ -139,6 +139,7 @@ struct ReportDateView: View {
                     Text("Fething...")
                     
                 } else {
+                    
                     FetchingView()
                 }
                 

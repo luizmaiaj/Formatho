@@ -265,7 +265,7 @@ class Wit: Codable, Identifiable, Hashable {
         
         self.projectLink = ""
         
-        self.idLink = "<a href=\"\(self.url)\">\(self.textWitID)</a>"
+        self.idLink = "" // <a href=\"\(self.url)\">\(self.textWitID)</a>" this URL points to the JSON
         
         self.html = ""
         
@@ -357,7 +357,7 @@ class Update: Codable, Identifiable, Hashable {
         do {
             self.revisedDate = dateFormatter.date(from: try values.decode(String.self, forKey: .revisedDate)) ?? Date()
             
-            print("revisedDate: \(self.revisedDate.formatted())")
+            //print("revisedDate: \(self.revisedDate.formatted())")
         } catch { self.revisedDate = Date() }
         
         do { self.fields = try values.decode(FieldsUpdate.self, forKey: .fields)
@@ -410,15 +410,15 @@ class FieldsUpdate: Codable, Identifiable {
         do {
             self.CustomReport = try values.decode(StringField.self, forKey: .CustomReport)
             
-            print("FieldsUpdate:CustomReport oldValue: \(self.CustomReport.oldValue)")
-            print("FieldsUpdate:CustomReport newValue: \(self.CustomReport.newValue)")
+            //print("FieldsUpdate:CustomReport oldValue: \(self.CustomReport.oldValue)")
+            //print("FieldsUpdate:CustomReport newValue: \(self.CustomReport.newValue)")
         } catch { self.CustomReport = StringField() }
 
         do {
             self.SystemRevisedDate = try values.decode(DateField.self, forKey: .SystemRevisedDate)
             
-            print("FieldsUpdate:SystemRevisedDate oldValue: \(self.SystemRevisedDate.oldValue.formatted())")
-            print("FieldsUpdate:SystemRevisedDate newValue: \(self.SystemRevisedDate.newValue.formatted())")
+            //print("FieldsUpdate:SystemRevisedDate oldValue: \(self.SystemRevisedDate.oldValue.formatted())")
+            //print("FieldsUpdate:SystemRevisedDate newValue: \(self.SystemRevisedDate.newValue.formatted())")
 
         } catch { self.SystemRevisedDate = DateField() }
     }
