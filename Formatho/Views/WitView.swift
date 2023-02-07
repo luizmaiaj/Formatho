@@ -120,7 +120,9 @@ struct ReportDateView: View {
             
             if !update.fields.CustomReport.newValue.isEmpty {
                 
-                lastReportUpdate = update.revisedDate.formatted()
+                lastReportUpdate = update.fields.SystemRevisedDate.oldValue.formatted() // the revised date out of the fields list seems to be wrong when it's the first review
+                
+                print("ReportDateView \(lastReportUpdate)")
                 
                 break
             }

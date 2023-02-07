@@ -354,7 +354,10 @@ class Update: Codable, Identifiable, Hashable {
         do { self.revisedBy = try values.decode(User.self, forKey: .revisedBy)
         } catch { self.revisedBy = User() }
         
-        do { self.revisedDate = dateFormatter.date(from: try values.decode(String.self, forKey: .revisedDate)) ?? Date()
+        do {
+            self.revisedDate = dateFormatter.date(from: try values.decode(String.self, forKey: .revisedDate)) ?? Date()
+            
+            print("revisedDate: \(self.revisedDate.formatted())")
         } catch { self.revisedDate = Date() }
         
         do { self.fields = try values.decode(FieldsUpdate.self, forKey: .fields)
@@ -396,27 +399,42 @@ class FieldsUpdate: Codable, Identifiable {
     
     init() {
         
-        CustomReport = FieldUpdate()
+        SystemRevisedDate = DateField()
+        CustomReport = StringField()
     }
     
     required init(from decoder: Decoder) throws {
         
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
-        do { self.CustomReport = try values.decode(FieldUpdate.self, forKey: .CustomReport)
-        } catch { self.CustomReport = FieldUpdate() }
+        do {
+            self.CustomReport = try values.decode(StringField.self, forKey: .CustomReport)
+            
+            print("FieldsUpdate:CustomReport oldValue: \(self.CustomReport.oldValue)")
+            print("FieldsUpdate:CustomReport newValue: \(self.CustomReport.newValue)")
+        } catch { self.CustomReport = StringField() }
+
+        do {
+            self.SystemRevisedDate = try values.decode(DateField.self, forKey: .SystemRevisedDate)
+            
+            print("FieldsUpdate:SystemRevisedDate oldValue: \(self.SystemRevisedDate.oldValue.formatted())")
+            print("FieldsUpdate:SystemRevisedDate newValue: \(self.SystemRevisedDate.newValue.formatted())")
+
+        } catch { self.SystemRevisedDate = DateField() }
     }
     
     enum CodingKeys: String, CodingKey {
+        case SystemRevisedDate = "System.RevisedDate"
         case CustomReport = "Custom.Report"
     }
     
-    let CustomReport: FieldUpdate
+    let SystemRevisedDate: DateField
+    let CustomReport: StringField
     
     let id = UUID()
 }
 
-class FieldUpdate: Codable, Identifiable {
+class StringField: Codable, Identifiable {
     
     init() {
         
@@ -445,6 +463,42 @@ class FieldUpdate: Codable, Identifiable {
     
     let id = UUID()
 }
+
+class DateField: Codable, Identifiable {
+    
+    init() {
+        
+        oldValue = Date()
+        newValue = Date()
+    }
+    
+    required init(from decoder: Decoder) throws {
+        
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ"
+        dateFormatter.calendar = Calendar(identifier: .iso8601)
+        
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        
+        do { self.oldValue = dateFormatter.date(from: try values.decode(String.self, forKey: .oldValue)) ?? Date()
+        } catch { self.oldValue = Date() }
+        
+        do { self.newValue = dateFormatter.date(from: try values.decode(String.self, forKey: .newValue)) ?? Date()
+        } catch { self.newValue = Date() }
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case oldValue = "oldValue"
+        case newValue = "newValue"
+    }
+    
+    let oldValue: Date
+    let newValue: Date
+    
+    let id = UUID()
+    
+    let dateFormatter = DateFormatter()
+}
+
 
 class WitNode: Wit, CustomStringConvertible {
     
