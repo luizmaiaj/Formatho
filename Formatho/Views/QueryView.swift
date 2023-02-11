@@ -112,7 +112,7 @@ struct QueryView: View {
                         
                         if !fetcher.wits.isEmpty {
                             
-                            WitTable(wits: self.fetcher.wits, org: self.fetcher.organisation, email: self.fetcher.email, pat: self.fetcher.pat, project: self.fetcher.project)
+                            WitTableView(wits: self.fetcher.wits, org: self.fetcher.organisation, email: self.fetcher.email, pat: self.fetcher.pat, project: self.fetcher.project)
                         }
                     }
                 }
@@ -130,50 +130,5 @@ struct QueryView: View {
 struct QueryView_Previews: PreviewProvider {
     static var previews: some View {
         QueryView(fetcher: Fetcher())
-    }
-}
-
-struct WitTable: View {
-    
-    @State var wits: [Wit]
-    
-    @State private var sortOrder = [KeyPathComparator(\Wit.id)]
-    
-    var org: String
-    var email: String
-    var pat: String
-    var project: String
-    
-    var body: some View {
-        
-        Table(wits, sortOrder: $sortOrder) {
-            TableColumn("Priority", value: \.fields.textPriority)
-                .width(max: 30)
-            
-            TableColumn("Type") { wit in
-                witIcon(type: wit.fields.SystemWorkItemType)
-            }
-            .width(max: 30)
-            
-            TableColumn("Title", value: \.fields.SystemTitle)
-            
-            TableColumn("id") { wit in
-                Text(wit.idLink.toRTF())
-            }
-                .width(max: 50)
-            
-            TableColumn("Report") { wit in
-                Text(wit.fields.CustomReport.toRTF())
-            }
-            
-            TableColumn("Updated") { wit in
-                ReportDateView(org: org, email: email, pat: pat, project: project, witid: wit.witID)
-            }
-            .width(max: 130)
-        }
-        .onChange(of: sortOrder) {
-            
-            wits.sort(using: $0)
-        }
     }
 }
