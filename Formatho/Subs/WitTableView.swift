@@ -13,10 +13,7 @@ struct WitTableView: View {
     
     @State private var sortOrder = [KeyPathComparator(\Wit.id)]
     
-    var org: String
-    var email: String
-    var pat: String
-    var project: String
+    @ObservedObject var fetcher: Fetcher
     
     var body: some View {
         
@@ -41,7 +38,7 @@ struct WitTableView: View {
             }
             
             TableColumn("Updated") { wit in
-                ReportDateView(org: org, email: email, pat: pat, project: project, witid: wit.witID)
+                ReportDateView(updates: fetcher.copy(), witid: wit.witID)
             }
             .width(max: 130)
         }
@@ -54,6 +51,6 @@ struct WitTableView: View {
 
 struct WitTableView_Previews: PreviewProvider {
     static var previews: some View {
-        WitTableView(wits: [Wit](), org: "org", email: "email", pat: "pat", project: "project")
+        WitTableView(wits: [Wit](), fetcher: Fetcher())
     }
 }

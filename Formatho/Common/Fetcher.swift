@@ -52,17 +52,15 @@ class Fetcher: ObservableObject {
     
     let service = APIService()
     
-    private func buildHeader() -> [String : String] {
+    private func buildHeader() {
         
         let authorisation = "Basic " + (String(self.email + ":" + self.pat).data(using: .utf8)?.base64EncodedString() ?? "")
         
-        let header = ["accept": "application/json", "authorization": authorisation]
+        self.header = ["accept": "application/json", "authorization": authorisation]
         
         if HTTP_DATA {
-            print(header)
+            print(self.header)
         }
-        
-        return header
     }
     
     // return a formatted query name and id for the prints
@@ -71,6 +69,29 @@ class Fetcher: ObservableObject {
         if DEBUG_INFO { print("\(title) \(query.name):\(query.id)") }
     }
     
+    func copy() -> Fetcher {
+        let fetcher = Fetcher()
+        
+        fetcher.organisation = self.organisation
+        fetcher.email = self.email
+        fetcher.pat = self.pat
+        fetcher.project = self.project
+        
+        fetcher.buildHeader()
+
+        return fetcher
+    }
+    
+    func copy(fetcher: Fetcher) {
+        
+        self.organisation = fetcher.organisation
+        self.email = fetcher.email
+        self.pat = fetcher.pat
+        self.project = fetcher.project
+        
+        buildHeader()
+    }
+
     func setProject(project: String) {
         
         self.project = project
@@ -83,7 +104,7 @@ class Fetcher: ObservableObject {
         self.pat = pat
         self.project = project
         
-        self.header = buildHeader()
+        buildHeader()
     }
     
     // to get the list of projects accessible to the user
@@ -94,7 +115,7 @@ class Fetcher: ObservableObject {
         self.email = email
         self.pat = pat
         
-        self.header = buildHeader()
+        buildHeader() // maybe this is not necessary ***
         
         self.isLoading = true
         self.errorMessage = nil
@@ -159,6 +180,8 @@ class Fetcher: ObservableObject {
                     if HTTP_ERROR { print("Fetcher error: \(error)") }
                     
                     self.errorMessage = error.localizedDescription
+                    
+                    print(self.errorMessage ?? "No error message")
                     
                 case .success(let info):
                     if HTTP_DATA { print("Fetcher count: \(info.count)") }

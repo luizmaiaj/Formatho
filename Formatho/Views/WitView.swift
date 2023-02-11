@@ -83,7 +83,7 @@ struct WitView: View {
                         + Text("\(fetcher.wit.fields.textPriority) \(fetcher.wit.fields.SystemTitle) \(fetcher.wit.projectLink.toRTF())")
                         + Text(": \(fetcher.wit.fields.CustomReport.toRTF())")
                         
-                        ReportDateView(org: fetcher.organisation, email: fetcher.email, pat: fetcher.pat, project: fetcher.project, witid: fetcher.wit.witID, onlyDate: false)
+                        ReportDateView(updates: fetcher.copy(), witid: fetcher.wit.witID, onlyDate: false)
                             .padding([.top])
                     }
                     .padding([.leading, .trailing])

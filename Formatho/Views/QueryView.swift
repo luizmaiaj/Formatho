@@ -9,20 +9,15 @@ import SwiftUI
 
 struct QueryView: View {
     
-    @AppStorage("queryid") private var queryid: String = String()
-    
     @AppStorage("copyToCB") private var copyToCB: Bool = false
     @AppStorage("includeReport") private var includeReport: Bool = false
     
     @ObservedObject var fetcher: Fetcher
-    @StateObject var qFetcher: Fetcher = Fetcher()
     
-    private func fetchWits() {
-        self.fetcher.query(queryid: queryid, cb: copyToCB, addReport: includeReport)
-    }
+    @State var queryID: String = ""
     
-    private func fetchQueries() {
-        self.qFetcher.getQueries()
+    private func fetch() {
+        self.fetcher.query(queryid: queryID, cb: copyToCB, addReport: includeReport)
     }
     
     private func queryWidth(width: CGFloat) -> CGFloat {
@@ -42,43 +37,7 @@ struct QueryView: View {
                 
                 VStack {
                     
-                    if qFetcher.isLoading {
-                        
-                        FetchingView()
-                        
-                    } else {
-                        
-                        Button("Refresh queries' list", action: {
-                            fetchQueries()
-                        })
-                        
-                        HStack {
-                            
-                            List {
-                                OutlineGroup(qFetcher.queries, children: \.children) { item in
-                                    
-                                    if !item.isFolder {
-                                        
-                                        Button("📄 \(item.description)", action: {
-                                            queryid = item.id
-                                            
-                                            fetchWits()
-                                        })
-                                        
-                                    } else {
-                                        Text("📂 \(item.description)")
-                                    }
-                                }
-                            }
-                            .onAppear() {
-                                
-                                // if empty query if not empty user has to refresh
-                                if qFetcher.queries.isEmpty {
-                                    fetchQueries()
-                                }
-                            }
-                        }
-                    }
+                    QueryHierarchyView(queriesFetcher: fetcher.copy(), queryid: $queryID)
                 }
                 .frame(width: QUERY_TREE_WIDTH, height: g.size.height)
                 
@@ -98,30 +57,80 @@ struct QueryView: View {
                         
                         HStack {
                             
-                            TextField("QUERY ID", text: $queryid)
+                            TextField("QUERY ID", text: $queryID)
                                 .frame(alignment: .trailing)
                                 .frame(maxWidth: 350)
                                 .onSubmit {
-                                    fetchWits()
+                                    fetch()
                                 }
                             
                             Button("Query", action: {
-                                fetchWits()
+                                fetch()
                             })
                         }
                         
                         if !fetcher.wits.isEmpty {
                             
-                            WitTableView(wits: self.fetcher.wits, org: self.fetcher.organisation, email: self.fetcher.email, pat: self.fetcher.pat, project: self.fetcher.project)
+                            WitTableView(wits: self.fetcher.wits, fetcher: fetcher)
                         }
                     }
                 }
                 .padding([.trailing, .top])
                 .frame(width: queryWidth(width: g.size.width), height: g.size.height)
+                .onChange(of: queryID) { newValue in
+                    
+                    fetch()
+                }
             }
-            .onAppear() {
+        }
+    }
+}
+
+struct QueryHierarchyView: View {
+    
+    @StateObject var queriesFetcher: Fetcher
+    
+    @Binding var queryid: String
+    
+    private func fetch() {
+        self.queriesFetcher.getQueries()
+    }
+    
+    var body: some View {
+        
+        if queriesFetcher.isLoading {
+            
+            FetchingView()
+            
+        } else {
+            
+            Button("Refresh queries' list", action: {
+                fetch()
+            })
+            
+            HStack {
                 
-                self.qFetcher.initialise(org: self.fetcher.organisation, email: self.fetcher.email, pat: self.fetcher.pat, project: self.fetcher.project)
+                List {
+                    OutlineGroup(queriesFetcher.queries, children: \.children) { item in
+                        
+                        if !item.isFolder {
+                            
+                            Button("📄 \(item.description)", action: {
+                                queryid = item.id
+                            })
+                            
+                        } else {
+                            Text("📂 \(item.description)")
+                        }
+                    }
+                }
+                .onAppear() {
+                    
+                    // if empty query if not empty user has to refresh
+                    if queriesFetcher.queries.isEmpty {
+                        fetch()
+                    }
+                }
             }
         }
     }

@@ -9,12 +9,7 @@ import SwiftUI
 
 struct ReportDateView: View {
     
-    @StateObject var updates: Fetcher = Fetcher()
-    
-    var org: String
-    var email: String
-    var pat: String
-    var project: String
+    @StateObject var updates: Fetcher
     
     var witid: Int
     
@@ -66,8 +61,6 @@ struct ReportDateView: View {
             
             if updates.updates.isEmpty {
                 
-                updates.initialise(org: self.org, email: self.email, pat: self.pat, project: self.project)
-                
                 updates.getUpdates(id: witid) {
                     
                     findLastReportUpdate()
@@ -79,6 +72,6 @@ struct ReportDateView: View {
 
 struct ReportDateView_Previews: PreviewProvider {
     static var previews: some View {
-        ReportDateView(org: "org", email: "email", pat: "pat", project: "project", witid: 50000)
+        ReportDateView(updates: Fetcher().copy(), witid: 50000)
     }
 }
