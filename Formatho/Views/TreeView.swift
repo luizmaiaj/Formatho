@@ -25,7 +25,7 @@ struct TreeView: View {
             
             if self.fetcher.isLoading {
                 
-                Text("Fetching \(self.fetcher.statusMessage ?? "")...")
+                FetchingView()
                 
             } else {
                 
@@ -67,7 +67,7 @@ struct TreeView: View {
                 }
             }
 #if os(iOS)
-            Text(self.fetcher.errorMessage ?? "") // only on iOS
+            Text(self.fetcher.statusMessage ?? "") // only on iOS
 #endif
         }
     }

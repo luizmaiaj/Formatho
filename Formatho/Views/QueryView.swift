@@ -64,7 +64,9 @@ struct QueryView: View {
                     
                     if fetcher.isLoading {
                         
-                        Text("Fetching \(fetcher.statusMessage ?? "")...")
+                        HStack {
+                            FetchingView()
+                        }
                         
                     } else {
                         

@@ -107,7 +107,7 @@ struct ContentView: View {
                         .tag(Tab.tree)
                 }
             }
-            Text(self.fetcher.errorMessage ?? "") // only on macOS
+            Text(self.fetcher.statusMessage ?? "") // only on macOS
         }
         .frame(minWidth: getW(), minHeight: getH())
         .onAppear() {

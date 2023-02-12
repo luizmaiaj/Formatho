@@ -31,8 +31,7 @@ class Fetcher: ObservableObject {
     @Published var queries: [QueryNode] = [QueryNode]()     // to store the list of queries in a hierarchy
     
     @Published var isLoading: Bool = false                  // if waiting for the requested data
-    @Published var statusMessage: String? = nil
-    @Published var errorMessage: String? = nil              // error message to be displayed on the interface
+    @Published var statusMessage: String? = nil              // error message to be displayed on the interface
     @Published var formattedWIT: AttributedString = AttributedString() // to manage the string that is copied to the clipboard
     
     private var fetched: [Int] = [Int]()                    // list fetched for the wit links' tree
@@ -118,7 +117,7 @@ class Fetcher: ObservableObject {
         buildHeader() // maybe this is not necessary ***
         
         self.isLoading = true
-        self.errorMessage = nil
+        self.statusMessage = nil
         
         self.projects.removeAll()
         self.projectNames.removeAll()
@@ -137,7 +136,7 @@ class Fetcher: ObservableObject {
                 case .failure(let error):
                     if HTTP_ERROR { print("Fetcher error: \(error)") }
                     
-                    self.errorMessage = error.localizedDescription
+                    self.statusMessage = error.localizedDescription
                     
                 case .success(let info):
                     if HTTP_DATA { print("Fetcher count: \(info.count)") }
@@ -153,6 +152,8 @@ class Fetcher: ObservableObject {
                         
                         self.project = self.projects.first?.name ?? ""
                     }
+                    
+                    self.statusMessage = "\(self.projects.count) project(s) found"
                 }
             }
         }
@@ -162,7 +163,6 @@ class Fetcher: ObservableObject {
     func getQueries() {
         
         self.isLoading = true
-        self.errorMessage = nil
         self.statusMessage = nil
         
         let prjBaseUrl: String = BASE_URL + self.organisation + "/" + self.project + "/_apis/wit/queries?$depth=1"
@@ -179,14 +179,14 @@ class Fetcher: ObservableObject {
                 case .failure(let error):
                     if HTTP_ERROR { print("Fetcher error: \(error)") }
                     
-                    self.errorMessage = error.localizedDescription
-                    
-                    print(self.errorMessage ?? "No error message")
+                    self.statusMessage = error.localizedDescription
                     
                 case .success(let info):
                     if HTTP_DATA { print("Fetcher count: \(info.count)") }
                     
-                    self.queries = info.value
+                    self.queries = info.value.sorted(by: {first,second in
+                        return first.name < second.name
+                    })
                     
                     for q in 0...(self.queries.count - 1) {
                         
@@ -194,13 +194,15 @@ class Fetcher: ObservableObject {
                         
                         if self.queries[q].children != nil { // must have children as this first query is on the root folder
                             
+                            self.queries[q].children = self.queries[q].children!.sorted(by: {first,second in
+                                return first.name < second.name
+                            })
+                            
                             for c in 0...(self.queries[q].children!.count - 1) { // already checked if array is not empty
                                 
                                 if self.queries[q].children![c].isFolder {
                                     
                                     self.printQuery(title: "GET CHILDREN", query: self.queries[q].children![c])
-                                    
-                                    self.statusMessage = self.queries[q].children![c].name
                                     
                                     self.getSubQueries(queryID: self.queries[q].children![c].id, completion: { query in
                                         
@@ -218,7 +220,6 @@ class Fetcher: ObservableObject {
     func getSubQueries(queryID: String, completion: @escaping (QueryNode) -> Void) {
         
         self.isLoading = true
-        self.statusMessage = queryID
         
         let prjBaseUrl: String = BASE_URL + self.organisation + "/" + self.project + "/_apis/wit/queries/" + queryID + "?$depth=1"
         
@@ -234,7 +235,7 @@ class Fetcher: ObservableObject {
                 case .failure(let error):
                     if HTTP_ERROR { print("Fetcher error: \(error)") }
                     
-                    self.errorMessage = error.localizedDescription
+                    self.statusMessage = error.localizedDescription
                     
                     self.isLoading = false  // under test
                     
@@ -242,9 +243,11 @@ class Fetcher: ObservableObject {
                     
                 case .success(let info):
                     
-                    self.printQuery(title: "REC parent", query: info)
-                    
                     if info.isFolder && info.children != nil {
+                        
+                        info.children = info.children!.sorted(by: {first,second in
+                            return first.name < second.name
+                        })
                         
                         for c in 0...(info.children!.count - 1) {
                             
@@ -274,7 +277,7 @@ class Fetcher: ObservableObject {
     func getActivities() {
         
         self.isLoading = true
-        self.errorMessage = nil
+        self.statusMessage = nil
         
         let prjBaseUrl: String = BASE_URL + self.organisation + "/_apis/work/accountmyworkrecentactivity"
         
@@ -290,7 +293,7 @@ class Fetcher: ObservableObject {
                 case .failure(let error):
                     if HTTP_ERROR { print("Fetcher error: \(error)") }
                     
-                    self.errorMessage = error.localizedDescription
+                    self.statusMessage = error.localizedDescription
                     
                 case .success(let info):
                     if HTTP_DATA { print("Fetcher count: \(info.count)") }
@@ -304,6 +307,8 @@ class Fetcher: ObservableObject {
                         // splitting between link and name to correctly display in dark mode
                         activity.idLink = "<a href=\"\(reqURL)\(activity.textID)\">\(activity.textID)</a>"
                     }
+                    
+                    self.statusMessage = "\(self.activities.count) activity(ies)"
                 }
             }
         }
@@ -318,7 +323,7 @@ class Fetcher: ObservableObject {
         
         if ids.isEmpty { // if no ids in the list then simply return *** add some error handling ? ***
             
-            self.errorMessage = "No ids on query"
+            self.statusMessage = "Query returned no results"
             
             return
         }
@@ -326,7 +331,7 @@ class Fetcher: ObservableObject {
         var report: String = String("")
         
         self.isLoading = true
-        self.errorMessage = nil
+        self.statusMessage = nil
         
         self.wits.removeAll()
         
@@ -369,12 +374,14 @@ class Fetcher: ObservableObject {
                     case .failure(let error):
                         if HTTP_ERROR { print("Fetcher error: \(error)") }
                         
-                        self.errorMessage = error.localizedDescription
+                        self.statusMessage = error.localizedDescription
                         
                     case .success(let info):
                         if HTTP_DATA { print("Fetcher count: \(info.count)") }
                         
                         self.wits += info.value
+                        
+                        self.statusMessage = "Query returned \(self.wits.count) wit(s)"
                         
                         if self.sortPriority { // sorting by priority
                             
@@ -454,7 +461,7 @@ class Fetcher: ObservableObject {
     func query(queryid: String, cb: Bool, addReport: Bool) {
         
         self.isLoading = true
-        self.errorMessage = nil
+        self.statusMessage = nil
         
         let prjBaseUrl: String = BASE_URL + self.organisation + "/_apis/wit/wiql?id=" + queryid
         
@@ -470,12 +477,14 @@ class Fetcher: ObservableObject {
                 case .failure(let error):
                     if HTTP_ERROR { print("Fetcher error: \(error)") }
                     
-                    self.errorMessage = error.localizedDescription
+                    self.statusMessage = error.localizedDescription
                     
                 case .success(let info):
                     if HTTP_DATA { print("Fetcher count: \(info.workItems.count)") }
                     
                     self.query = info
+                    
+                    self.statusMessage = "Query returned  \(self.query.workItems.count) wit(s)"
                     
                     // build id list to query for the details on wits
                     var ids: [String] = [String]()
@@ -497,8 +506,7 @@ class Fetcher: ObservableObject {
     func getWitLinks(id: String) {
         
         self.isLoading = true
-        self.errorMessage = nil
-        self.statusMessage = id
+        self.statusMessage = nil
         
         self.nodes.removeAll()
         
@@ -519,7 +527,7 @@ class Fetcher: ObservableObject {
                 case .failure(let error):
                     if HTTP_ERROR { print("Fetcher error: \(error)") }
                     
-                    self.errorMessage = error.localizedDescription
+                    self.statusMessage = error.localizedDescription
                     
                 case .success(let info):
                     if HTTP_DATA { print("Fetcher count: \([info].count)") }
@@ -559,7 +567,7 @@ class Fetcher: ObservableObject {
     func getSubWitLinks(id: Int, completion: @escaping (WitNode) -> Void) {
         
         self.isLoading = true
-        self.statusMessage = "\(id)"
+        self.statusMessage = nil
         
         let witBaseUrl: String = BASE_URL + self.organisation + "/_apis/wit/workitems/" + "\(id)" + "?$expand=relations"
         
@@ -576,7 +584,7 @@ class Fetcher: ObservableObject {
                 case .failure(let error):
                     if HTTP_ERROR { print("Fetcher error wit id \(id): \(error)") }
                     
-                    self.errorMessage = error.localizedDescription
+                    self.statusMessage = error.localizedDescription
                     
                     completion(WitNode())
                     
@@ -611,7 +619,7 @@ class Fetcher: ObservableObject {
     func getUpdates(id: Int, completion: @escaping () -> Void) {
         
         self.isLoading = true
-        self.errorMessage = nil
+        self.statusMessage = nil
         
         //GET https://dev.azure.com/{organization}/{project}/_apis/wit/workItems/{id}/updates?api-version=7.0
         let prjBaseUrl: String = BASE_URL + self.organisation + "/_apis/wit/workItems/" + "\(id)" + "/updates?"
@@ -628,7 +636,7 @@ class Fetcher: ObservableObject {
                 case .failure(let error):
                     if HTTP_ERROR { print("Fetcher error: \(error)") }
                     
-                    self.errorMessage = error.localizedDescription
+                    self.statusMessage = error.localizedDescription
                     
                 case .success(let info):
                     if HTTP_DATA { print("Fetcher count: \(info.count)") }

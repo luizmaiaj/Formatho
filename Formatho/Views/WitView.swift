@@ -91,7 +91,7 @@ struct WitView: View {
             }
             
 #if os(iOS)
-            Text(self.fetcher.errorMessage ?? "") // only on iOS
+            Text(self.fetcher.statusMessage ?? "") // only on iOS
 #endif
         }
     }
