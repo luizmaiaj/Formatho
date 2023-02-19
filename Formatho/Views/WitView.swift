@@ -55,38 +55,7 @@ struct WitView: View {
                 
                 if !fetcher.wits.isEmpty {
                     
-                    ScrollView {
-                        HStack {
-                            if !fetcher.wit.fields.CustomCORequestor.isEmpty {
-                                Text("CO: \(fetcher.wit.fields.CustomCORequestor)")
-                            }
-                            
-                            Text("Area: \(fetcher.wit.fields.SystemAreaPath)")
-                        }
-                        .padding([.bottom], 10)
-                        
-                        HStack {
-                            Text("Last change: \(fetcher.wit.fields.SystemChangedDate.formatted())")
-                            
-                            Text("State: \(fetcher.wit.fields.SystemState)")
-                        }
-                        .padding([.bottom], 10)
-                        
-                        HStack {
-                            Text("Created By: \(fetcher.wit.fields.SystemCreatedBy.displayName)")
-                            
-                            Text("Assigned To: \(fetcher.wit.fields.SystemAssignedTo.displayName)")
-                        }
-                        .padding([.bottom], 10)
-                        
-                        witIcon(type: fetcher.wit.fields.SystemWorkItemType)
-                        + Text("\(fetcher.wit.fields.textPriority) \(fetcher.wit.fields.SystemTitle) \(fetcher.wit.projectLink.toRTF())")
-                        + Text(": \(fetcher.wit.fields.CustomReport.toRTF())")
-                        
-                        ReportDateView(updates: fetcher.copy(), witid: fetcher.wit.witID, onlyDate: false)
-                            .padding([.top])
-                    }
-                    .padding([.leading, .trailing])
+                    DetailedWitView(fetcher: fetcher)
                 }
             }
             
@@ -100,5 +69,46 @@ struct WitView: View {
 struct WitView_Previews: PreviewProvider {
     static var previews: some View {
         WitView(fetcher: Fetcher())
+    }
+}
+
+struct DetailedWitView: View {
+    
+    @ObservedObject var fetcher: Fetcher
+    
+    var body: some View {
+        
+        ScrollView {
+            HStack {
+                if !fetcher.wit.fields.CustomCORequestor.isEmpty {
+                    Text("CO: \(fetcher.wit.fields.CustomCORequestor)")
+                }
+                
+                Text("Area: \(fetcher.wit.fields.SystemAreaPath)")
+            }
+            .padding([.bottom], 10)
+            
+            HStack {
+                Text("Last change: \(fetcher.wit.fields.SystemChangedDate.formatted())")
+                
+                Text("State: \(fetcher.wit.fields.SystemState)")
+            }
+            .padding([.bottom], 10)
+            
+            HStack {
+                Text("Created By: \(fetcher.wit.fields.SystemCreatedBy.displayName)")
+                
+                Text("Assigned To: \(fetcher.wit.fields.SystemAssignedTo.displayName)")
+            }
+            .padding([.bottom], 10)
+            
+            witIcon(type: fetcher.wit.fields.SystemWorkItemType)
+            + Text("\(fetcher.wit.fields.textPriority) \(fetcher.wit.fields.SystemTitle) \(fetcher.wit.projectLink.toRTF())")
+            + Text(": \(fetcher.wit.fields.CustomReport.toRTF())")
+            
+            ReportDateView(updates: fetcher.copy(), witid: fetcher.wit.witID, onlyDate: false)
+                .padding([.top])
+        }
+        .padding([.leading, .trailing])
     }
 }

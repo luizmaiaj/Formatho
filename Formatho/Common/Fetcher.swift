@@ -319,6 +319,77 @@ class Fetcher: ObservableObject {
         self.getWits(ids: [witid])
     }
     
+    fileprivate func sortByPriority() {
+        if self.sortPriority { // sorting by priority
+            
+            self.wits = self.wits.sorted(by: {first,second in
+                return first.fields.MicrosoftVSTSCommonPriority < second.fields.MicrosoftVSTSCommonPriority
+            })
+        }
+    }
+    
+    fileprivate func createDisplayInfo(includeReport: Bool) -> String {
+        
+        let reqURL: String = BASE_URL + self.organisation + "/" + self.project + "/_workitems/edit/"
+        
+        var report: String = ""
+        
+        // create a link by project name and ID
+        // create a link by ID
+        // create html text with report
+        for wit in self.wits {
+            
+            // splitting between link and name to correctly display in dark mode
+            wit.projectLink = "<a href=\"\(reqURL)\(wit.textWitID)\">[\(self.project)-\(wit.textWitID)]</a>"
+            
+            wit.idLink = "<a href=\"\(reqURL)\(wit.textWitID)\">\(wit.textWitID)</a>"
+            
+            wit.html = wit.name + " " + wit.projectLink
+            
+            //add report field information if necessary
+            if includeReport {
+                
+                wit.html += ": \(wit.fields.CustomReport)<br>"
+                
+            } else {
+                
+                wit.html += "<br>" // add line break if report is not added
+            }
+            
+            report += wit.html
+        }
+        
+        return report
+    }
+    
+    fileprivate func copyToClipboard(_ report: String) {
+        if let data = report.data(using: .unicode),
+           let nsAttrString = try? NSAttributedString(data: data,
+                                                      options: [.documentType: NSAttributedString.DocumentType.html],
+                                                      documentAttributes: nil) {
+            
+            self.formattedWIT = AttributedString(nsAttrString) // string to be displayed in Text()
+            
+#if os(OSX)
+            self.pboard.clearContents()
+            
+            self.pboard.writeObjects(NSArray(object: nsAttrString) as! [NSPasteboardWriting])
+#else
+            
+            do {
+                let rtf = try nsAttrString.data(from: NSMakeRange(0, nsAttrString.length), documentAttributes: [NSAttributedString.DocumentAttributeKey.documentType : NSAttributedString.DocumentType.rtf])
+                
+                //UIPasteboard.general.setData(rtf, forPasteboardType: kUTTypeRTF as String)
+                UIPasteboard.general.setData(rtf, forPasteboardType: "public.rtf")
+                
+            } catch {
+                
+                print("ERROR on pasteboard")
+            }
+#endif
+        }
+    }
+    
     func getWits(ids: [String], cb: Bool = true, includeReport: Bool = true) {
         
         if ids.isEmpty { // if no ids in the list then simply return *** add some error handling ? ***
@@ -328,14 +399,10 @@ class Fetcher: ObservableObject {
             return
         }
         
-        var report: String = String("")
-        
         self.isLoading = true
         self.statusMessage = nil
         
         self.wits.removeAll()
-        
-        let reqURL: String = BASE_URL + self.organisation + "/" + self.project + "/_workitems/edit/"
         
         // build id list limited to ADO_LIST_LIMIT = 200 wits
         var iStart: Int = 0
@@ -383,73 +450,20 @@ class Fetcher: ObservableObject {
                         
                         self.statusMessage = "Query returned \(self.wits.count) wit(s)"
                         
-                        if self.sortPriority { // sorting by priority
-                            
-                            self.wits = self.wits.sorted(by: {first,second in
-                                return first.fields.MicrosoftVSTSCommonPriority < second.fields.MicrosoftVSTSCommonPriority
-                            })
-                        }
+                        self.sortByPriority()
                         
-                        // create and add a link with the project name
-                        // add report
-                        for wit in self.wits {
-                            
-                            // splitting between link and name to correctly display in dark mode
-                            wit.projectLink = "<a href=\"\(reqURL)\(wit.textWitID)\">[\(self.project)-\(wit.textWitID)]</a>"
-                            
-                            wit.idLink = "<a href=\"\(reqURL)\(wit.textWitID)\">\(wit.textWitID)</a>"
-                            
-                            wit.html = wit.name + " " + wit.projectLink
-                            
-                            //add report field information if necessary
-                            if includeReport {
-                                
-                                wit.html +=  ": \(wit.fields.CustomReport)<br>"
-                                
-                            } else {
-                                
-                                wit.html +=  "<br>" // add line break if report is not added
-                            }
-                            
-                            report += wit.html
-                        }
+                        let report: String = self.createDisplayInfo(includeReport: includeReport)
+                        
+                        if DEBUG_INFO { print(report) }
                         
                         // if query was for only one item or multiple items but 'add to clipboard' was selected
-                        if self.wits.count == 1 || cb {
+                        if self.wits.count == 1 {
                             
-                            self.wit = self.wits[0]
-                            
-                            if self.wits.count == 1 {
-                                report = self.wit.html
-                            }
-                            
-                            if DEBUG_INFO { print(report) }
-                            
-                            if let data = report.data(using: .unicode),
-                               let nsAttrString = try? NSAttributedString(data: data,
-                                                                          options: [.documentType: NSAttributedString.DocumentType.html],
-                                                                          documentAttributes: nil) {
-                                
-                                self.formattedWIT = AttributedString(nsAttrString) // string to be displayed in Text()
-                                
-#if os(OSX)
-                                self.pboard.clearContents()
-                                
-                                self.pboard.writeObjects(NSArray(object: nsAttrString) as! [NSPasteboardWriting])
-#else
-                                
-                                do {
-                                    let rtf = try nsAttrString.data(from: NSMakeRange(0, nsAttrString.length), documentAttributes: [NSAttributedString.DocumentAttributeKey.documentType : NSAttributedString.DocumentType.rtf])
-                                    
-                                    //UIPasteboard.general.setData(rtf, forPasteboardType: kUTTypeRTF as String)
-                                    UIPasteboard.general.setData(rtf, forPasteboardType: "public.rtf")
-                                    
-                                } catch {
-                                    
-                                    print("ERROR on pasteboard")
-                                }
-#endif
-                            }
+                            self.wit = self.wits.first!
+                        }
+                         
+                        if cb {
+                            self.copyToClipboard(report)
                         }
                     }
                 }
