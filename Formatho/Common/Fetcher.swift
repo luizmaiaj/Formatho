@@ -601,11 +601,19 @@ class Fetcher: ObservableObject {
                 case .success(let info):
                     if HTTP_DATA { print("Fetcher count: \([info].count)") }
                     
+                    // if fetched 200 items return without continuing
+                    if self.fetched.count >= ADO_TREE_LIMIT {
+                        
+                        self.statusMessage = "WARNING! \(ADO_TREE_LIMIT) wits limit reached"
+                        
+                        return
+                    }
+                    
                     self.fetched.append(info.witID)
                     
-                    if DEBUG_INFO { print("fetched: \(self.fetched)") }
+                    if DEBUG_INFO { print("fetched: \(self.fetched.count)") }
                     
-                    completion(info)
+                    completion(info) // it's here now, not sure it's correct
                     
                     let cMax = max((info.children?.count ?? 0) - 1, 0) // cannot be less than zero
                     
@@ -622,7 +630,7 @@ class Fetcher: ObservableObject {
                         }
                     }
                                         
-                    //completion(info)
+                    //completion(info) was here before
                 }
             }
         }

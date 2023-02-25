@@ -21,6 +21,7 @@ let RELATIONS_LEVELS = 1
 
 // Azure DevOps limit on the number of wits that can be fetched at once
 let ADO_LIST_LIMIT: Int = 200
+let ADO_TREE_LIMIT: Int = 1000
 
 let QUERY_MIN_WIDTH: CGFloat = 250.0
 
