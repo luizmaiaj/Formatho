@@ -47,8 +47,6 @@ func getWitNumber(url: String) -> Int {
 
 func witIcon(type: String) -> Text {
     
-    //print(type)
-    
     switch type {
     case workItemType.epic.rawValue:
         return Text(Image(systemName: "crown.fill")).foregroundColor(.orange)

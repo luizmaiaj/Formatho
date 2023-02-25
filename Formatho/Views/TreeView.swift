@@ -22,18 +22,17 @@ struct TreeView: View {
     
     var body: some View {
         VStack {
-            
-            if self.fetcher.isLoading {
+            VStack {
                 
-                FetchingView()
-                
-            } else {
-                
-                VStack {
+                if self.fetcher.isLoading {
+                    
+                    FetchingView()
+                    
+                } else {
                     HStack {
                         
                         TextField("WIT ID", text: $witid)
-                            .frame(maxWidth: 125, alignment: .trailing)
+                            .frame(maxWidth: 80, alignment: .trailing)
                             .onReceive(Just(witid)) { newValue in
                                 let filtered = newValue.filter { "0123456789".contains($0) }
                                 if filtered != newValue { witid = filtered }
@@ -51,17 +50,17 @@ struct TreeView: View {
                             fetch()
                         })
                     }
+                }
 #if os(iOS)
                     .padding([.top])
 #endif
-                    
-                    if !fetcher.nodes.isEmpty {
-                        List {
-                            OutlineGroup(fetcher.nodes, children: \.children) { item in
-                                
-                                witIcon(type: item.fields.SystemWorkItemType)
-                                + Text(" \(item.description)")
-                            }
+                
+                if !fetcher.nodes.isEmpty {
+                    List {
+                        OutlineGroup(fetcher.nodes, children: \.children) { item in
+                            
+                            witIcon(type: item.fields.SystemWorkItemType)
+                            + Text(" \(item.description)")
                         }
                     }
                 }

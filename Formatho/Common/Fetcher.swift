@@ -43,8 +43,6 @@ class Fetcher: ObservableObject {
     
     private var header: [String : String] = [String : String]()
     
-    let BASE_URL: String = "https://dev.azure.com/"
-    
 #if os(OSX)
     let pboard = NSPasteboard.general // reference to pasteboard
 #endif
@@ -300,7 +298,7 @@ class Fetcher: ObservableObject {
                     
                     self.activities = info.value
                     
-                    let reqURL: String = self.BASE_URL + self.organisation + "/" + self.project + "/_workitems/edit/"
+                    let reqURL: String = BASE_URL + self.organisation + "/" + self.project + "/_workitems/edit/"
                     
                     for activity in self.activities {
 
@@ -534,8 +532,6 @@ class Fetcher: ObservableObject {
             
             DispatchQueue.main.async {
                 
-                // self.isLoading = false // testing
-                
                 switch result {
                     
                 case .failure(let error):
@@ -571,16 +567,16 @@ class Fetcher: ObservableObject {
                             }
                         }
                     }
+                    
+                    self.isLoading = false // only set loading to false after all have been fetched to display progress view on the search view
                 }
-                
-                self.isLoading = false
             }
         }
     }
     
     func getSubWitLinks(id: Int, completion: @escaping (WitNode) -> Void) {
         
-        self.isLoading = true
+        //self.isLoading = true
         self.statusMessage = nil
         
         let witBaseUrl: String = BASE_URL + self.organisation + "/_apis/wit/workitems/" + "\(id)" + "?$expand=relations"
@@ -591,7 +587,7 @@ class Fetcher: ObservableObject {
             
             DispatchQueue.main.async {
                 
-                self.isLoading = false
+                //self.isLoading = false
                 
                 switch result {
                     
@@ -609,6 +605,8 @@ class Fetcher: ObservableObject {
                     
                     if DEBUG_INFO { print("fetched: \(self.fetched)") }
                     
+                    completion(info)
+                    
                     let cMax = max((info.children?.count ?? 0) - 1, 0) // cannot be less than zero
                     
                     for c in 0...(cMax) {
@@ -624,7 +622,7 @@ class Fetcher: ObservableObject {
                         }
                     }
                                         
-                    completion(info)
+                    //completion(info)
                 }
             }
         }

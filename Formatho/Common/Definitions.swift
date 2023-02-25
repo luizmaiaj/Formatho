@@ -25,6 +25,7 @@ let ADO_LIST_LIMIT: Int = 200
 let QUERY_MIN_WIDTH: CGFloat = 250.0
 
 enum relation: String {
+    case none = "none"
     case root = "root"
     case related = "System.LinkTypes.Related"
     case child = "System.LinkTypes.Hierarchy-Forward"

@@ -559,39 +559,14 @@ class WitNode: Wit, CustomStringConvertible {
                 
                 if !bFound { // do not add duplicate ids to the hierarchy
                     
-                    var nodeType: relation
-                    
                     var tempChild: WitNode
                     
                     switch rel.rel {
-                    case relation.related.rawValue:
-                        nodeType = relation.related
-                        
-                    case relation.child.rawValue:
-                        nodeType = relation.child
-                        
-                    case relation.parent.rawValue:
-                        nodeType = relation.parent
-
-                    case relation.predecessor.rawValue:
-                        nodeType = relation.predecessor
-                    
-                    case relation.pullRequest.rawValue:
-                        nodeType = relation.pullRequest
-                        
-                    case relation.file.rawValue:
-                        nodeType = relation.file
-
-                    default:
-                        nodeType = relation.root
-                    }
-                    
-                    switch nodeType {
                     case relation.file, relation.pullRequest:
-                        tempChild = WitNode(witID: rel.id, description: "\(nodeType.rawValue): \(rel.attributes.name): \(rel.id)", nodeType: nodeType)
+                        tempChild = WitNode(witID: rel.id, description: "\(rel.rel.rawValue): \(rel.attributes.name): \(rel.id)", nodeType: rel.rel)
                         
                     default:
-                        tempChild = WitNode(witID: rel.id, description: "\(rel.attributes.name): \(rel.id)", nodeType: nodeType)
+                        tempChild = WitNode(witID: rel.id, description: "\(rel.attributes.name): \(rel.id)", nodeType: rel.rel)
                     }
                     
                     let child: WitNode = tempChild
@@ -820,7 +795,8 @@ class Relations: Codable, Identifiable, Hashable {
     
     init() {
         self.id = 0
-        self.rel = ""
+        self.sRel = ""
+        self.rel = relation.none
         self.url = ""
         self.attributes = Attributes()
     }
@@ -829,8 +805,39 @@ class Relations: Codable, Identifiable, Hashable {
         
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
-        do { self.rel = try values.decode(String.self, forKey: .rel)
-        } catch { self.rel = "" }
+        do {
+            self.sRel = try values.decode(String.self, forKey: .sRel)
+            
+            switch sRel {
+            case relation.root.rawValue:
+                self.rel = relation.root
+                
+            case relation.related.rawValue:
+                self.rel = relation.related
+                
+            case relation.child.rawValue:
+                self.rel = relation.child
+                
+            case relation.parent.rawValue:
+                self.rel = relation.parent
+                
+            case relation.predecessor.rawValue:
+                self.rel = relation.predecessor
+                
+            case relation.pullRequest.rawValue:
+                self.rel = relation.pullRequest
+                
+            case relation.file.rawValue:
+                self.rel = relation.file
+                
+            default:
+                self.rel = relation.none
+            }
+            
+        } catch {
+            self.sRel = ""
+            self.rel = relation.none
+        }
         
         do { self.url = try values.decode(String.self, forKey: .url)
         } catch { self.url = "" }
@@ -840,7 +847,7 @@ class Relations: Codable, Identifiable, Hashable {
         
         // using values retrieved above populate the id and the relation type enum
         switch self.rel {
-        case relation.file.rawValue, relation.pullRequest.rawValue:
+        case relation.file, relation.pullRequest:
             self.id = self.attributes.id
             
         default:
@@ -858,8 +865,15 @@ class Relations: Codable, Identifiable, Hashable {
         hasher.combine(id)
     }
     
+    enum CodingKeys: String, CodingKey {
+        case sRel = "rel"
+        case url = "url"
+        case attributes = "attributes"
+    }
+    
     var id: Int
-    let rel: String
+    private let sRel: String
+    let rel: relation
     let url: String
     let attributes: Attributes
 }

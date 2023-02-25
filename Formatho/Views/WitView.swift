@@ -31,7 +31,7 @@ struct WitView: View {
                 HStack {
                     
                     TextField("WIT ID", text: $witid)
-                        .frame(maxWidth: 125, alignment: .trailing)
+                        .frame(maxWidth: 80, alignment: .trailing)
                         .onReceive(Just(witid)) { newValue in
                             let filtered = newValue.filter { "0123456789".contains($0) }
                             if filtered != newValue { witid = filtered }
