@@ -232,7 +232,7 @@ class Wit: Codable, Identifiable, Hashable {
         self.html = ""
         self.relations = [Relations]()
     }
-
+    
     // new constructor for widget placeholder and snapshot
     init(witID: Int, fields: Fields) {
         self.witID = witID
@@ -344,13 +344,13 @@ class Update: Codable, Identifiable, Hashable {
         
         do { self.updateID = try values.decode(Int.self, forKey: .updateID)
         } catch { self.updateID = 0 }
-                
+        
         do { self.workItemId = try values.decode(Int.self, forKey: .workItemId)
         } catch { self.workItemId = 0 }
-
+        
         do { self.rev = try values.decode(Int.self, forKey: .rev)
         } catch { self.rev = 0 }
-
+        
         do { self.revisedBy = try values.decode(User.self, forKey: .revisedBy)
         } catch { self.revisedBy = User() }
         
@@ -413,13 +413,13 @@ class FieldsUpdate: Codable, Identifiable {
             //print("FieldsUpdate:CustomReport oldValue: \(self.CustomReport.oldValue)")
             //print("FieldsUpdate:CustomReport newValue: \(self.CustomReport.newValue)")
         } catch { self.CustomReport = StringField() }
-
+        
         do {
             self.SystemRevisedDate = try values.decode(DateField.self, forKey: .SystemRevisedDate)
             
             //print("FieldsUpdate:SystemRevisedDate oldValue: \(self.SystemRevisedDate.oldValue.formatted())")
             //print("FieldsUpdate:SystemRevisedDate newValue: \(self.SystemRevisedDate.newValue.formatted())")
-
+            
         } catch { self.SystemRevisedDate = DateField() }
     }
     
@@ -504,26 +504,33 @@ class WitNode: Wit, CustomStringConvertible {
     
     var description: String
     var children: [WitNode]?
-    var nodeType: relation
+    var rel: Relations
     
     override init() {
         
         self.description = ""
         self.children = nil
-        self.nodeType = relation.root
+        self.rel = Relations()
         
         super.init()
     }
     
-    init(witID: Int, description: String, nodeType: relation) {
+    init(relations: Relations) {
         
-        self.description = description
+        self.rel = relations
+        
+        switch self.rel.rel {
+            
+        case relation.file, relation.pullRequest:
+            self.description = "\(self.rel.id): \(self.rel.attributes.name)"
+            
+        default:
+            self.description = "\(relations.attributes.name): \(self.rel.id)"
+        }
         
         self.children = nil
         
-        self.nodeType = nodeType
-        
-        super.init(witID: witID)
+        super.init(witID: relations.id)
     }
     
     required init(from decoder: Decoder) throws {
@@ -532,7 +539,7 @@ class WitNode: Wit, CustomStringConvertible {
         
         self.children = nil
         
-        self.nodeType = relation.root
+        self.rel = Relations()
         
         try super.init(from: decoder)
         
@@ -559,19 +566,7 @@ class WitNode: Wit, CustomStringConvertible {
                 
                 if !bFound { // do not add duplicate ids to the hierarchy
                     
-                    var tempChild: WitNode
-                    
-                    switch rel.rel {
-                    case relation.file, relation.pullRequest:
-                        tempChild = WitNode(witID: rel.id, description: "\(rel.rel.rawValue): \(rel.attributes.name): \(rel.id)", nodeType: rel.rel)
-                        
-                    default:
-                        tempChild = WitNode(witID: rel.id, description: "\(rel.attributes.name): \(rel.id)", nodeType: rel.rel)
-                    }
-                    
-                    let child: WitNode = tempChild
-                    
-                    self.children?.append(child)
+                    self.children?.append(WitNode(relations: rel))
                 }
             }
         }
@@ -649,19 +644,19 @@ class Fields: Codable, Identifiable {
         
         do { self.SystemAssignedTo = try values.decode(User.self, forKey: .SystemAssignedTo)
         } catch { self.SystemAssignedTo = User() }
-
+        
         do { self.SystemCreatedDate = dateFormatter.date(from: try values.decode(String.self, forKey: .SystemCreatedDate)) ?? Date()
         } catch { self.SystemCreatedDate = Date() }
         
         do { self.SystemCreatedBy = try values.decode(User.self, forKey: .SystemCreatedBy)
         } catch { self.SystemCreatedBy = User() }
-
+        
         do { self.SystemChangedDate = dateFormatter.date(from: try values.decode(String.self, forKey: .SystemChangedDate)) ?? Date()
         } catch { self.SystemChangedDate = Date() }
         
         do { self.SystemChangedBy = try values.decode(User.self, forKey: .SystemChangedBy)
         } catch { self.SystemChangedBy = User() }
-
+        
         do { self.SystemCommentCount = try values.decode(Int.self, forKey: .SystemCommentCount)
         } catch { self.SystemCommentCount = 0 }
         

@@ -69,6 +69,12 @@ func witIcon(type: String) -> Text {
     case workItemType.task.rawValue:
         return Text(Image(systemName: "checkmark.rectangle.portrait.fill")).foregroundColor(.yellow)
         
+    case workItemType.attachedFile.rawValue:
+        return Text(Image(systemName: "paperclip"))
+        
+    case workItemType.pullRequest.rawValue:
+        return Text(Image(systemName: "arrow.triangle.pull"))
+        
     default:
         return Text(Image(systemName: "questionmark.square.dashed")).foregroundColor(.red)
     }

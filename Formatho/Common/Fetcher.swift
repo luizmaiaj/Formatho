@@ -555,11 +555,14 @@ class Fetcher: ObservableObject {
                             
                             for c in 0...(cMax) {
                                 
-                                if !self.fetched.contains(self.nodes[n].children![c].witID) && self.nodes[n].children![c].nodeType != relation.file && self.nodes[n].children![c].nodeType != relation.pullRequest {
+                                if !self.fetched.contains(self.nodes[n].children![c].witID) && self.nodes[n].children![c].rel.rel != relation.file && self.nodes[n].children![c].rel.rel != relation.pullRequest {
                                     
                                     self.getSubWitLinks(id: self.nodes[n].children![c].witID, completion: { [self] node in
                                         
                                         if node.witID != 0 {
+                                            
+                                            node.rel = self.nodes[n].children![c].rel
+                                            
                                             self.nodes[n].children![c] = node
                                         }
                                     })
@@ -619,11 +622,14 @@ class Fetcher: ObservableObject {
                     
                     for c in 0...(cMax) {
                         
-                        if !self.fetched.contains(info.children![c].witID) && info.children![c].nodeType != relation.file && info.children![c].nodeType != relation.pullRequest {
+                        if !self.fetched.contains(info.children![c].witID) && info.children![c].rel.rel != relation.file && info.children![c].rel.rel != relation.pullRequest {
                             
                             self.getSubWitLinks(id: info.children![c].witID, completion: { node in
                                 
                                 if node.witID != 0 {
+                                    
+                                    node.rel = info.children![c].rel
+                                    
                                     info.children![c] = node
                                 }
                             })

@@ -59,8 +59,14 @@ struct TreeView: View {
                     List {
                         OutlineGroup(fetcher.nodes, children: \.children) { item in
                             
-                            witIcon(type: item.fields.SystemWorkItemType)
-                            + Text(" \(item.description)")
+                            if item.rel.rel == relation.pullRequest || item.rel.rel == relation.file {
+                                witIcon(type: item.rel.rel.rawValue)
+                                + Text(" \(item.description)")
+                            } else {
+                                Text("\(item.rel.attributes.name) ")
+                                + witIcon(type: item.fields.SystemWorkItemType)
+                                + Text(" \(item.description)")
+                            }
                         }
                     }
                 }
