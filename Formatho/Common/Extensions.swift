@@ -75,6 +75,9 @@ func witIcon(type: String) -> Text {
     case workItemType.pullRequest.rawValue:
         return Text(Image(systemName: "arrow.triangle.pull"))
         
+    case workItemType.related.rawValue:
+        return Text(Image(systemName: "arrowtriangle.left.and.line.vertical.and.arrowtriangle.right.fill"))
+
     default:
         return Text(Image(systemName: "questionmark.square.dashed")).foregroundColor(.red)
     }

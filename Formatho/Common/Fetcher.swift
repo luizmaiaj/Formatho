@@ -23,7 +23,7 @@ class Fetcher: ObservableObject {
     
     @Published var wits: [Wit] = [Wit]()                    // to store the list of wits from the result of a query
     @Published var updates: [Update] = [Update]()           // to store the list of updates for a wit
-    @Published var nodes: [WitNode] = [WitNode]()           // to store the list of wits in a hierarchy
+    @Published var root: WitNode = WitNode()           // to store the list of wits in a hierarchy
     
     @Published var wit: Wit = Wit()                         // single wit
     @Published var activities: [Activity] = [Activity]()    // for the latest 200 items the user has worked on
@@ -75,7 +75,7 @@ class Fetcher: ObservableObject {
         fetcher.project = self.project
         
         fetcher.buildHeader()
-
+        
         return fetcher
     }
     
@@ -88,7 +88,7 @@ class Fetcher: ObservableObject {
         
         buildHeader()
     }
-
+    
     func setProject(project: String) {
         
         self.project = project
@@ -301,7 +301,7 @@ class Fetcher: ObservableObject {
                     let reqURL: String = BASE_URL + self.organisation + "/" + self.project + "/_workitems/edit/"
                     
                     for activity in self.activities {
-
+                        
                         // splitting between link and name to correctly display in dark mode
                         activity.idLink = "<a href=\"\(reqURL)\(activity.textID)\">\(activity.textID)</a>"
                     }
@@ -459,7 +459,7 @@ class Fetcher: ObservableObject {
                             
                             self.wit = self.wits.first!
                         }
-                         
+                        
                         if cb {
                             self.copyToClipboard(report)
                         }
@@ -514,23 +514,36 @@ class Fetcher: ObservableObject {
         }
     }
     
-    // queries for all the links contained in one wit
-    func getWitLinks(id: String) {
+    func getWitLinks(id: Int) {
         
         self.isLoading = true
         self.statusMessage = nil
         
-        self.nodes.removeAll()
-        
         self.fetched.removeAll()
         
-        let witBaseUrl: String = BASE_URL + self.organisation + "/_apis/wit/workitems/" + id + "?$expand=relations"
+        self.root = WitNode(witID: id)
+        
+        self.isLoading = true
+        self.statusMessage = nil
+        
+        self.getWitLinks(node: self.root)
+    }
+    
+    // queries for all the links contained in one wit
+    func getWitLinks(node: WitNode) {
+        
+        let reqURL: String = BASE_URL + self.organisation + "/" + self.project + "/_workitems/edit/"
+        
+        // build the query url
+        let witBaseUrl: String = BASE_URL + self.organisation + "/_apis/wit/workitems/" + "\(node.witID)" + "?$expand=relations"
         
         let url = NSURL(string: witBaseUrl)! as URL
         
         self.service.fetch(WitNode.self, url: url, headers: self.header) { [unowned self] result in
             
             DispatchQueue.main.async {
+                
+                self.isLoading = false
                 
                 switch result {
                     
@@ -542,101 +555,29 @@ class Fetcher: ObservableObject {
                 case .success(let info):
                     if HTTP_DATA { print("Fetcher count: \([info].count)") }
                     
-                    self.nodes = [info]
+                    node.copy(from: info)
                     
-                    self.fetched.append(info.witID)
-                    if DEBUG_INFO { print("fetched: \(self.fetched)") }
+                    node.idLink = "<a href=\"\(reqURL)\(node.textWitID)\">\(node.textWitID)</a>"
                     
-                    for n in 0...(self.nodes.count - 1) {
-                        
-                        if self.nodes[n].children != nil {
-                            
-                            let cMax = max((self.nodes[n].children?.count ?? 0) - 1, 0) // cannot be less than zero
-                            
-                            for c in 0...(cMax) {
-                                
-                                if !self.fetched.contains(self.nodes[n].children![c].witID) && self.nodes[n].children![c].rel.rel != relation.file && self.nodes[n].children![c].rel.rel != relation.pullRequest {
-                                    
-                                    self.getSubWitLinks(id: self.nodes[n].children![c].witID, completion: { [self] node in
-                                        
-                                        if node.witID != 0 {
-                                            
-                                            node.rel = self.nodes[n].children![c].rel
-                                            
-                                            self.nodes[n].children![c] = node
-                                        }
-                                    })
-                                }
-                            }
-                        }
-                    }
-                    
-                    self.isLoading = false // only set loading to false after all have been fetched to display progress view on the search view
-                }
-            }
-        }
-    }
-    
-    func getSubWitLinks(id: Int, completion: @escaping (WitNode) -> Void) {
-        
-        //self.isLoading = true
-        self.statusMessage = nil
-        
-        let witBaseUrl: String = BASE_URL + self.organisation + "/_apis/wit/workitems/" + "\(id)" + "?$expand=relations"
-        
-        let url = NSURL(string: witBaseUrl)! as URL
-        
-        self.service.fetch(WitNode.self, url: url, headers: self.header) { [unowned self] result in
-            
-            DispatchQueue.main.async {
-                
-                //self.isLoading = false
-                
-                switch result {
-                    
-                case .failure(let error):
-                    if HTTP_ERROR { print("Fetcher error wit id \(id): \(error)") }
-                    
-                    self.statusMessage = error.localizedDescription
-                    
-                    completion(WitNode())
-                    
-                case .success(let info):
-                    if HTTP_DATA { print("Fetcher count: \([info].count)") }
-                    
-                    // if fetched 200 items return without continuing
                     if self.fetched.count >= ADO_TREE_LIMIT {
                         
                         self.statusMessage = "WARNING! \(ADO_TREE_LIMIT) wits limit reached"
                         
                         return
+                    } else {
+                        self.statusMessage = "Fetched \(self.fetched.count)"
                     }
                     
                     self.fetched.append(info.witID)
+                    if DEBUG_INFO { print("fetched: \(self.fetched)") }
                     
-                    if DEBUG_INFO { print("fetched: \(self.fetched.count)") }
-                    
-                    completion(info) // it's here now, not sure it's correct
-                    
-                    let cMax = max((info.children?.count ?? 0) - 1, 0) // cannot be less than zero
-                    
-                    for c in 0...(cMax) {
+                    for child in node.children ?? [] {
                         
-                        if !self.fetched.contains(info.children![c].witID) && info.children![c].rel.rel != relation.file && info.children![c].rel.rel != relation.pullRequest {
+                        if !self.fetched.contains(child.witID) && child.rel.rel != relation.file && child.rel.rel != relation.pullRequest {
                             
-                            self.getSubWitLinks(id: info.children![c].witID, completion: { node in
-                                
-                                if node.witID != 0 {
-                                    
-                                    node.rel = info.children![c].rel
-                                    
-                                    info.children![c] = node
-                                }
-                            })
+                            self.getWitLinks(node: child)
                         }
                     }
-                                        
-                    //completion(info) was here before
                 }
             }
         }

@@ -221,6 +221,19 @@ class Wit: Codable, Identifiable, Hashable {
         self.relations = [Relations]()
     }
     
+    init(from: Wit) {
+        
+        self.witID = from.witID
+        self.textWitID = from.textWitID
+        self.fields = from.fields
+        self.url = from.url
+        self.name = from.name
+        self.projectLink = from.projectLink
+        self.idLink = from.idLink
+        self.html = from.html
+        self.relations = from.relations
+    }
+    
     init(witID: Int) {
         self.witID = witID
         self.textWitID = "\(self.witID)"
@@ -290,15 +303,33 @@ class Wit: Codable, Identifiable, Hashable {
         case relations = "relations"
     }
     
-    let witID: Int
-    let textWitID: String
-    let fields: Fields
-    let url: String
+    func copy(from: Wit) {
+        
+        self.witID = from.witID
+        self.textWitID = from.textWitID
+        self.fields = from.fields
+        self.url = from.url
+        self.name = from.name
+        self.projectLink = from.projectLink
+        self.idLink = from.idLink
+        self.html = from.html
+        self.relations = from.relations
+    }
+    
+    func copy() -> Wit {
+        
+        return Wit(from: self)
+    }
+    
+    var witID: Int
+    var textWitID: String
+    var fields: Fields
+    var url: String
     var name: String // wit name in html format
     var projectLink: String // project-id link in html format
     var idLink: String // id link in html format
     var html: String // full html formatted wit
-    let relations: [Relations]
+    var relations: [Relations]
     let id = UUID()
 }
 
@@ -500,11 +531,7 @@ class DateField: Codable, Identifiable {
 }
 
 
-class WitNode: Wit, CustomStringConvertible {
-    
-    var description: String
-    var children: [WitNode]?
-    var rel: Relations
+class WitNode: Wit {
     
     override init() {
         
@@ -515,62 +542,84 @@ class WitNode: Wit, CustomStringConvertible {
         super.init()
     }
     
+    override init(witID: Int) {
+        
+        self.description = ""
+        self.children = nil
+        self.rel = Relations()
+        
+        super.init(witID: witID)
+    }
+    
     init(relations: Relations) {
         
+        self.description = ""
+        
         self.rel = relations
+                
+        self.children = nil
+        
+        super.init(witID: relations.id)
         
         switch self.rel.rel {
             
         case relation.file, relation.pullRequest:
             self.description = "\(self.rel.id): \(self.rel.attributes.name)"
             
+        case relation.related:
+            self.description = "\(self.rel.id)"
+            
         default:
             self.description = "\(relations.attributes.name): \(self.rel.id)"
         }
-        
-        self.children = nil
-        
-        super.init(witID: relations.id)
     }
     
     required init(from decoder: Decoder) throws {
         
         self.description = ""
         
-        self.children = nil
-        
         self.rel = Relations()
+        
+        self.children = [WitNode]()
         
         try super.init(from: decoder)
         
-        self.description = "\(self.textWitID): " + self.fields.SystemTitle + ": " + self.fields.SystemState
-        
-        if !relations.isEmpty {
+        self.description = self.fields.SystemTitle + ": " + self.fields.SystemState
             
-            self.children = [WitNode]()
+        for rel in relations { // list for relation class
             
-            for rel in relations { // list for relation class
-                
-                var bFound = false
-                
-                for child in self.children ?? [] { // check if it's a duplicate
+            var bFound = false
+            
+            for child in children ?? [] {
+                if child.witID == rel.id {
                     
-                    if child.witID == rel.id {
-                        
-                        if DEBUG_INFO { print("DUPLICATE: \(rel.id)") }
-                        
-                        bFound = true
-                        break
-                    }
-                }
-                
-                if !bFound { // do not add duplicate ids to the hierarchy
+                    if DEBUG_INFO { print("DUPLICATE: \(rel.id)") }
                     
-                    self.children?.append(WitNode(relations: rel))
+                    bFound = true
+                    
+                    break
                 }
+            }
+            
+            if !bFound { // do not add duplicate ids to the hierarchy
+                
+                self.children?.append(WitNode(relations: rel))
             }
         }
     }
+    
+    func copy(from: WitNode) {
+        
+        self.description = from.description
+        self.rel = from.rel
+        self.children = from.children
+        
+        super.copy(from: from)
+    }
+    
+    var description: String
+    var children: [WitNode]?
+    var rel: Relations
 }
 
 class Fields: Codable, Identifiable {

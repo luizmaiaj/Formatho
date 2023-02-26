@@ -17,7 +17,7 @@ struct TreeView: View {
     
     func fetch() {
         
-        self.fetcher.getWitLinks(id: witid)
+        self.fetcher.getWitLinks(id: Int(witid) ?? 0)
     }
     
     var body: some View {
@@ -55,9 +55,9 @@ struct TreeView: View {
                     .padding([.top])
 #endif
                 
-                if !fetcher.nodes.isEmpty {
+                if fetcher.root.witID != 0 {
                     List {
-                        OutlineGroup(fetcher.nodes, children: \.children) { item in
+                        OutlineGroup(fetcher.root, children: \.children) { item in
                             
                             if item.rel.rel == relation.pullRequest || item.rel.rel == relation.file {
                                 witIcon(type: item.rel.rel.rawValue)
@@ -65,6 +65,7 @@ struct TreeView: View {
                             } else {
                                 Text("\(item.rel.attributes.name) ")
                                 + witIcon(type: item.fields.SystemWorkItemType)
+                                + Text(" \(item.idLink.toRTF()): ")
                                 + Text(" \(item.description)")
                             }
                         }
