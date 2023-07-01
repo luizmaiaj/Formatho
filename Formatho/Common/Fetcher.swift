@@ -394,6 +394,8 @@ class Fetcher: ObservableObject {
             
             self.statusMessage = "Query returned no results"
             
+            self.wits.removeAll(keepingCapacity: true)
+            
             return
         }
         
