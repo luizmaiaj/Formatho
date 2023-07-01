@@ -56,6 +56,9 @@ struct TreeView: View {
 #endif
                 
                 if fetcher.root.witID != 0 {
+                    
+                    let reqURL: String = BASE_URL + fetcher.organisation + "/" + fetcher.project + "/_workitems/edit/"
+                    
                     List {
                         OutlineGroup(fetcher.root, children: \.children) { item in
                             
@@ -63,11 +66,12 @@ struct TreeView: View {
                                 witIcon(type: item.rel.rel.rawValue)
                                 + Text(" \(item.description)")
                             } else {
-                                Text("\(item.rel.attributes.name) ")
-                                + witIcon(type: item.fields.SystemWorkItemType)
-                                //+ Text(" \(item.idLink.toRTF()): ") // removed because of performance issues building the link
-                                + Text(" \(item.textWitID): ")
-                                + Text(" \(item.description)")
+                                
+                                HStack(spacing: 0.0) {
+                                    witIcon(type: item.fields.SystemWorkItemType)
+                                    Link(" \(item.textWitID): ", destination: URL(string: "\(reqURL)\(item.textWitID)")!)
+                                    Text(" \(item.description)")
+                                }
                             }
                         }
                     }
