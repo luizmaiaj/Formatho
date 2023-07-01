@@ -65,7 +65,8 @@ struct TreeView: View {
                             } else {
                                 Text("\(item.rel.attributes.name) ")
                                 + witIcon(type: item.fields.SystemWorkItemType)
-                                + Text(" \(item.idLink.toRTF()): ")
+                                //+ Text(" \(item.idLink.toRTF()): ") // removed because of performance issues building the link
+                                + Text(" \(item.textWitID): ")
                                 + Text(" \(item.description)")
                             }
                         }

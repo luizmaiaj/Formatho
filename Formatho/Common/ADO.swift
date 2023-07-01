@@ -1148,7 +1148,7 @@ class QueryNode: Codable, Identifiable, Hashable, CustomStringConvertible {
     var description: String
 }
 
-class Link: Codable {
+class ADOLink: Codable {
     
     init() {
         href = ""
@@ -1169,27 +1169,27 @@ class Link: Codable {
 class Links: Codable {
     
     init() {
-        lSelf = Link()
-        html = Link()
-        parent = Link()
-        wiql = Link()
+        lSelf = ADOLink()
+        html = ADOLink()
+        parent = ADOLink()
+        wiql = ADOLink()
     }
     
     required init(from decoder: Decoder) throws {
         
         let values = try decoder.container(keyedBy: CodingKeys.self)
         
-        do { self.lSelf = try values.decode(Link.self, forKey: .lSelf)
-        } catch { self.lSelf = Link() }
+        do { self.lSelf = try values.decode(ADOLink.self, forKey: .lSelf)
+        } catch { self.lSelf = ADOLink() }
         
-        do { self.html = try values.decode(Link.self, forKey: .html)
-        } catch { self.html = Link() }
+        do { self.html = try values.decode(ADOLink.self, forKey: .html)
+        } catch { self.html = ADOLink() }
         
-        do { self.parent = try values.decode(Link.self, forKey: .parent)
-        } catch { self.parent = Link() }
+        do { self.parent = try values.decode(ADOLink.self, forKey: .parent)
+        } catch { self.parent = ADOLink() }
         
-        do { self.wiql = try values.decode(Link.self, forKey: .wiql)
-        } catch { self.wiql = Link() }
+        do { self.wiql = try values.decode(ADOLink.self, forKey: .wiql)
+        } catch { self.wiql = ADOLink() }
     }
     
     enum CodingKeys: String, CodingKey {
@@ -1199,8 +1199,8 @@ class Links: Codable {
         case wiql = "wiql"
     }
     
-    let lSelf: Link
-    let html: Link
-    let parent: Link
-    let wiql: Link
+    let lSelf: ADOLink
+    let html: ADOLink
+    let parent: ADOLink
+    let wiql: ADOLink
 }
