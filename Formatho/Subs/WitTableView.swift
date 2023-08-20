@@ -21,6 +21,9 @@ struct WitTableView: View {
             TableColumn("Priority", value: \.fields.textPriority)
                 .width(max: 30)
             
+            TableColumn("Requestor", value: \.fields.CustomCORequestor)
+                .width(max: 50)
+            
             TableColumn("Type") { wit in
                 witIcon(type: wit.fields.SystemWorkItemType)
             }

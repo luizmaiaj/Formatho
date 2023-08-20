@@ -26,7 +26,6 @@ class IntentHandler: INExtension, ConfigurationIntentHandling {
     }
     
     /*func resolveWitID(for intent: ConfigurationIntent) async -> ConfigurationWitIDResolutionResult {
-        <#code#>
     }*/
         
     override func handler(for intent: INIntent) -> Any {
