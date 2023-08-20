@@ -103,7 +103,7 @@ struct DetailedWitView: View {
             .padding([.bottom], 10)
             
             witIcon(type: fetcher.wit.fields.SystemWorkItemType)
-            + Text("\(fetcher.wit.fields.textPriority) \(fetcher.wit.fields.SystemTitle) \(fetcher.wit.projectLink.toRTF())")
+            + Text("\(fetcher.wit.fields.textPriority) \(fetcher.wit.fields.CustomCORequestor) x\(fetcher.wit.fields.SystemTitle) \(fetcher.wit.projectLink.toRTF())")
             + Text(": \(fetcher.wit.fields.CustomReport.toRTF())")
             
             ReportDateView(updates: fetcher.copy(), witid: fetcher.wit.witID, onlyDate: false)

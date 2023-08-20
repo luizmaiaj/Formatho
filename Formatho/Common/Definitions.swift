@@ -48,6 +48,7 @@ enum workItemType: String {
     case attachedFile = "AttachedFile"
     case pullRequest = "ArtifactLink"
     case related = "Related"
+    case script = "Script"
 }
 
 enum Tab: Int {

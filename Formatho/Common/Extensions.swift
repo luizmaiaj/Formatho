@@ -77,6 +77,9 @@ func witIcon(type: String) -> Text {
         
     case workItemType.related.rawValue:
         return Text(Image(systemName: "arrowtriangle.left.and.line.vertical.and.arrowtriangle.right.fill"))
+        
+    case workItemType.script.rawValue:
+        return Text(Image(systemName: "gearshape.fill")).foregroundColor(.green)
 
     default:
         return Text(Image(systemName: "questionmark.square.dashed")).foregroundColor(.red)
