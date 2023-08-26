@@ -50,10 +50,10 @@ struct TreeView: View {
                             fetch()
                         })
                     }
-                }
 #if os(iOS)
                     .padding([.top])
 #endif
+                }
                 
                 if fetcher.root.witID != 0 {
                     

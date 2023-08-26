@@ -13,10 +13,11 @@ struct ContentView: View {
     @AppStorage("email", store: UserDefaults(suiteName: APP_GROUP)) var email: String = String()
     @AppStorage("pat", store: UserDefaults(suiteName: APP_GROUP)) var pat: String = String()
     @AppStorage("project", store: UserDefaults(suiteName: APP_GROUP)) var project: String = String()
-
+    
     @StateObject var fetcher: Fetcher = Fetcher()
     
     @State private var selection: Tab = Tab.wit
+    @State var queryID: String = ""
     
     func getW() -> CGFloat { // WIDTH
         switch selection {
@@ -38,82 +39,55 @@ struct ContentView: View {
     
     var body: some View {
         
-        VStack {
+        //            if (organisation.isEmpty || pat.isEmpty || email.isEmpty || project.isEmpty) && selection != Tab.login {
+        //
+        //                Text("Please configure login")
+        //
+        //                Button {
+        //                    selection = Tab.login
+        //
+        //                } label: {
+        //
+        //                    HStack {
+        //
+        //                        Text("Login details")
+        //
+        //                        Image(systemName: "person.circle")
+        //                            .font(.title2)
+        //                    }
+        //                }
+        
+        NavigationSplitView {
             
-            if (organisation.isEmpty || pat.isEmpty || email.isEmpty || project.isEmpty) && selection != Tab.login {
+            SideBarView(selection: $selection)
+            
+        } detail: {
+            
+            switch selection {
                 
-                Text("Please configure login")
-                
-                Button {
-                    selection = Tab.login
-                    
-                } label: {
-                    
-                    HStack {
-                        
-                        Text("Login details")
-                        
-                        Image(systemName: "person.circle")
-                            .font(.title2)
-                    }
-                }
-                
-            } else {
-                
-                TabView(selection: $selection) {
-                    
-                    LoginView(fetcher: fetcher)
-                        .tabItem {
-                            Text("Login")
-                        }
-                        .tag(Tab.login)
-                    
-                    WitView(fetcher: fetcher)
-                        .tabItem {
-                            Text("WIT")
-                        }
-                        .tag(Tab.wit)
-                    
-                    ActivityView(fetcher: fetcher)
-                        .tabItem {
-                            Text("Activity")
-                        }
-                        .tag(Tab.recent)
-                    
-                    QueryView(fetcher: fetcher)
-                        .tabItem {
-                            Text("Query")
-                        }
-                        .tag(Tab.query)
-                    
-                    if #available(macOS 13.0, *) {
-                        GraphView(fetcher: fetcher)
-                            .tabItem {
-                                Text("Graph")
-                            }
-                            .tag(Tab.graph)
-                    }
-                    
-                    ListView(fetcher: fetcher)
-                        .tabItem {
-                            Text("List")
-                        }
-                        .tag(Tab.list)
-                    
-                    TreeView(fetcher: fetcher)
-                        .tabItem {
-                            Text("Tree")
-                        }
-                        .tag(Tab.tree)
-                }
+            case .login:
+                LoginView(fetcher: fetcher)
+            case .wit:
+                WitView(fetcher: fetcher)
+            case .recent:
+                ActivityView(fetcher: fetcher)
+            case .query:
+                QueryView(fetcher: fetcher)
+            case .graph:
+                GraphView(fetcher: fetcher)
+            case .tree:
+                TreeView(fetcher: fetcher)
+            case .list:
+                ListView(fetcher: fetcher)
             }
-            Text(self.fetcher.statusMessage ?? "") // only on macOS
+            
+            //Text(self.fetcher.statusMessage ?? "") // only on macOS
         }
-        .frame(minWidth: getW(), minHeight: getH())
         .onAppear() {
             
             self.fetcher.initialise(org: organisation, email: email, pat: pat, project: project)
         }
+
     }
 }
 
