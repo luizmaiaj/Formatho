@@ -17,46 +17,9 @@ struct ContentView: View {
     @StateObject var fetcher: Fetcher = Fetcher()
     
     @State private var selection: Tab = Tab.wit
-    @State var queryID: String = ""
-    
-    func getW() -> CGFloat { // WIDTH
-        switch selection {
-        case Tab.wit:
-            return 250
-        default:
-            return 400
-        }
-    }
-    
-    func getH() -> CGFloat { // HEIGHT
-        switch selection {
-        case Tab.wit:
-            return 65
-        default:
-            return 250
-        }
-    }
     
     var body: some View {
-        
-        //            if (organisation.isEmpty || pat.isEmpty || email.isEmpty || project.isEmpty) && selection != Tab.login {
-        //
-        //                Text("Please configure login")
-        //
-        //                Button {
-        //                    selection = Tab.login
-        //
-        //                } label: {
-        //
-        //                    HStack {
-        //
-        //                        Text("Login details")
-        //
-        //                        Image(systemName: "person.circle")
-        //                            .font(.title2)
-        //                    }
-        //                }
-        
+                
         NavigationSplitView {
             
             SideBarView(selection: $selection)
