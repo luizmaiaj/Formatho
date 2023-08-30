@@ -14,7 +14,7 @@ struct SideBarView: View {
     @AppStorage("pat", store: UserDefaults(suiteName: APP_GROUP)) var pat: String = String()
     @AppStorage("project", store: UserDefaults(suiteName: APP_GROUP)) var project: String = String()
     
-    @Binding var selection: Tab
+    @Binding var selection: Tab?
     
     var body: some View {
         

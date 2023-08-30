@@ -21,16 +21,10 @@ struct GraphView: View {
                 
             } else {
                 
-                if #available(macOS 13.0, *) {
+                Chart(fetcher.wits) {
                     
-                    Chart(fetcher.wits) {
-                        
-                        BarMark(x: .value("priority", $0.fields.textPriority),
-                                y: .value("count", 1))
-                    }
-                } else {
-                    
-                    Text("Only available on macOS 13")
+                    BarMark(x: .value("priority", $0.fields.textPriority),
+                            y: .value("count", 1))
                 }
             }
         }

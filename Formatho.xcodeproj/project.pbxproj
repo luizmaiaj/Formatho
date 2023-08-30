@@ -17,7 +17,6 @@
 		BB01CE5A294B460900B5482E /* Definitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7D8CE28F7C44500CD9A16 /* Definitions.swift */; };
 		BB01CE5B294B460E00B5482E /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC3A61A28D564D600143EA4 /* APIError.swift */; };
 		BB01CE5C294B460E00B5482E /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC3A61828D5645800143EA4 /* APIService.swift */; };
-		BB01CE5D294B461200B5482E /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7D8D028F7C75700CD9A16 /* Extensions.swift */; };
 		BB01CE5E294B461500B5482E /* Fetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1EA0A928D615E800644D5F /* Fetcher.swift */; };
 		BB01CE5F294B461800B5482E /* ADO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1EA0AB28D6362300644D5F /* ADO.swift */; };
 		BB2919D229122F0F00CD9A79 /* WitTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2919D129122F0F00CD9A79 /* WitTab.swift */; };
@@ -60,6 +59,7 @@
 		EE9A4FCF28DF721D006BEC27 /* WitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9A4FCE28DF721D006BEC27 /* WitView.swift */; };
 		EE9A4FD128DF768F006BEC27 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9A4FD028DF768F006BEC27 /* ActivityView.swift */; };
 		EE9A4FD328DF775B006BEC27 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9A4FD228DF775B006BEC27 /* LoginView.swift */; };
+		EE9E12B02A9DF1A80087D172 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7D8D028F7C75700CD9A16 /* Extensions.swift */; };
 		EEB340E0295E9A7C008F6D96 /* FetchingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEB340DF295E9A7C008F6D96 /* FetchingView.swift */; };
 		EEB340E1295E9A7C008F6D96 /* FetchingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEB340DF295E9A7C008F6D96 /* FetchingView.swift */; };
 		EEEC8E152A92F0B600048613 /* ReportDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8ABC722992905900577B66 /* ReportDateView.swift */; };
@@ -85,7 +85,7 @@
 /* Begin PBXCopyFilesBuildPhase section */
 		BB99F3702945C5FC00959611 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
@@ -93,7 +93,7 @@
 				BB01CE56294B438F00B5482E /* macWidget.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -492,7 +492,7 @@
 				BB01CE5F294B461800B5482E /* ADO.swift in Sources */,
 				BB01CE5E294B461500B5482E /* Fetcher.swift in Sources */,
 				BB01CE52294B438F00B5482E /* macWidget.intentdefinition in Sources */,
-				BB01CE5D294B461200B5482E /* Extensions.swift in Sources */,
+				EE9E12B02A9DF1A80087D172 /* Extensions.swift in Sources */,
 				BB01CE5C294B460E00B5482E /* APIService.swift in Sources */,
 				BB01CE5B294B460E00B5482E /* APIError.swift in Sources */,
 				BB01CE5A294B460900B5482E /* Definitions.swift in Sources */,
@@ -603,8 +603,11 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -636,8 +639,11 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -795,11 +801,12 @@
 				PRODUCT_BUNDLE_IDENTIFIER = io.red8.Formatho;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -842,11 +849,12 @@
 				PRODUCT_BUNDLE_IDENTIFIER = io.red8.Formatho;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
-				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -951,8 +959,11 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -982,8 +993,11 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

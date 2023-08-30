@@ -107,9 +107,10 @@ struct LoginView: View {
             fetcher.setProject(project: project)
         }
 #if !os(OSX)
-        .onTapGesture {
-            hideKeyboard()
-        }
+        .scrollDismissesKeyboard(.interactively)
+//        .onTapGesture {
+//            hideKeyboard()
+//        }
 #endif
     }
 }
@@ -134,12 +135,8 @@ struct LoginDetails: View {
             
             LoginField(name: "email", value: $email)
             
-            if #available(macOS 13.0, *) {
-                LoginField(name: "PAT", value: $pat)
-                    .lineLimit(2...5)
-            } else {
-                LoginField(name: "PAT", value: $pat)
-            }
+            LoginField(name: "PAT", value: $pat)
+                .lineLimit(2...5)
         }
 #if os(OSX)
         .frame(maxWidth: 300)

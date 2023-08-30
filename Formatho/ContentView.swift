@@ -16,7 +16,7 @@ struct ContentView: View {
     
     @StateObject var fetcher: Fetcher = Fetcher()
     
-    @State private var selection: Tab = Tab.wit
+    @State private var selection: Tab? = Tab.wit
     
     var body: some View {
                 
@@ -28,8 +28,6 @@ struct ContentView: View {
             
             switch selection {
                 
-            case .login:
-                LoginView(fetcher: fetcher)
             case .wit:
                 WitView(fetcher: fetcher)
             case .recent:
@@ -42,6 +40,8 @@ struct ContentView: View {
                 TreeView(fetcher: fetcher)
             case .list:
                 ListView(fetcher: fetcher)
+            case .login, .none:
+                LoginView(fetcher: fetcher)
             }
             
             //Text(self.fetcher.statusMessage ?? "") // only on macOS
