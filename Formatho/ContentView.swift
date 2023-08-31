@@ -14,17 +14,26 @@ struct ContentView: View {
     @AppStorage("pat", store: UserDefaults(suiteName: APP_GROUP)) var pat: String = String()
     @AppStorage("project", store: UserDefaults(suiteName: APP_GROUP)) var project: String = String()
     
+    @AppStorage("copyToCB") private var copyToCB: Bool = false
+    @AppStorage("includeReport") private var includeReport: Bool = false
+    
     @StateObject var fetcher: Fetcher = Fetcher()
+    @StateObject var queriesFetcher: Fetcher = Fetcher()
     
     @State private var selection: Tab? = Tab.wit
+    @State private var queryID: String = ""
+    
+    private func fetch() {
+        self.fetcher.query(queryid: queryID, cb: copyToCB, addReport: includeReport)
+    }
     
     var body: some View {
                 
         NavigationSplitView {
             
-            SideBarView(selection: $selection)
+            SideBarView(selection: $selection, queriesFetcher: queriesFetcher)
             
-        } detail: {
+        } content: {
             
             switch selection {
                 
@@ -33,7 +42,7 @@ struct ContentView: View {
             case .recent:
                 ActivityView(fetcher: fetcher)
             case .query:
-                QueryView(fetcher: fetcher)
+                QueryHierarchyView(queriesFetcher: queriesFetcher, queryid: $queryID, copyToCB: $copyToCB, includeReport: $includeReport)
             case .graph:
                 GraphView(fetcher: fetcher)
             case .tree:
@@ -45,10 +54,46 @@ struct ContentView: View {
             }
             
             //Text(self.fetcher.statusMessage ?? "") // only on macOS
+        } detail: {
+            switch selection {
+            case .login:
+                Text("Testing")
+            case .wit:
+                Text("Testing")
+            case .recent:
+                Text("Testing")
+            case .query:
+                if queryID != "" && !fetcher.wits.isEmpty {
+                    
+                    WitTableView(wits: self.fetcher.wits, fetcher: fetcher)
+                    
+                } else {
+                    Text("Please select a query")
+                }
+            case .graph:
+                Text("Testing")
+            case .tree:
+                Text("Testing")
+            case .list:
+                Text("Testing")
+            case nil:
+                Text("Testing")
+            }
         }
         .onAppear() {
             
             self.fetcher.initialise(org: organisation, email: email, pat: pat, project: project)
+            
+            if self.queriesFetcher.queries.isEmpty {
+                
+                self.queriesFetcher.initialise(org: organisation, email: email, pat: pat, project: project)
+                
+                self.queriesFetcher.getQueries()
+            }
+        }
+        .onChange(of: queryID) { newValue in
+            
+            fetch()
         }
 
     }

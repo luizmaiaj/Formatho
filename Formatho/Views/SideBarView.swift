@@ -16,6 +16,8 @@ struct SideBarView: View {
     
     @Binding var selection: Tab?
     
+    @ObservedObject var queriesFetcher: Fetcher
+    
     var body: some View {
         
         List(selection: $selection) {
@@ -50,7 +52,7 @@ struct SideBarView: View {
         }
         .safeAreaInset(edge: .bottom) {
             Button {
-                // refresh queries
+                queriesFetcher.getQueries() // update the list of queries
             } label: {
                 Label("Refresh Queries", systemImage: "arrow.clockwise")
             }

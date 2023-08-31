@@ -31,8 +31,8 @@ struct QueryView: View {
             
             HStack {
                 
-                QueryHierarchyView(queriesFetcher: fetcher.copy(), queryid: $queryID)
-                    .frame(width: queryWidth, height: g.size.height)
+                //QueryHierarchyView(queriesFetcher: fetcher.copy(), queryid: $queryID)
+                    //.frame(width: queryWidth, height: g.size.height)
 
                 Divider()
                     .fixedSize(horizontal: false, vertical: false)
@@ -110,29 +110,28 @@ struct QueryView: View {
 
 struct QueryHierarchyView: View {
     
-    @StateObject var queriesFetcher: Fetcher
-    
+    @ObservedObject var queriesFetcher: Fetcher
+
     @Binding var queryid: String
-    
-    private func fetch() {
-        self.queriesFetcher.getQueries()
-    }
+    @Binding var copyToCB: Bool
+    @Binding var includeReport: Bool
     
     var body: some View {
         
-        if queriesFetcher.isLoading {
-            
-            FetchingView()
-            
-        } else {
-            
-            VStack {
-                Button("Refresh queries' list", action: {
-                    fetch()
-                })
+        Group {
+            if queriesFetcher.isLoading {
                 
-                HStack {
-                    
+                FetchingView()
+                
+            } else {
+                
+                VStack {
+                    HStack {
+                        Toggle("copy to clipboard", isOn: $copyToCB)
+                        
+                        Toggle("include report", isOn: $includeReport)
+                    }
+
                     List {
                         OutlineGroup(queriesFetcher.queries, children: \.children) { item in
                             
@@ -147,16 +146,10 @@ struct QueryHierarchyView: View {
                             }
                         }
                     }
-                    .onAppear() {
-                        
-                        // if empty query if not empty user has to refresh
-                        if queriesFetcher.queries.isEmpty {
-                            fetch()
-                        }
-                    }
                 }
             }
         }
+        .navigationTitle("Queries")
     }
 }
 
