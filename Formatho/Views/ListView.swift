@@ -107,6 +107,7 @@ struct ListView: View {
             Text(self.fetcher.statusMessage ?? "") // only on iOS
 #endif
         }
+        .navigationTitle("List")
     }
 }
 

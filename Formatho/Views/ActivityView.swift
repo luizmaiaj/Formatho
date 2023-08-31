@@ -77,5 +77,6 @@ struct ActivityTable: View {
             
             activities.sort(using: $0)
         }
+        .navigationTitle("Activity")
     }
 }

@@ -13,5 +13,14 @@ struct FormathoApp: App {
         WindowGroup {
             ContentView()
         }
+        // Menu focus
+//        .commands {
+//            CommandMenu("Command") {
+//                Button("Refresh Queries") {
+//                    
+//                }
+//                .keyboardShortcut(KeyEquivalent("r"), modifiers: .command)
+//            }
+//        }
     }
 }

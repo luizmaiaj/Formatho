@@ -81,6 +81,7 @@ struct TreeView: View {
             Text(self.fetcher.statusMessage ?? "") // only on iOS
 #endif
         }
+        .navigationTitle("Tree")
     }
 }
 

@@ -103,6 +103,7 @@ struct QueryView: View {
                     fetch()
                 }
             }
+            .navigationTitle("Queries")
         }
     }
 }

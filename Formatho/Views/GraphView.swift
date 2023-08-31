@@ -29,6 +29,7 @@ struct GraphView: View {
             }
         }
         .frame(minHeight: 30)
+        .navigationTitle("Graph")
     }
 }
 

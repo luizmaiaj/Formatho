@@ -48,6 +48,18 @@ struct SideBarView: View {
                     .tag(Tab.login)
             }
         }
+        .safeAreaInset(edge: .bottom) {
+            Button {
+                // refresh queries
+            } label: {
+                Label("Refresh Queries", systemImage: "arrow.clockwise")
+            }
+            .buttonStyle(.borderless)
+            .foregroundColor(.accentColor)
+            .padding()
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .keyboardShortcut(KeyEquivalent("r"), modifiers: .command)
+        }
     }
 }
 
