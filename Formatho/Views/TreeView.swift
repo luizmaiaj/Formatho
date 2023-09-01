@@ -24,7 +24,7 @@ struct TreeView: View {
         VStack {
             VStack {
                 
-                if self.fetcher.isLoading {
+                if self.fetcher.isFetchingWIT {
                     
                     FetchingView()
                     

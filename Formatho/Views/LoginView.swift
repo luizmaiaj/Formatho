@@ -35,7 +35,7 @@ struct LoginView: View {
         
         VStack {
             
-            if fetcher.isLoading {
+            if fetcher.isFetchingWIT {
     
                 FetchingView()
                 

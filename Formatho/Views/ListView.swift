@@ -39,7 +39,7 @@ struct ListView: View {
     var body: some View {
         VStack {
             
-            if fetcher.isLoading {
+            if fetcher.isFetchingWIT {
                 
                 FetchingView()
                 

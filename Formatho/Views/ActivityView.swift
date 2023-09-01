@@ -21,7 +21,7 @@ struct ActivityView: View {
         
         VStack {
             
-            if fetcher.isLoading {
+            if fetcher.isFetchingActivity {
                 
                 FetchingView()
                 

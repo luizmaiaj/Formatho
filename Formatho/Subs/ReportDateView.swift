@@ -37,7 +37,7 @@ struct ReportDateView: View {
     var body: some View {
         
         HStack {
-            if updates.isLoading {
+            if updates.isFetchingWIT {
                 
                 if onlyDate {
                     

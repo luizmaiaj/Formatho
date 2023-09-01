@@ -62,7 +62,7 @@ struct QueryView: View {
                 
                 VStack {
                     
-                    if fetcher.isLoading {
+                    if fetcher.isFetchingWIT {
                         
                         HStack {
                             FetchingView()
@@ -119,7 +119,7 @@ struct QueryHierarchyView: View {
     var body: some View {
         
         Group {
-            if queriesFetcher.isLoading {
+            if queriesFetcher.isFetchingWIT {
                 
                 FetchingView()
                 

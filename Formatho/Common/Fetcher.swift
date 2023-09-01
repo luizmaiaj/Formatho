@@ -30,7 +30,8 @@ class Fetcher: ObservableObject {
     @Published var query: Query = Query()                   // for the list of wits on a query
     @Published var queries: [QueryNode] = [QueryNode]()     // to store the list of queries in a hierarchy
     
-    @Published var isLoading: Bool = false                  // if waiting for the requested data
+    @Published var isFetchingWIT: Bool = false                  // if waiting for the requested data
+    @Published var isFetchingActivity: Bool = false                  // if waiting for the requested data
     @Published var statusMessage: String? = nil              // error message to be displayed on the interface
     @Published var formattedWIT: AttributedString = AttributedString() // to manage the string that is copied to the clipboard
     
@@ -114,7 +115,7 @@ class Fetcher: ObservableObject {
         
         buildHeader() // maybe this is not necessary ***
         
-        self.isLoading = true
+        self.isFetchingWIT = true
         self.statusMessage = nil
         
         self.projects.removeAll()
@@ -128,7 +129,7 @@ class Fetcher: ObservableObject {
             
             DispatchQueue.main.async {
                 
-                self.isLoading = false
+                self.isFetchingWIT = false
                 
                 switch result {
                 case .failure(let error):
@@ -160,7 +161,7 @@ class Fetcher: ObservableObject {
     // to get the list of queries accessible to the user
     func getQueries() {
         
-        self.isLoading = true
+        self.isFetchingWIT = true
         self.statusMessage = nil
         
         let prjBaseUrl: String = BASE_URL + self.organisation + "/" + self.project + "/_apis/wit/queries?$depth=1"
@@ -171,7 +172,7 @@ class Fetcher: ObservableObject {
             
             DispatchQueue.main.async {
                 
-                self.isLoading = false
+                self.isFetchingWIT = false
                 
                 switch result {
                 case .failure(let error):
@@ -217,7 +218,7 @@ class Fetcher: ObservableObject {
     
     func getSubQueries(queryID: String, completion: @escaping (QueryNode) -> Void) {
         
-        self.isLoading = true
+        self.isFetchingWIT = true
         
         let prjBaseUrl: String = BASE_URL + self.organisation + "/" + self.project + "/_apis/wit/queries/" + queryID + "?$depth=1"
         
@@ -235,7 +236,7 @@ class Fetcher: ObservableObject {
                     
                     self.statusMessage = error.localizedDescription
                     
-                    self.isLoading = false  // under test
+                    self.isFetchingWIT = false  // under test
                     
                     completion(QueryNode())
                     
@@ -263,7 +264,7 @@ class Fetcher: ObservableObject {
                         }
                     }
                     
-                    self.isLoading = false // under test
+                    self.isFetchingWIT = false // under test
                     
                     completion(info)
                 }
@@ -274,7 +275,7 @@ class Fetcher: ObservableObject {
     // to get the list of the most recent wits that the user has worked on (limited to 200)
     func getActivities() {
         
-        self.isLoading = true
+        self.isFetchingActivity = true
         self.statusMessage = nil
         
         let prjBaseUrl: String = BASE_URL + self.organisation + "/_apis/work/accountmyworkrecentactivity"
@@ -285,7 +286,7 @@ class Fetcher: ObservableObject {
             
             DispatchQueue.main.async {
                 
-                self.isLoading = false
+                self.isFetchingActivity = false
                 
                 switch result {
                 case .failure(let error):
@@ -399,7 +400,7 @@ class Fetcher: ObservableObject {
             return
         }
         
-        self.isLoading = true
+        self.isFetchingWIT = true
         self.statusMessage = nil
         
         self.wits.removeAll()
@@ -435,7 +436,7 @@ class Fetcher: ObservableObject {
                 
                 DispatchQueue.main.async {
                     
-                    self.isLoading = false
+                    self.isFetchingWIT = false
                     
                     switch result {
                     case .failure(let error):
@@ -474,7 +475,7 @@ class Fetcher: ObservableObject {
     // use a query id to get the list of wit ids and then use the wits fectcher function to get information for each wit
     func query(queryid: String, cb: Bool, addReport: Bool) {
         
-        self.isLoading = true
+        self.isFetchingWIT = true
         self.statusMessage = nil
         
         let prjBaseUrl: String = BASE_URL + self.organisation + "/_apis/wit/wiql?id=" + queryid
@@ -485,7 +486,7 @@ class Fetcher: ObservableObject {
             
             DispatchQueue.main.async {
                 
-                self.isLoading = false
+                self.isFetchingWIT = false
                 
                 switch result {
                 case .failure(let error):
@@ -518,14 +519,14 @@ class Fetcher: ObservableObject {
     
     func getWitLinks(id: Int) {
         
-        self.isLoading = true
+        self.isFetchingWIT = true
         self.statusMessage = nil
         
         self.fetched.removeAll()
         
         self.root = WitNode(witID: id)
         
-        self.isLoading = true
+        self.isFetchingWIT = true
         self.statusMessage = nil
         
         self.getWitLinks(node: self.root)
@@ -545,7 +546,7 @@ class Fetcher: ObservableObject {
             
             DispatchQueue.main.async {
                 
-                self.isLoading = false
+                self.isFetchingWIT = false
                 
                 switch result {
                     
@@ -587,7 +588,7 @@ class Fetcher: ObservableObject {
     
     func getUpdates(id: Int, completion: @escaping () -> Void) {
         
-        self.isLoading = true
+        self.isFetchingWIT = true
         self.statusMessage = nil
         
         //GET https://dev.azure.com/{organization}/{project}/_apis/wit/workItems/{id}/updates?api-version=7.0
@@ -599,7 +600,7 @@ class Fetcher: ObservableObject {
             
             DispatchQueue.main.async {
                 
-                self.isLoading = false
+                self.isFetchingWIT = false
                 
                 switch result {
                 case .failure(let error):
