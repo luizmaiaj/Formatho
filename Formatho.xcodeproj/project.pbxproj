@@ -50,12 +50,12 @@
 		BBF7D8CF28F7C44500CD9A16 /* Definitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7D8CE28F7C44500CD9A16 /* Definitions.swift */; };
 		BBF7D8D128F7C75700CD9A16 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7D8D028F7C75700CD9A16 /* Extensions.swift */; };
 		EE00AE5428E71B0B00500331 /* GraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE00AE5328E71B0B00500331 /* GraphView.swift */; };
+		EE1BC40F2AA19528009D52F7 /* WITDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1BC40E2AA19528009D52F7 /* WITDetailView.swift */; };
 		EE1EA0AA28D615E800644D5F /* Fetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1EA0A928D615E800644D5F /* Fetcher.swift */; };
 		EE1EA0AC28D6362300644D5F /* ADO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1EA0AB28D6362300644D5F /* ADO.swift */; };
 		EE61CB2F297ABA5F00FDD861 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE61CB2E297ABA5F00FDD861 /* ActivityView.swift */; };
 		EE6FFE3C299723E80056BEF8 /* WitTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6FFE3B299723E80056BEF8 /* WitTableView.swift */; };
 		EE77EAE22A99B1A1001BD97C /* SideBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE77EAE12A99B1A1001BD97C /* SideBarView.swift */; };
-		EE77EAE42A99B25E001BD97C /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE77EAE32A99B25E001BD97C /* DetailView.swift */; };
 		EE9A4FCF28DF721D006BEC27 /* WitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9A4FCE28DF721D006BEC27 /* WitView.swift */; };
 		EE9A4FD128DF768F006BEC27 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9A4FD028DF768F006BEC27 /* ActivityView.swift */; };
 		EE9A4FD328DF775B006BEC27 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9A4FD228DF775B006BEC27 /* LoginView.swift */; };
@@ -133,13 +133,13 @@
 		BBF7D8CE28F7C44500CD9A16 /* Definitions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Definitions.swift; sourceTree = "<group>"; };
 		BBF7D8D028F7C75700CD9A16 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		EE00AE5328E71B0B00500331 /* GraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphView.swift; sourceTree = "<group>"; };
+		EE1BC40E2AA19528009D52F7 /* WITDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WITDetailView.swift; sourceTree = "<group>"; };
 		EE1EA0A928D615E800644D5F /* Fetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fetcher.swift; sourceTree = "<group>"; };
 		EE1EA0AB28D6362300644D5F /* ADO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ADO.swift; sourceTree = "<group>"; };
 		EE32BE5128DA2169009EBC6F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		EE61CB2E297ABA5F00FDD861 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		EE6FFE3B299723E80056BEF8 /* WitTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WitTableView.swift; sourceTree = "<group>"; };
 		EE77EAE12A99B1A1001BD97C /* SideBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarView.swift; sourceTree = "<group>"; };
-		EE77EAE32A99B25E001BD97C /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		EE9A4FCE28DF721D006BEC27 /* WitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WitView.swift; sourceTree = "<group>"; };
 		EE9A4FD028DF768F006BEC27 /* ActivityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityView.swift; sourceTree = "<group>"; };
 		EE9A4FD228DF775B006BEC27 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -205,7 +205,6 @@
 				BBC8B2EF293DB721007C898E /* ListView.swift */,
 				EEB340DF295E9A7C008F6D96 /* FetchingView.swift */,
 				EE77EAE12A99B1A1001BD97C /* SideBarView.swift */,
-				EE77EAE32A99B25E001BD97C /* DetailView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -244,6 +243,7 @@
 		BB5C368728CE2BBA00A973E4 /* Formatho */ = {
 			isa = PBXGroup;
 			children = (
+				EE1BC40D2AA194FC009D52F7 /* DetailViews */,
 				BB2919D029122E9000CD9A79 /* Tabs */,
 				BB2919CF29122E8500CD9A79 /* Views */,
 				BB8ABC712992902C00577B66 /* Subs */,
@@ -327,6 +327,14 @@
 				BBE8129729504BD400811F80 /* formathoIntent.entitlements */,
 			);
 			path = formathoIntent;
+			sourceTree = "<group>";
+		};
+		EE1BC40D2AA194FC009D52F7 /* DetailViews */ = {
+			isa = PBXGroup;
+			children = (
+				EE1BC40E2AA19528009D52F7 /* WITDetailView.swift */,
+			);
+			path = DetailViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -509,7 +517,6 @@
 				BB5C368B28CE2BBA00A973E4 /* ContentView.swift in Sources */,
 				BB66E26428E5215F004F731D /* QueryView.swift in Sources */,
 				BBC3A61B28D564D600143EA4 /* APIError.swift in Sources */,
-				EE77EAE42A99B25E001BD97C /* DetailView.swift in Sources */,
 				EE00AE5428E71B0B00500331 /* GraphView.swift in Sources */,
 				BBC3A61928D5645800143EA4 /* APIService.swift in Sources */,
 				BB2919D229122F0F00CD9A79 /* WitTab.swift in Sources */,
@@ -523,6 +530,7 @@
 				EE9A4FD128DF768F006BEC27 /* ActivityView.swift in Sources */,
 				EE9A4FD328DF775B006BEC27 /* LoginView.swift in Sources */,
 				EE6FFE3C299723E80056BEF8 /* WitTableView.swift in Sources */,
+				EE1BC40F2AA19528009D52F7 /* WITDetailView.swift in Sources */,
 				BB8ABC732992905900577B66 /* ReportDateView.swift in Sources */,
 				EE9A4FCF28DF721D006BEC27 /* WitView.swift in Sources */,
 				BB79FCEF28EFE92800F12473 /* TreeView.swift in Sources */,

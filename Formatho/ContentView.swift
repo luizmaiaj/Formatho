@@ -22,6 +22,7 @@ struct ContentView: View {
     
     @State private var selection: Tab? = Tab.wit
     @State private var queryID: String = ""
+    @State private var selectedWIT: Activity.ID?
     
     private func fetch() {
         self.fetcher.query(queryid: queryID, cb: copyToCB, addReport: includeReport)
@@ -40,7 +41,7 @@ struct ContentView: View {
             case .wit:
                 WitView(fetcher: fetcher)
             case .recent:
-                ActivityView(fetcher: fetcher)
+                ActivityView(fetcher: fetcher, selectedWIT: $selectedWIT)
             case .query:
                 QueryHierarchyView(queriesFetcher: queriesFetcher, queryid: $queryID, copyToCB: $copyToCB, includeReport: $includeReport)
             case .graph:
@@ -59,9 +60,14 @@ struct ContentView: View {
             case .login:
                 Text("Testing")
             case .wit:
-                Text("Testing")
+                if !fetcher.wits.isEmpty {
+                    
+                    WITDetailView(wit: $fetcher.wit, fetcher: fetcher)
+                }
             case .recent:
-                Text("Testing")
+                if !fetcher.wits.isEmpty {
+                    WITDetailView(wit: $fetcher.wit, fetcher: fetcher)
+                }
             case .query:
                 if queryID != "" && !fetcher.wits.isEmpty {
                     
@@ -95,7 +101,17 @@ struct ContentView: View {
             
             fetch()
         }
-
+        .onChange(of: selectedWIT) { newValue in
+            
+            guard let selectedEntry = fetcher.activities.first(where: { entry in
+                entry.id == newValue
+            }) else {
+                return
+            }
+            
+            // now search for the WIT to display
+            fetcher.getWit(witid: String(selectedEntry.activityID))
+        }
     }
 }
 

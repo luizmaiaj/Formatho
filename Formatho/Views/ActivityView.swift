@@ -11,6 +11,8 @@ struct ActivityView: View {
     
     @ObservedObject var fetcher: Fetcher
     
+    @Binding var selectedWIT: Activity.ID?
+    
     private func fetchActivities() {
         fetcher.getActivities()
     }
@@ -25,11 +27,11 @@ struct ActivityView: View {
                 
             } else {
                 
-                Button("Refresh activities", action: {
-                    fetchActivities()
-                })
+//                Button("Refresh activities", action: {
+//                    fetchActivities()
+//                })
                 
-                ActivityTable(activities: fetcher.activities)
+                ActivityTable(activities: fetcher.activities, selectedWIT: $selectedWIT)
             }
         }
         .onAppear() {
@@ -40,11 +42,11 @@ struct ActivityView: View {
     }
 }
 
-struct RecentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ActivityView(fetcher: Fetcher())
-    }
-}
+//struct RecentView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ActivityView(fetcher: Fetcher())
+//    }
+//}
 
 struct ActivityTable: View {
     
@@ -52,9 +54,12 @@ struct ActivityTable: View {
     
     @State private var sortOrder = [KeyPathComparator(\Activity.id)]
     
+    @Binding var selectedWIT: Activity.ID?
+    
     var body: some View {
         
-        Table(activities, sortOrder: $sortOrder) {
+        Table(activities, selection: $selectedWIT, sortOrder: $sortOrder) {
+            
             TableColumn("Activity", value: \.activityType.capitalized)
                 .width(max: 50)
             
