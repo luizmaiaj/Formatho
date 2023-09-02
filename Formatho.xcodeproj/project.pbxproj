@@ -27,19 +27,6 @@
 		BB66E26428E5215F004F731D /* QueryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB66E26328E5215F004F731D /* QueryView.swift */; };
 		BB79FCEF28EFE92800F12473 /* TreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB79FCEE28EFE92800F12473 /* TreeView.swift */; };
 		BB8ABC732992905900577B66 /* ReportDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8ABC722992905900577B66 /* ReportDateView.swift */; };
-		BB99F3812945C83200959611 /* formathoPhoneApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB99F3802945C83200959611 /* formathoPhoneApp.swift */; };
-		BB99F3832945C83200959611 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB99F3822945C83200959611 /* ContentView.swift */; };
-		BB99F3852945C83300959611 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB99F3842945C83300959611 /* Assets.xcassets */; };
-		BB99F3882945C83300959611 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB99F3872945C83300959611 /* Preview Assets.xcassets */; };
-		BB99F38C2945C8C400959611 /* ADO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1EA0AB28D6362300644D5F /* ADO.swift */; };
-		BB99F38D2945C8C400959611 /* Definitions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7D8CE28F7C44500CD9A16 /* Definitions.swift */; };
-		BB99F38E2945C8C400959611 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7D8D028F7C75700CD9A16 /* Extensions.swift */; };
-		BB99F38F2945C8C400959611 /* Fetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1EA0A928D615E800644D5F /* Fetcher.swift */; };
-		BB99F3902945C8C400959611 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC3A61828D5645800143EA4 /* APIService.swift */; };
-		BB99F3912945C8C400959611 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC3A61A28D564D600143EA4 /* APIError.swift */; };
-		BB99F3922945C90200959611 /* WitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9A4FCE28DF721D006BEC27 /* WitView.swift */; };
-		BB99F3932945C90200959611 /* TreeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB79FCEE28EFE92800F12473 /* TreeView.swift */; };
-		BB99F3942945C90200959611 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9A4FD228DF775B006BEC27 /* LoginView.swift */; };
 		BBC3A61928D5645800143EA4 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC3A61828D5645800143EA4 /* APIService.swift */; };
 		BBC3A61B28D564D600143EA4 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC3A61A28D564D600143EA4 /* APIError.swift */; };
 		BBC8B2F0293DB721007C898E /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC8B2EF293DB721007C898E /* ListView.swift */; };
@@ -53,7 +40,6 @@
 		EE1BC40F2AA19528009D52F7 /* WITDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1BC40E2AA19528009D52F7 /* WITDetailView.swift */; };
 		EE1EA0AA28D615E800644D5F /* Fetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1EA0A928D615E800644D5F /* Fetcher.swift */; };
 		EE1EA0AC28D6362300644D5F /* ADO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1EA0AB28D6362300644D5F /* ADO.swift */; };
-		EE61CB2F297ABA5F00FDD861 /* ActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE61CB2E297ABA5F00FDD861 /* ActivityView.swift */; };
 		EE6FFE3C299723E80056BEF8 /* WitTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6FFE3B299723E80056BEF8 /* WitTableView.swift */; };
 		EE77EAE22A99B1A1001BD97C /* SideBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE77EAE12A99B1A1001BD97C /* SideBarView.swift */; };
 		EE9A4FCF28DF721D006BEC27 /* WitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9A4FCE28DF721D006BEC27 /* WitView.swift */; };
@@ -61,8 +47,6 @@
 		EE9A4FD328DF775B006BEC27 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9A4FD228DF775B006BEC27 /* LoginView.swift */; };
 		EE9E12B02A9DF1A80087D172 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBF7D8D028F7C75700CD9A16 /* Extensions.swift */; };
 		EEB340E0295E9A7C008F6D96 /* FetchingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEB340DF295E9A7C008F6D96 /* FetchingView.swift */; };
-		EEB340E1295E9A7C008F6D96 /* FetchingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEB340DF295E9A7C008F6D96 /* FetchingView.swift */; };
-		EEEC8E152A92F0B600048613 /* ReportDateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB8ABC722992905900577B66 /* ReportDateView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -117,7 +101,6 @@
 		BB8ABC722992905900577B66 /* ReportDateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportDateView.swift; sourceTree = "<group>"; };
 		BB99F3622945C5FA00959611 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		BB99F3642945C5FB00959611 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
-		BB99F37E2945C83200959611 /* formathoPhone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = formathoPhone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB99F3802945C83200959611 /* formathoPhoneApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = formathoPhoneApp.swift; sourceTree = "<group>"; };
 		BB99F3822945C83200959611 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		BB99F3842945C83300959611 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -157,13 +140,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		BB5C368228CE2BBA00A973E4 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BB99F37B2945C83200959611 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -233,7 +209,6 @@
 			isa = PBXGroup;
 			children = (
 				BB5C368528CE2BBA00A973E4 /* formatho.app */,
-				BB99F37E2945C83200959611 /* formathoPhone.app */,
 				BB01CE47294B438D00B5482E /* macWidget.appex */,
 				BBE8129029504BD300811F80 /* formathoIntent.appex */,
 			);
@@ -377,23 +352,6 @@
 			productReference = BB5C368528CE2BBA00A973E4 /* formatho.app */;
 			productType = "com.apple.product-type.application";
 		};
-		BB99F37D2945C83200959611 /* formathoPhone */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = BB99F3892945C83300959611 /* Build configuration list for PBXNativeTarget "formathoPhone" */;
-			buildPhases = (
-				BB99F37A2945C83200959611 /* Sources */,
-				BB99F37B2945C83200959611 /* Frameworks */,
-				BB99F37C2945C83200959611 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = formathoPhone;
-			productName = formathoPhone;
-			productReference = BB99F37E2945C83200959611 /* formathoPhone.app */;
-			productType = "com.apple.product-type.application";
-		};
 		BBE8128F29504BD300811F80 /* formathoIntent */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BBE8129D29504BD400811F80 /* Build configuration list for PBXNativeTarget "formathoIntent" */;
@@ -427,9 +385,6 @@
 					BB5C368428CE2BBA00A973E4 = {
 						CreatedOnToolsVersion = 14.0;
 					};
-					BB99F37D2945C83200959611 = {
-						CreatedOnToolsVersion = 14.1;
-					};
 					BBE8128F29504BD300811F80 = {
 						CreatedOnToolsVersion = 14.1;
 					};
@@ -449,7 +404,6 @@
 			projectRoot = "";
 			targets = (
 				BB5C368428CE2BBA00A973E4 /* formatho */,
-				BB99F37D2945C83200959611 /* formathoPhone */,
 				BB01CE46294B438D00B5482E /* macWidget */,
 				BBE8128F29504BD300811F80 /* formathoIntent */,
 			);
@@ -471,15 +425,6 @@
 			files = (
 				BB5C369128CE2BBC00A973E4 /* Preview Assets.xcassets in Resources */,
 				BB5C368D28CE2BBC00A973E4 /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		BB99F37C2945C83200959611 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BB99F3882945C83300959611 /* Preview Assets.xcassets in Resources */,
-				BB99F3852945C83300959611 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -537,27 +482,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		BB99F37A2945C83200959611 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BB99F3932945C90200959611 /* TreeView.swift in Sources */,
-				BB99F38E2945C8C400959611 /* Extensions.swift in Sources */,
-				EE61CB2F297ABA5F00FDD861 /* ActivityView.swift in Sources */,
-				BB99F3902945C8C400959611 /* APIService.swift in Sources */,
-				BB99F38D2945C8C400959611 /* Definitions.swift in Sources */,
-				BB99F3832945C83200959611 /* ContentView.swift in Sources */,
-				BB99F3922945C90200959611 /* WitView.swift in Sources */,
-				BB99F38C2945C8C400959611 /* ADO.swift in Sources */,
-				EEEC8E152A92F0B600048613 /* ReportDateView.swift in Sources */,
-				BB99F3912945C8C400959611 /* APIError.swift in Sources */,
-				EEB340E1295E9A7C008F6D96 /* FetchingView.swift in Sources */,
-				BB99F3942945C90200959611 /* LoginView.swift in Sources */,
-				BB99F3812945C83200959611 /* formathoPhoneApp.swift in Sources */,
-				BB99F38F2945C8C400959611 /* Fetcher.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		BBE8128C29504BD300811F80 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -600,6 +524,7 @@
 				INFOPLIST_FILE = macWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = macWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -636,6 +561,7 @@
 				INFOPLIST_FILE = macWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = macWidget;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -781,7 +707,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 26;
+				CURRENT_PROJECT_VERSION = 28;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Formatho/Preview Content\"";
 				DEVELOPMENT_TEAM = 9T8V5DM9MV;
@@ -829,7 +755,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 26;
+				CURRENT_PROJECT_VERSION = 28;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"Formatho/Preview Content\"";
 				DEVELOPMENT_TEAM = 9T8V5DM9MV;
@@ -866,81 +792,6 @@
 			};
 			name = Release;
 		};
-		BB99F38A2945C83300959611 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = formathoPhone/formathoPhone.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 26;
-				DEVELOPMENT_ASSET_PATHS = "\"formathoPhone/Preview Content\"";
-				DEVELOPMENT_TEAM = 9T8V5DM9MV;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = formatho;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.8.3;
-				PRODUCT_BUNDLE_IDENTIFIER = io.red8.formathoPhone;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
-			};
-			name = Debug;
-		};
-		BB99F38B2945C83300959611 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = formathoPhone/formathoPhone.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 26;
-				DEVELOPMENT_ASSET_PATHS = "\"formathoPhone/Preview Content\"";
-				DEVELOPMENT_TEAM = 9T8V5DM9MV;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = formatho;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.8.3;
-				PRODUCT_BUNDLE_IDENTIFIER = io.red8.formathoPhone;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
-				SUPPORTS_MACCATALYST = NO;
-				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
-				VALIDATE_PRODUCT = YES;
-			};
-			name = Release;
-		};
 		BBE8129B29504BD400811F80 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -956,6 +807,7 @@
 				INFOPLIST_FILE = formathoIntent/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = formathoIntent;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -990,6 +842,7 @@
 				INFOPLIST_FILE = formathoIntent/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = formathoIntent;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -1035,15 +888,6 @@
 			buildConfigurations = (
 				BB5C369528CE2BBC00A973E4 /* Debug */,
 				BB5C369628CE2BBC00A973E4 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		BB99F3892945C83300959611 /* Build configuration list for PBXNativeTarget "formathoPhone" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BB99F38A2945C83300959611 /* Debug */,
-				BB99F38B2945C83300959611 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
