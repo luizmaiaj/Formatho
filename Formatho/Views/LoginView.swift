@@ -106,7 +106,6 @@ struct LoginView: View {
         .onDisappear() {
             fetcher.setProject(project: project)
         }
-        .navigationTitle("Login")
 #if !os(OSX)
         .scrollDismissesKeyboard(.interactively)
 //        .onTapGesture {

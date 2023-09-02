@@ -32,6 +32,7 @@ class Fetcher: ObservableObject {
     
     @Published var isFetchingWIT: Bool = false                  // if waiting for the requested data
     @Published var isFetchingActivity: Bool = false                  // if waiting for the requested data
+    @Published var isFetchingQuery: Bool = false                  // if waiting for the requested data
     @Published var statusMessage: String? = nil              // error message to be displayed on the interface
     @Published var formattedWIT: AttributedString = AttributedString() // to manage the string that is copied to the clipboard
     
@@ -161,7 +162,7 @@ class Fetcher: ObservableObject {
     // to get the list of queries accessible to the user
     func getQueries() {
         
-        self.isFetchingWIT = true
+        self.isFetchingQuery = true
         self.statusMessage = nil
         
         let prjBaseUrl: String = BASE_URL + self.organisation + "/" + self.project + "/_apis/wit/queries?$depth=1"
@@ -172,7 +173,7 @@ class Fetcher: ObservableObject {
             
             DispatchQueue.main.async {
                 
-                self.isFetchingWIT = false
+                self.isFetchingQuery = false
                 
                 switch result {
                 case .failure(let error):
@@ -218,7 +219,7 @@ class Fetcher: ObservableObject {
     
     func getSubQueries(queryID: String, completion: @escaping (QueryNode) -> Void) {
         
-        self.isFetchingWIT = true
+        self.isFetchingQuery = true
         
         let prjBaseUrl: String = BASE_URL + self.organisation + "/" + self.project + "/_apis/wit/queries/" + queryID + "?$depth=1"
         
@@ -236,7 +237,7 @@ class Fetcher: ObservableObject {
                     
                     self.statusMessage = error.localizedDescription
                     
-                    self.isFetchingWIT = false  // under test
+                    self.isFetchingQuery = false  // under test
                     
                     completion(QueryNode())
                     
@@ -264,7 +265,7 @@ class Fetcher: ObservableObject {
                         }
                     }
                     
-                    self.isFetchingWIT = false // under test
+                    self.isFetchingQuery = false // under test
                     
                     completion(info)
                 }

@@ -40,25 +40,34 @@ struct ContentView: View {
                 
             case .wit:
                 WitView(fetcher: fetcher)
+                    .navigationSplitViewColumnWidth(min: 150, ideal: 200)
+                    .navigationSubtitle("Work Item Type")
             case .recent:
                 ActivityView(fetcher: fetcher, selectedWIT: $selectedWIT)
+                    .navigationSplitViewColumnWidth(min: 250, ideal: 300)
+                    .navigationSubtitle("Activity")
             case .query:
                 QueryHierarchyView(queriesFetcher: queriesFetcher, queryid: $queryID, copyToCB: $copyToCB, includeReport: $includeReport)
+                    .navigationSplitViewColumnWidth(min: 250, ideal: 300)
+                    .navigationSubtitle("Query")
             case .graph:
                 GraphView(fetcher: fetcher)
+                    .navigationSubtitle("Graph")
             case .tree:
                 TreeView(fetcher: fetcher)
+                    .navigationSubtitle("Tree")
             case .list:
                 ListView(fetcher: fetcher)
+                    .navigationSubtitle("List")
             case .login, .none:
                 LoginView(fetcher: fetcher)
+                    .navigationSubtitle("Login")
             }
             
             //Text(self.fetcher.statusMessage ?? "") // only on macOS
         } detail: {
             switch selection {
-            case .login:
-                Text("Testing")
+                
             case .wit:
                 if !fetcher.wits.isEmpty {
                     
@@ -67,6 +76,9 @@ struct ContentView: View {
             case .recent:
                 if !fetcher.wits.isEmpty {
                     WITDetailView(wit: $fetcher.wit, fetcher: fetcher)
+                } else {
+                    Text("Please select a WIT")
+                        .navigationSplitViewColumnWidth(min: 100, ideal: 200)
                 }
             case .query:
                 if queryID != "" && !fetcher.wits.isEmpty {
@@ -74,16 +86,18 @@ struct ContentView: View {
                     WitTableView(wits: self.fetcher.wits, fetcher: fetcher)
                     
                 } else {
-                    Text("Please select a query")
+                    
+                    if fetcher.isFetchingWIT {
+                        
+                        FetchingView()
+                    } else {
+                        
+                        Text("Please select a query")
+                    }
                 }
-            case .graph:
-                Text("Testing")
-            case .tree:
-                Text("Testing")
-            case .list:
-                Text("Testing")
-            case nil:
-                Text("Testing")
+            case .login, .graph, .tree, .list, nil:
+                Text("Hidden")
+                    .navigationSplitViewColumnWidth(0)
             }
         }
         .onAppear() {

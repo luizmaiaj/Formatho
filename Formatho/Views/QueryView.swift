@@ -103,7 +103,6 @@ struct QueryView: View {
                     fetch()
                 }
             }
-            .navigationTitle("Queries")
         }
     }
 }
@@ -119,7 +118,7 @@ struct QueryHierarchyView: View {
     var body: some View {
         
         Group {
-            if queriesFetcher.isFetchingWIT {
+            if queriesFetcher.isFetchingQuery {
                 
                 FetchingView()
                 

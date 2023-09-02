@@ -96,6 +96,7 @@ struct ListView: View {
                             
                             Button("Get WITs", action: { fetch() })
                         }
+                        .padding([.bottom])
                     }
                 }
 #if os(iOS)
@@ -107,7 +108,6 @@ struct ListView: View {
             Text(self.fetcher.statusMessage ?? "") // only on iOS
 #endif
         }
-        .navigationTitle("List")
     }
 }
 

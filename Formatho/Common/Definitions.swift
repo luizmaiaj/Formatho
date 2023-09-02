@@ -10,7 +10,7 @@ import Foundation
 // for debugging
 let HTTP_DATA = false
 let HTTP_ERROR = false
-let DEBUG_INFO = true
+let DEBUG_INFO = false
 let DEBUG_BUTTON = false
 
 let APP_GROUP = "group.io.red8.formatho"
