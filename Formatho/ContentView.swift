@@ -41,27 +41,59 @@ struct ContentView: View {
             case .wit:
                 WitView(fetcher: fetcher)
                     .navigationSplitViewColumnWidth(min: 150, ideal: 200)
+                
+#if os(macOS)
                     .navigationSubtitle("Work Item Type")
+#else
+                    .navigationTitle("Work Item Type")
+#endif
             case .recent:
                 ActivityView(fetcher: fetcher, selectedWIT: $selectedWIT)
                     .navigationSplitViewColumnWidth(min: 250, ideal: 300)
+#if os(macOS)
                     .navigationSubtitle("Activity")
+#else
+                    .navigationTitle("Activity")
+#endif
             case .query:
                 QueryHierarchyView(queriesFetcher: queriesFetcher, queryid: $queryID, copyToCB: $copyToCB, includeReport: $includeReport)
                     .navigationSplitViewColumnWidth(min: 250, ideal: 300)
+#if os(macOS)
                     .navigationSubtitle("Query")
+#else
+                    .navigationTitle("Query")
+#endif
+
             case .graph:
                 GraphView(fetcher: fetcher)
+#if os(macOS)
                     .navigationSubtitle("Graph")
+#else
+                    .navigationTitle("Graph")
+#endif
+
             case .tree:
                 TreeView(fetcher: fetcher)
+#if os(macOS)
                     .navigationSubtitle("Tree")
+#else
+                    .navigationTitle("Tree")
+#endif
+
             case .list:
                 ListView(fetcher: fetcher)
+#if os(macOS)
                     .navigationSubtitle("List")
+#else
+                    .navigationTitle("List")
+#endif
             case .login, .none:
                 LoginView(fetcher: fetcher)
+#if os(macOS)
                     .navigationSubtitle("Login")
+#else
+                    .navigationTitle("Login")
+#endif
             }
             
             //Text(self.fetcher.statusMessage ?? "") // only on macOS
