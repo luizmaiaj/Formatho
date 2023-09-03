@@ -48,6 +48,9 @@ struct SideBarView: View {
             Section("Settings") {
                 Label("Login", systemImage: "person.crop.circle")
                     .tag(Tab.login)
+                
+                Label("Config", systemImage: "gearshape.fill")
+                    .tag(Tab.config)
             }
         }
         .safeAreaInset(edge: .bottom) {

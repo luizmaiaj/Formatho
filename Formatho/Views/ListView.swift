@@ -12,7 +12,6 @@ struct ListView: View {
     
     @AppStorage("copyToCB") private var copyToCB: Bool = false
     @AppStorage("includeReport") private var includeReport: Bool = false
-    @AppStorage("sortPriority") private var sortPriority: Bool = false
     
     @ObservedObject var fetcher: Fetcher
     
@@ -69,12 +68,11 @@ struct ListView: View {
                     VStack {
                         
                         HStack {
-                            Toggle("copy to clipboard", isOn: $copyToCB)
+                            Button("Clear list", action: { witList.removeAll() })
                             
-                            Toggle("include report", isOn: $includeReport)
-                            
-                            Toggle("sort by priority", isOn: $sortPriority)
+                            Button("Get WITs", action: { fetch() })
                         }
+                        .padding([.top])
                         
                         List {
                             ForEach(Array(witList.enumerated()), id: \.element) { index, element in
@@ -90,13 +88,6 @@ struct ListView: View {
                             }
                             .onDelete(perform: self.removeItem) // swipe left action
                         }
-                        
-                        HStack {
-                            Button("Clear list", action: { witList.removeAll() })
-                            
-                            Button("Get WITs", action: { fetch() })
-                        }
-                        .padding([.bottom])
                     }
                 }
 #if os(iOS)

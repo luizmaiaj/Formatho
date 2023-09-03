@@ -56,7 +56,7 @@ struct ContentView: View {
                     .navigationTitle("Activity")
 #endif
             case .query:
-                QueryHierarchyView(queriesFetcher: queriesFetcher, queryid: $queryID, copyToCB: $copyToCB, includeReport: $includeReport)
+                QueryHierarchyView(queriesFetcher: queriesFetcher, queryid: $queryID)
                     .navigationSplitViewColumnWidth(min: 250, ideal: 300)
 #if os(macOS)
                     .navigationSubtitle("Query")
@@ -94,6 +94,14 @@ struct ContentView: View {
 #else
                     .navigationTitle("Login")
 #endif
+                
+            case .config:
+                ConfigView()
+#if os(macOS)
+                    .navigationSubtitle("Config")
+#else
+                    .navigationTitle("Config")
+#endif
             }
             
             //Text(self.fetcher.statusMessage ?? "") // only on macOS
@@ -127,7 +135,7 @@ struct ContentView: View {
                         Text("Please select a query")
                     }
                 }
-            case .login, .graph, .tree, .list, nil:
+            case .login, .graph, .tree, .list, .config, nil:
                 Text("Hidden")
                     .navigationSplitViewColumnWidth(0)
             }
