@@ -58,6 +58,7 @@ struct ActivityTable: View {
     
     var body: some View {
         
+#if os(macOS)
         Table(activities, selection: $selectedWIT, sortOrder: $sortOrder) {
             
             TableColumn("Activity", value: \.activityType.capitalized)
@@ -82,5 +83,25 @@ struct ActivityTable: View {
             
             activities.sort(using: $0)
         }
+#else
+        List {
+            ForEach(activities) { activity in
+                HStack {
+                    
+                    Text(activity.activityType.capitalized)
+                    
+                    VStack {
+                        witIcon(type: activity.workItemType)
+                        Text(activity.textID)
+                    }
+
+                    VStack {
+                        Text(activity.state)
+                        Text(activity.title)
+                    }
+                }
+            }
+        }
+#endif
     }
 }
