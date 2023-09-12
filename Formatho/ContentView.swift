@@ -20,7 +20,10 @@ struct ContentView: View {
     @StateObject var fetcher: Fetcher = Fetcher()
     @StateObject var queriesFetcher: Fetcher = Fetcher()
     
-    @State private var selection: Tab? = Tab.wit
+    @State var columnVisibility: NavigationSplitViewVisibility = .all
+    
+    @State private var sideBarSelection: Tab? = Tab.wit
+    @State private var contentSelection: Tab? = Tab.wit
     @State private var queryID: String = ""
     @State private var selectedWIT: Activity.ID?
     
@@ -30,35 +33,32 @@ struct ContentView: View {
     
     var body: some View {
                 
-        NavigationSplitView {
+        NavigationSplitView(columnVisibility: $columnVisibility, sidebar: {
+            SideBarView(selection: $sideBarSelection, queriesFetcher: queriesFetcher)
             
-            SideBarView(selection: $selection, queriesFetcher: queriesFetcher)
-            
-        } content: {
-            
-            switch selection {
+        }, content: {
+            switch sideBarSelection {
                 
             case .wit:
                 WitView(fetcher: fetcher)
-                    .navigationSplitViewColumnWidth(min: 150, ideal: 200)
-                
 #if os(macOS)
+                    .navigationSplitViewColumnWidth(min: 150, ideal: 200)
                     .navigationSubtitle("Work Item Type")
 #else
                     .navigationTitle("Work Item Type")
 #endif
             case .recent:
                 ActivityView(fetcher: fetcher, selectedWIT: $selectedWIT)
-                    .navigationSplitViewColumnWidth(min: 250, ideal: 300)
 #if os(macOS)
+                    .navigationSplitViewColumnWidth(min: 250, ideal: 300)
                     .navigationSubtitle("Activity")
 #else
                     .navigationTitle("Activity")
 #endif
             case .query:
                 QueryHierarchyView(queriesFetcher: queriesFetcher, queryid: $queryID)
-                    .navigationSplitViewColumnWidth(min: 250, ideal: 300)
 #if os(macOS)
+                    .navigationSplitViewColumnWidth(min: 250, ideal: 300)
                     .navigationSubtitle("Query")
 #else
                     .navigationTitle("Query")
@@ -88,58 +88,54 @@ struct ContentView: View {
                     .navigationTitle("List")
 #endif
             case .login, .none:
-                LoginView(fetcher: fetcher)
+                SettingsView(fetcher: fetcher)
 #if os(macOS)
-                    .navigationSubtitle("Login")
+                    .navigationSubtitle("Settings")
 #else
-                    .navigationTitle("Login")
-#endif
-                
-            case .config:
-                ConfigView()
-#if os(macOS)
-                    .navigationSubtitle("Config")
-#else
-                    .navigationTitle("Config")
+                    .navigationTitle("Settings")
 #endif
             }
+        }, detail: {
             
-            //Text(self.fetcher.statusMessage ?? "") // only on macOS
-        } detail: {
-            switch selection {
+            switch sideBarSelection {
+
+            case .wit, .recent:
                 
-            case .wit:
-                if !fetcher.wits.isEmpty {
+                List(selection: $contentSelection) {
                     
-                    WITDetailView(wit: $fetcher.wit, fetcher: fetcher)
-                }
-            case .recent:
-                if !fetcher.wits.isEmpty {
-                    WITDetailView(wit: $fetcher.wit, fetcher: fetcher)
-                } else {
-                    Text("Please select a WIT")
-                        .navigationSplitViewColumnWidth(min: 100, ideal: 200)
-                }
-            case .query:
-                if queryID != "" && !fetcher.wits.isEmpty {
-                    
-                    WitTableView(wits: self.fetcher.wits, fetcher: fetcher)
-                    
-                } else {
-                    
-                    if fetcher.isFetchingWIT {
-                        
-                        FetchingView()
+                    if !fetcher.wits.isEmpty {
+                        WITDetailView(wit: $fetcher.wit, fetcher: fetcher)
                     } else {
-                        
-                        Text("Please select a query")
+                        Text("Please select a WIT")
+                            .navigationSplitViewColumnWidth(min: 100, ideal: 200)
                     }
                 }
-            case .login, .graph, .tree, .list, .config, nil:
+                
+            case .query:
+                
+                //List(selection: $contentSelection) {
+                    
+                    if queryID != "" && !fetcher.wits.isEmpty {
+                        
+                        WitTableView(wits: self.fetcher.wits, fetcher: fetcher)
+                        
+                    } else {
+                        
+                        if fetcher.isFetchingWIT {
+                            
+                            FetchingView()
+                        } else {
+                            
+                            Text("Please select a query")
+                        }
+                    }
+                //}
+                
+            case .login, .graph, .tree, .list, nil:
                 Text("Hidden")
                     .navigationSplitViewColumnWidth(0)
             }
-        }
+        })
         .onAppear() {
             
             self.fetcher.initialise(org: organisation, email: email, pat: pat, project: project)

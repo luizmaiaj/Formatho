@@ -59,5 +59,4 @@ enum Tab: Int {
     case graph = 4
     case tree = 5
     case list = 6
-    case config = 7
 }

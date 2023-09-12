@@ -44,8 +44,9 @@ struct ListView: View {
                 
             } else {
                 
-                HStack {
-                    VStack {
+                VStack {
+                    
+                    HStack {
                         TextField("WIT ID", text: $witid)
                             .frame(maxWidth: 80, alignment: .trailing)
                             .onReceive(Just(witid)) { newValue in
@@ -60,34 +61,29 @@ struct ListView: View {
                             .onSubmit {
                                 addItem()
                             }
-                            .padding([.leading], 10)
                         
                         Button("Add to list", action: { addItem() })
                     }
                     
-                    VStack {
+                    HStack {
+                        Button("Clear list", action: { witList.removeAll() })
                         
-                        HStack {
-                            Button("Clear list", action: { witList.removeAll() })
+                        Button("Get WITs", action: { fetch() })
+                    }
+                    
+                    List {
+                        ForEach(Array(witList.enumerated()), id: \.element) { index, element in
                             
-                            Button("Get WITs", action: { fetch() })
-                        }
-                        .padding([.top])
-                        
-                        List {
-                            ForEach(Array(witList.enumerated()), id: \.element) { index, element in
-                                
-                                Text("\(element)")
-                                    .contextMenu { // right click menu for MacOS
-                                        Button(action: {
-                                            self.witList.remove(atOffsets: [index])
-                                        }){
-                                            Text("Delete")
-                                        }
+                            Text("\(element)")
+                                .contextMenu { // right click menu for MacOS
+                                    Button(action: {
+                                        self.witList.remove(atOffsets: [index])
+                                    }){
+                                        Text("Delete")
                                     }
-                            }
-                            .onDelete(perform: self.removeItem) // swipe left action
+                                }
                         }
+                        .onDelete(perform: self.removeItem) // swipe left action
                     }
                 }
 #if os(iOS)
