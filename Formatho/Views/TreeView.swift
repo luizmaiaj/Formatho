@@ -69,8 +69,10 @@ struct TreeView: View {
                                 
                                 HStack(spacing: 0.0) {
                                     witIcon(type: item.fields.SystemWorkItemType)
+                                    
                                     Link(" \(item.textWitID): ", destination: URL(string: "\(reqURL)\(item.textWitID)")!)
-                                    Text(" \(item.description)")
+                                    
+                                    Text(" \(item.formatted(html: false))")
                                 }
                             }
                         }

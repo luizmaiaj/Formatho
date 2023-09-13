@@ -340,11 +340,11 @@ class Fetcher: ObservableObject {
         for wit in self.wits {
             
             // splitting between link and name to correctly display in dark mode
-            wit.projectLink = "<a href=\"\(reqURL)\(wit.textWitID)\">[\(self.project)-\(wit.textWitID)]</a>"
+            wit.projectLink = "<a href=\"\(reqURL)\(wit.textWitID)\">[\(self.project)-\(wit.textWitID)]</a>" // a link to the wit with the project name and ID
             
-            wit.idLink = "<a href=\"\(reqURL)\(wit.textWitID)\">\(wit.textWitID)</a>"
+            wit.idLink = "<a href=\"\(reqURL)\(wit.textWitID)\">\(wit.textWitID)</a>" // a link to the wit with the ID only
             
-            wit.html = wit.name + " " + wit.projectLink
+            wit.html = wit.formatted(html: true) + " " + wit.projectLink
             
             //add report field information if necessary
             if includeReport {

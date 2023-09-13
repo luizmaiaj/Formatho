@@ -53,7 +53,7 @@ struct ReportDateView: View {
                 if onlyDate {
                     Text("\(lastReportUpdate)")
                 } else {
-                    Text("Report updated on: \(lastReportUpdate)")
+                    Text("Report Changed Date: \(lastReportUpdate)")
                 }
             }
         }

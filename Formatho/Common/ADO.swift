@@ -214,7 +214,6 @@ class Wit: Codable, Identifiable, Hashable {
         self.textWitID = ""
         self.fields = Fields()
         self.url = ""
-        self.name = ""
         self.projectLink = ""
         self.idLink = ""
         self.html = ""
@@ -227,7 +226,6 @@ class Wit: Codable, Identifiable, Hashable {
         self.textWitID = from.textWitID
         self.fields = from.fields
         self.url = from.url
-        self.name = from.name
         self.projectLink = from.projectLink
         self.idLink = from.idLink
         self.html = from.html
@@ -239,7 +237,6 @@ class Wit: Codable, Identifiable, Hashable {
         self.textWitID = "\(self.witID)"
         self.fields = Fields()
         self.url = ""
-        self.name = ""
         self.projectLink = ""
         self.idLink = ""
         self.html = ""
@@ -252,7 +249,6 @@ class Wit: Codable, Identifiable, Hashable {
         self.textWitID = "\(self.witID)"
         self.fields = fields
         self.url = ""
-        self.name = ""
         self.projectLink = ""
         self.idLink = ""
         self.html = ""
@@ -273,8 +269,6 @@ class Wit: Codable, Identifiable, Hashable {
         
         do { self.url = try values.decode(String.self, forKey: .url)
         } catch { self.url = "" }
-        
-        self.name = "<b>\(self.fields.textPriority) \(self.fields.SystemWorkItemType) \(self.fields.SystemTitle)</b>"
         
         self.projectLink = ""
         
@@ -303,13 +297,32 @@ class Wit: Codable, Identifiable, Hashable {
         case relations = "relations"
     }
     
+    func formatted(html: Bool) -> String {
+        
+        var formattedString: String = "\(self.fields.textPriority) \(self.fields.SystemWorkItemType) \(self.fields.SystemTitle)"
+            
+        if !self.fields.CustomCORequestor.isEmpty { // if there's a requestor string then add it to the beginning
+            
+            formattedString = "\(self.fields.CustomCORequestor) - \(formattedString)"
+        }
+        
+        if html { // if html then add the bold markers
+            
+            if self.fields.CustomCORequestor.isEmpty { // in case there is no requestor string
+                
+                formattedString = "<b>\(formattedString)</b>"
+            }
+        }
+        
+        return formattedString
+    }
+    
     func copy(from: Wit) {
         
         self.witID = from.witID
         self.textWitID = from.textWitID
         self.fields = from.fields
         self.url = from.url
-        self.name = from.name
         self.projectLink = from.projectLink
         self.idLink = from.idLink
         self.html = from.html
@@ -325,7 +338,6 @@ class Wit: Codable, Identifiable, Hashable {
     var textWitID: String
     var fields: Fields
     var url: String
-    var name: String // wit name in html format
     var projectLink: String // project-id link in html format
     var idLink: String // id link in html format
     var html: String // full html formatted wit
@@ -566,11 +578,8 @@ class WitNode: Wit {
         case relation.file, relation.pullRequest:
             self.description = "\(self.rel.id): \(self.rel.attributes.name)"
             
-        case relation.related:
-            self.description = "\(self.rel.id)"
-            
         default:
-            self.description = "\(relations.attributes.name): \(self.rel.id)"
+            self.description = self.formatted(html: false) //"\(self.rel.id)"
         }
     }
     

@@ -17,7 +17,7 @@ struct WITDetailView: View {
         ScrollView {
             HStack {
                 if !wit.fields.CustomCORequestor.isEmpty {
-                    Text("CO: \(wit.fields.CustomCORequestor)")
+                    Text("Requestor: \(wit.fields.CustomCORequestor)")
                 }
                 
                 Text("Area: \(wit.fields.SystemAreaPath)")
@@ -41,16 +41,16 @@ struct WITDetailView: View {
             if wit.fields.CustomReport.isEmpty {
                 
                 witIcon(type: wit.fields.SystemWorkItemType)
-                + Text("\(wit.fields.textPriority) \(wit.fields.CustomCORequestor)  \(wit.fields.SystemTitle) \(wit.projectLink.toRTF())")
+                + Text("\(wit.formatted(html: false)) \(wit.projectLink.toRTF())")
                 
             } else { // if there is a report
                 
                 witIcon(type: wit.fields.SystemWorkItemType)
-                + Text("\(wit.fields.textPriority) \(wit.fields.CustomCORequestor)  \(wit.fields.SystemTitle) \(wit.projectLink.toRTF())")
+                + Text("\(wit.formatted(html: false)) \(wit.projectLink.toRTF())")
                 + Text(": \(wit.fields.CustomReport.toRTF())")
                 
                 ReportDateView(updates: fetcher.copy(), witid: wit.witID, onlyDate: false)
-                    //.padding([.top])
+                    .padding([.top])
             }
         }
         .padding()
