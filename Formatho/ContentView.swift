@@ -32,7 +32,7 @@ struct ContentView: View {
     }
     
     var body: some View {
-                
+        
         NavigationSplitView(columnVisibility: $columnVisibility, sidebar: {
             SideBarView(selection: $sideBarSelection, queriesFetcher: queriesFetcher)
             
@@ -63,7 +63,7 @@ struct ContentView: View {
 #else
                     .navigationTitle("Query")
 #endif
-
+                
             case .graph:
                 GraphView(fetcher: fetcher)
 #if os(macOS)
@@ -71,7 +71,7 @@ struct ContentView: View {
 #else
                     .navigationTitle("Graph")
 #endif
-
+                
             case .tree:
                 TreeView(fetcher: fetcher)
 #if os(macOS)
@@ -79,7 +79,7 @@ struct ContentView: View {
 #else
                     .navigationTitle("Tree")
 #endif
-
+                
             case .list:
                 ListView(fetcher: fetcher)
 #if os(macOS)
@@ -98,37 +98,37 @@ struct ContentView: View {
         }, detail: {
             
             switch sideBarSelection {
-
+                
             case .wit, .recent:
                 
-                List(selection: $contentSelection) {
-                    
-                    if !fetcher.wits.isEmpty {
-                        WITDetailView(wit: $fetcher.wit, fetcher: fetcher)
-                    } else {
-                        Text("Please select a WIT")
-                            .navigationSplitViewColumnWidth(min: 100, ideal: 200)
-                    }
+                //List(selection: $contentSelection) {
+                
+                if !fetcher.wits.isEmpty {
+                    WITDetailView(wit: $fetcher.wit, fetcher: fetcher)
+                } else {
+                    Text("Please select a WIT")
+                        .navigationSplitViewColumnWidth(min: 100, ideal: 200)
                 }
+                //}
                 
             case .query:
                 
                 //List(selection: $contentSelection) {
+                
+                if queryID != "" && !fetcher.wits.isEmpty {
                     
-                    if queryID != "" && !fetcher.wits.isEmpty {
+                    WitTableView(wits: self.fetcher.wits, fetcher: fetcher)
+                    
+                } else {
+                    
+                    if fetcher.isFetchingWIT {
                         
-                        WitTableView(wits: self.fetcher.wits, fetcher: fetcher)
-                        
+                        FetchingView()
                     } else {
                         
-                        if fetcher.isFetchingWIT {
-                            
-                            FetchingView()
-                        } else {
-                            
-                            Text("Please select a query")
-                        }
+                        Text("Please select a query")
                     }
+                }
                 //}
                 
             case .login, .graph, .tree, .list, nil:

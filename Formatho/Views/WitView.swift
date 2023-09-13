@@ -54,15 +54,16 @@ struct WitView: View {
 #endif
             }
             
-#if os(iOS)
             Text(self.fetcher.statusMessage ?? "") // only on iOS
-#endif
         }
     }
 }
 
-struct WitView_Previews: PreviewProvider {
-    static var previews: some View {
-        WitView(fetcher: Fetcher())
-    }
-}
+//struct WitView_Previews: PreviewProvider {
+//    
+//    @State var columnVisibility: NavigationSplitViewVisibility = .all
+//
+//    static var previews: some View {
+//        WitView(fetcher: Fetcher(), columnVisibility: $columnVisibility)
+//    }
+//}

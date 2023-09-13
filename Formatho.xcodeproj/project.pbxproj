@@ -19,7 +19,6 @@
 		BB01CE5C294B460E00B5482E /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBC3A61828D5645800143EA4 /* APIService.swift */; };
 		BB01CE5E294B461500B5482E /* Fetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1EA0A928D615E800644D5F /* Fetcher.swift */; };
 		BB01CE5F294B461800B5482E /* ADO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1EA0AB28D6362300644D5F /* ADO.swift */; };
-		BB2919D229122F0F00CD9A79 /* WitTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2919D129122F0F00CD9A79 /* WitTab.swift */; };
 		BB5C368928CE2BBA00A973E4 /* FormathoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5C368828CE2BBA00A973E4 /* FormathoApp.swift */; };
 		BB5C368B28CE2BBA00A973E4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB5C368A28CE2BBA00A973E4 /* ContentView.swift */; };
 		BB5C368D28CE2BBC00A973E4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB5C368C28CE2BBC00A973E4 /* Assets.xcassets */; };
@@ -88,7 +87,6 @@
 		BB01CE4E294B438F00B5482E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BB01CE50294B438F00B5482E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BB01CE51294B438F00B5482E /* macWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macWidget.entitlements; sourceTree = "<group>"; };
-		BB2919D129122F0F00CD9A79 /* WitTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WitTab.swift; sourceTree = "<group>"; };
 		BB5C368528CE2BBA00A973E4 /* formatho.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = formatho.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB5C368828CE2BBA00A973E4 /* FormathoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormathoApp.swift; sourceTree = "<group>"; };
 		BB5C368A28CE2BBA00A973E4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -185,14 +183,6 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		BB2919D029122E9000CD9A79 /* Tabs */ = {
-			isa = PBXGroup;
-			children = (
-				BB2919D129122F0F00CD9A79 /* WitTab.swift */,
-			);
-			path = Tabs;
-			sourceTree = "<group>";
-		};
 		BB5C367C28CE2BBA00A973E4 = {
 			isa = PBXGroup;
 			children = (
@@ -219,7 +209,6 @@
 			isa = PBXGroup;
 			children = (
 				EE1BC40D2AA194FC009D52F7 /* DetailViews */,
-				BB2919D029122E9000CD9A79 /* Tabs */,
 				BB2919CF29122E8500CD9A79 /* Views */,
 				BB8ABC712992902C00577B66 /* Subs */,
 				BB66E26528E52499004F731D /* Common */,
@@ -463,7 +452,6 @@
 				BBC3A61B28D564D600143EA4 /* APIError.swift in Sources */,
 				EE00AE5428E71B0B00500331 /* GraphView.swift in Sources */,
 				BBC3A61928D5645800143EA4 /* APIService.swift in Sources */,
-				BB2919D229122F0F00CD9A79 /* WitTab.swift in Sources */,
 				EEB340E0295E9A7C008F6D96 /* FetchingView.swift in Sources */,
 				BB01CE53294B438F00B5482E /* macWidget.intentdefinition in Sources */,
 				EE1EA0AA28D615E800644D5F /* Fetcher.swift in Sources */,
