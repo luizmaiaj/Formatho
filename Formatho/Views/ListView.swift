@@ -16,7 +16,7 @@ struct ListView: View {
     @ObservedObject var fetcher: Fetcher
     
     @State var witid: String = String()
-    @State var witList: [String] = [String]()
+    @AppStorage("includeReport") private var witList: [String] = [String]()
     
     private func fetch() {
         fetcher.getWits(ids: witList, cb: copyToCB, includeReport: includeReport)
