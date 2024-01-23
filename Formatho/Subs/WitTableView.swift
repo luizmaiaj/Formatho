@@ -21,7 +21,7 @@ struct WitTableView: View {
             TableColumn("Priority", value: \.fields.textPriority)
                 .width(max: 30)
             
-            TableColumn("Requestor", value: \.fields.CustomCORequestor)
+            TableColumn("Requestor", value: \.fields.CustomRequestor)
                 .width(max: 50)
             
             TableColumn("Type") { wit in

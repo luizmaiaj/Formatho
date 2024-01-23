@@ -301,14 +301,14 @@ class Wit: Codable, Identifiable, Hashable {
         
         var formattedString: String = "\(self.fields.textPriority) \(self.fields.SystemWorkItemType) \(self.fields.SystemTitle)"
             
-        if !self.fields.CustomCORequestor.isEmpty { // if there's a requestor string then add it to the beginning
+        if !self.fields.CustomRequestor.isEmpty { // if there's a requestor string then add it to the beginning
             
-            formattedString = "\(self.fields.CustomCORequestor) - \(formattedString)"
+            formattedString = "\(self.fields.CustomRequestor) - \(formattedString)"
         }
         
         if html { // if html then add the bold markers
             
-            if self.fields.CustomCORequestor.isEmpty { // in case there is no requestor string
+            if self.fields.CustomRequestor.isEmpty { // in case there is no requestor string
                 
                 formattedString = "<b>\(formattedString)</b>"
             }
@@ -646,7 +646,7 @@ class Fields: Codable, Identifiable {
         self.SystemChangedBy = User()
         self.SystemCommentCount = 0
         self.SystemTitle = ""
-        self.CustomCORequestor = ""
+        self.CustomRequestor = ""
         self.SystemDescription = ""
         self.MicrosoftVSTSCommonPriority = 0
         self.textPriority = ""
@@ -668,7 +668,7 @@ class Fields: Codable, Identifiable {
         self.SystemChangedBy = User()
         self.SystemCommentCount = commentCount
         self.SystemTitle = title
-        self.CustomCORequestor = requestor
+        self.CustomRequestor = requestor
         self.SystemDescription = ""
         self.MicrosoftVSTSCommonPriority = priority
         self.textPriority = "P\(self.MicrosoftVSTSCommonPriority)"
@@ -721,8 +721,8 @@ class Fields: Codable, Identifiable {
         do { self.SystemTitle = try values.decode(String.self, forKey: .SystemTitle)
         } catch { self.SystemTitle = "" }
         
-        do { self.CustomCORequestor = try values.decode(String.self, forKey: .CustomCORequestor)
-        } catch { self.CustomCORequestor = "" }
+        do { self.CustomRequestor = try values.decode(String.self, forKey: .CustomRequestor)
+        } catch { self.CustomRequestor = "" }
         
         do { self.SystemDescription = try values.decode(String.self, forKey: .SystemDescription)
         } catch { self.SystemDescription = "" }
@@ -765,7 +765,7 @@ class Fields: Codable, Identifiable {
         case SystemChangedBy = "System.ChangedBy"
         case SystemCommentCount = "System.CommentCount"
         case SystemTitle = "System.Title"
-        case CustomCORequestor = "Custom.CORequestor"
+        case CustomRequestor = "Custom.Requestor"
         case SystemDescription = "System.Description"
         case MicrosoftVSTSCommonPriority = "Microsoft.VSTS.Common.Priority"
         case CustomReport = "Custom.Report"
@@ -784,7 +784,7 @@ class Fields: Codable, Identifiable {
     let SystemChangedBy: User
     let SystemCommentCount: Int
     let SystemTitle: String
-    let CustomCORequestor: String
+    let CustomRequestor: String
     let SystemDescription: String
     let MicrosoftVSTSCommonPriority: Int
     let textPriority: String

@@ -16,8 +16,8 @@ struct WITDetailView: View {
     var body: some View {
         ScrollView {
             HStack {
-                if !wit.fields.CustomCORequestor.isEmpty {
-                    Text("Requestor: \(wit.fields.CustomCORequestor)")
+                if !wit.fields.CustomRequestor.isEmpty {
+                    Text("Requestor: \(wit.fields.CustomRequestor)")
                 }
                 
                 Text("Area: \(wit.fields.SystemAreaPath)")

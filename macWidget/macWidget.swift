@@ -111,8 +111,8 @@ struct macWidgetEntryView : View {
             HStack {
                 Text("\(entry.wit.fields.SystemAreaPath)")
                 
-                if !entry.wit.fields.CustomCORequestor.isEmpty {
-                    Text("\(entry.wit.fields.CustomCORequestor)")
+                if !entry.wit.fields.CustomRequestor.isEmpty {
+                    Text("\(entry.wit.fields.CustomRequestor)")
                 }
             }
             .padding([.bottom])
