@@ -73,12 +73,10 @@ The app supports several configuration options:
 - Custom query management
 - Widget configurations
 
-[Add your license here]
+## License
 
-## Contributing
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-[Add contribution guidelines]
+## Disclaimer
 
-## Support
-
-[Add your contact information]
+This software is provided "as is", without warranty of any kind. Use at your own risk.
